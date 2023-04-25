@@ -25,6 +25,7 @@ create table task (
     task_id serial primary key ,
     task_name text not null ,
     task_label char(20),
+    task_deadline date,
     task_detail text,
     task_priority priority,
     completed boolean default false,
@@ -40,6 +41,7 @@ create table task_user (
 create table file (
     file_id serial primary key ,
     file_name char(50) ,
+    file_upload_date date,
     project_id int references project (project_id),
     user_id int references user_account (user_id)
 );
