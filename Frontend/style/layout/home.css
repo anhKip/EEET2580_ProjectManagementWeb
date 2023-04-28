@@ -75,16 +75,19 @@
     text-decoration: none;
     font-size: 17px;
     clear: left;
+    width: 100%;
 }
 
 .menu-container a:hover {
     background-color: #b0c7c4;
     color: #fff;
+    width: 100%;
 }
 
 .menu-container.open {
     left: 0;
 }
+
 
 .project-grid {
     display: grid;
