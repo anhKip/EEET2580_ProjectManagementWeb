@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/5f92c9aea9.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./../../style/layout/file.css">
+    <link rel="stylesheet" href="./../../style/global.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>File</title>
+</head>
+<body>
+    <div class="topnav">
+        <a class="menu-icon" href="#"><i class="fa-solid fa-bars"></i></a>
+        <div class="menu-container">
+            <a href="#"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="#"><i class="fa-regular fa-clipboard"></i> Task</a>
+            <a href="#"><i class="fa-solid fa-list"></i> View</a>
+            <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i> File management</a>
+            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+        </div>
+        <div class="right-icons">
+            <a href="#"><i class="fa-regular fa-bell"></i></a>
+            <a href="#"><i class="fa-solid fa-rotate"></i></a>
+            <a href="#"><i class="fa-regular fa-user"></i></a>
+        </div>
+    </div>    
+
+    <form action="#">
+        <div class="buttons-flex">
+            <input type="file" id="upload" class="upload-button" value="upload"> 
+            <label for="upload"> <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload </label>
+            <input type="submit" id="download" class="download-button" value="download">
+            <label for="download"> <i class="fa-solid fa-download"></i> Download </label>
+        </div>
+    
+        <table class="table-sortable">
+            <thead>
+                <tr>
+                    <th></th> 
+                    <th> Name </th> 
+                    <th> Date</th> 
+                    <th> Size </th> 
+                    <th> Owner </th> 
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </form>
+
+    <script src="./file.js"></script>
+      
+</body>
+</html>
