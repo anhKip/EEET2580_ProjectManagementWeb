@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "user_account")
@@ -29,4 +31,10 @@ public class UserAccount {
 
     @Column(name = "user_score", columnDefinition = "integer default 0")
     private int score;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "project_user",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id"))
+    private List<Project> projects;
 }
