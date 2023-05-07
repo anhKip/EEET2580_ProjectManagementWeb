@@ -13,17 +13,20 @@ public class UserAccount {
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank
-    @Size(min = 3, max = 50)
+    @Size(min = 3, max = 20)
     @Column(name = "username")
     private String username;
+
     @NotBlank
     @Column(name = "user_email")
     private String email;
+
     @NotBlank
     @Column(name = "user_password")
     private String password;
 
-    @Column(name = "user_score")
+    @Column(name = "user_score", columnDefinition = "integer default 0")
     private int score;
 }
