@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/5f92c9aea9.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./../../style/layout/setting.css">
+    <link rel="stylesheet" href="./../../style/global.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Setting</title>
+</head>
+<body>
+    <div class="topnav">
+        <a class="menu-icon" href="#"><i class="fa-solid fa-bars"></i></a>
+        <div class="menu-container">
+            <a href="#"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="#"><i class="fa-regular fa-clipboard"></i> Task</a>
+            <a href="#"><i class="fa-solid fa-list"></i> View</a>
+            <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i> File management</a>
+            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+        </div>
+        <div class="right-icons">
+            <a href="#"><i class="fa-regular fa-bell"></i></a>
+            <a href="#"><i class="fa-solid fa-rotate"></i></a>
+            <a href="#"><i class="fa-regular fa-user"></i></a>
+        </div>
+    </div>    
+
+    <div class="container">
+        <div class="name-setting">
+            <h4> Project name </h4>
+            <div class="name-input">
+                <input readonly type="text" value="My project" id="project-name">
+                <div class="change-buttons">
+                    <button type="button" id="change"> Change </button>
+                    <button type="submit" id="save"> Save </button>
+                    <button type="button" id="cancel"> Cancel </button>
+                </div>
+            </div>
+        </div>
+        <div class="contributor-setting">
+            <h4> Contributors </h4>
+            <div class="list">
+                <div class="contributors">
+                    <div class="contributor">
+                        <h5> User 1 </h5>
+                    </div>
+                    <div class="contributor"> <h5> User 2 </h5> </div>
+                    <div class="contributor"> <h5> User 3 </h5> </div>
+                </div>
+                <div class="add-button">
+                    <button type="button" id="add-contributor"> Add </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="overlay"></div>
+        <div class="add-form">
+            <h6> Add user </h6>
+            <form>
+                <input type="number" id="id-input" placeholder="ID">
+
+                <button type="submit" id="confirm-button"> Add </button>
+                <button type="button" id="cancel-button"> Cancel </button>
+            </form>
+        </div>
+
+        <div class="delete-project">
+            <button type="button" class="delete-project-btn"> Delete project </button>
+        </div>
+    </div>
+      
+    <script src="setting.js"></script>
+</body>
+</html>

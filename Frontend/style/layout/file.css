@@ -97,10 +97,22 @@
     left: 0;
 }
 
+.container {
+    display: flex;
+    margin: 8px;
+    margin-top: 54px;
+    padding: 20px;
+}
+
+form {
+    width: 100%;
+}
+
 .buttons-flex {
     display: flex;
-    margin-top: 60px;
-    margin-left: 270px;
+    margin-left: 232px;
+    margin-right: 10px;
+    padding: 10px;
 }
 
 .upload-button, .download-button {
@@ -116,7 +128,7 @@
     margin-right: 10px;
     border: 0;
     background-color: rgb(233, 242, 241);
-    padding: 10px;
+    padding: 10px 15px;
     border-radius: 20px;
     -webkit-border-radius: 20px;
     -moz-border-radius: 20px;
@@ -126,14 +138,16 @@
 }
 
 .buttons-flex label:hover {
-    background-color: beige;
+    background-color: #FBE7AB;
+    cursor: pointer;
 }
 
 table {
     margin-top: 30px;
-    margin-left: 260px;
+    margin-left: 232px;
     margin-right: 10px;
     width: 80%;
+    padding: 10px;
 }
 
 table, th, td {
@@ -149,6 +163,7 @@ table th {
     font-size: 20px;
     line-height: 24px;
     align-items: center;
+    cursor: pointer;
 }
 
 td {
@@ -172,7 +187,7 @@ table tr:first-child th:nth-child(1) {
 }
 
 table tr:first-child th:nth-child(2) {
-    width: 40%;
+    width: 45%;
 }
 
 table tr:first-child th:nth-child(3) {
@@ -180,7 +195,7 @@ table tr:first-child th:nth-child(3) {
 }
 
 table tr:first-child th:nth-child(4) {
-    width: 10%;
+    width: 6%;
 }
 
 table tr:first-child th:nth-child(5) {

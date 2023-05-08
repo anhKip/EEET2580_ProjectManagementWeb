@@ -18,7 +18,7 @@
             <a href="#"><i class="fa-regular fa-clipboard"></i> Task</a>
             <a href="#"><i class="fa-solid fa-list"></i> View</a>
             <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i> File management</a>
-            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+            <a href="../Setting/setting.html"><i class="fa-solid fa-gear"></i> Settings</a>
         </div>
         <div class="right-icons">
             <a href="#"><i class="fa-regular fa-bell"></i></a>
@@ -27,29 +27,31 @@
         </div>
     </div>    
 
-    <form action="#">
-        <div class="buttons-flex">
-            <input type="file" id="upload" class="upload-button" value="upload"> 
-            <label for="upload"> <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload </label>
-            <input type="submit" id="download" class="download-button" value="download">
-            <label for="download"> <i class="fa-solid fa-download"></i> Download </label>
-        </div>
-    
-        <table class="table-sortable">
-            <thead>
-                <tr>
-                    <th></th> 
-                    <th> Name </th> 
-                    <th> Date</th> 
-                    <th> Size </th> 
-                    <th> Owner </th> 
-                </tr>
-            </thead>
-            <tbody>
-                
-            </tbody>
-        </table>
-    </form>
+    <div class="container">
+        <form action="#">
+            <div class="buttons-flex">
+                <input type="file" id="upload" class="upload-button" value="upload"> 
+                <label for="upload"> <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload </label>
+                <input type="submit" id="download" class="download-button" value="download">
+                <label for="download"> <i class="fa-solid fa-download"></i> Download </label>
+            </div>
+        
+            <table class="table-sortable">
+                <thead>
+                    <tr>
+                        <th></th> 
+                        <th> Name </th> 
+                        <th> Date</th> 
+                        <th> Size </th> 
+                        <th> Owner </th> 
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </form>
+    </div>
 
     <script src="./file.js"></script>
       
