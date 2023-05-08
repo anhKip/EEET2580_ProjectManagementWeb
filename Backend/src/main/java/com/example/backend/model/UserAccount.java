@@ -37,4 +37,8 @@ public class UserAccount {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id"))
     private List<Project> projects;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private List<Task> tasks;
 }

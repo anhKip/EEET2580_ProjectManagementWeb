@@ -21,6 +21,10 @@ public class Project {
     @Column(name = "project_name")
     private String name;
 
-    @ManyToMany(mappedBy = "projects")
+    @ManyToMany(mappedBy = "projects", cascade = CascadeType.ALL)
     private List<UserAccount> users;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
+    private List<Task> tasks;
 }
