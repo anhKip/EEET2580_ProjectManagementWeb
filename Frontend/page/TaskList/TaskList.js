@@ -22,11 +22,15 @@ function addTask() {
         date: new Date(),
     };
 
-    // add new task to array
-    tasks.push(task);
+    if (taskName == null || taskName == "") {
+        window.alert("Empty task name is not allowed!")
+    } else {
+        // add new task to array
+        tasks.push(task);
 
-    // update task list
-    updateTaskList();
+        // update task list
+        updateTaskList();
+    }
 }
 
 // function to sort tasks
@@ -68,6 +72,9 @@ function updateTaskList() {
           <div>
             <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
             <small>${task.date.toLocaleString()}</small>
+            <a href="#" class="edit-task">
+            <div class="edit-task-icon"><i class="fa-regular fa-pen-to-square"></i></div>
+            </a>
           </div>
         </div>
       `;
@@ -143,4 +150,24 @@ document.addEventListener("click", (event) => {
         tasks[index].assigned = true; // add a new property to the task object to indicate it's assigned
         updateTaskList(); // update the task list to reflect the changes
     }
+});
+
+$(document).ready(function () {
+    // click event handler for create project card
+    $(".add-task-btn").click(function (event) {
+        // prevent the default click behavior, which is to navigate to a new page
+        event.preventDefault();
+
+        // show the gray overlay
+        $(".overlay").fadeIn();
+
+        // show the create project box
+        $(".add-task-popup").fadeIn();
+    });
+
+    // click event handler for close button and overlay
+    $(".overlay, #cancelBtn").click(function () {
+        // hide the gray overlay and create project box
+        $(".overlay, .add-task-popup").fadeOut();
+    });
 });

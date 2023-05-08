@@ -49,6 +49,33 @@
                 data-bs-target="#addTaskBox" aria-expanded="false" aria-controls="addTaskBox">
                 Add Task
             </button>
+            <div class="overlay"></div>
+            <div class="add-task-popup">
+                <h6>Add Task</h6>
+                <form>
+                    <div class="form-row align-items-center">
+
+                        <label for="taskNameInput">Task name:</label>
+                        <input type="text" class="form-control mb-2" id="taskNameInput" placeholder="Task Name" />
+
+
+                        <label for="prioritySelect">Select Priority:</label>
+                        <select class="form-control mb-2" id="prioritySelect">
+                            <option value="1">High Priority</option>
+                            <option value="2">Medium Priority</option>
+                            <option value="3">Low Priority</option>
+                        </select>
+
+                        <div class="popupBtn">
+                            <button type="button" class="btn btn-primary mb-2" id="addTaskBtn">
+                                Add
+                            </button>
+                            <button type="button" class="btn btn-primary mb-2" id="cancelBtn">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle sort-btn" type="button" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -61,41 +88,18 @@
                 </div>
             </div>
         </div>
-        <div class="collapse" id="addTaskBox">
-            <div class="card card-body">
-                <form>
-                    <div class="form-row align-items-center">
-                        <div class="col-6">
-                            <input type="text" class="form-control mb-2" id="taskNameInput" placeholder="Task Name" />
-                        </div>
-                        <div class="col-3">
-                            <select class="form-control mb-2" id="prioritySelect">
-                                <option value="1">High Priority</option>
-                                <option value="2">Medium Priority</option>
-                                <option value="3">Low Priority</option>
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <button type="button" class="btn btn-primary mb-2" id="addTaskBtn">
-                                Add
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
     <hr />
     <div class="list-container p-3">
         <h5 class="list-title">Task List</h5>
         <ul class="list-group" id="taskList"></ul>
     </div>
-    
+
     <div class="list-container p-3">
         <h5 class="list-title">Completed Tasks</h5>
         <ul class="list-group" id="completedTaskList"></ul>
     </div>
-    
+
 </body>
 
 </html>
