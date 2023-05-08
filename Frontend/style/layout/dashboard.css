@@ -120,7 +120,7 @@
     left: -250px;
 }
 
-header {
+.dashboard-container {
     display: flex;
     flex-direction: column;
     align-items: center;
