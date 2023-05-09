@@ -1,4 +1,4 @@
-.login-container {
+.signup-container {
     display: flex;
     height: 100%;
     width: 100vw;
@@ -25,12 +25,12 @@ body {
     background: #ffffff;
 }
 
-.login-sizing {
+.signup-sizing {
     width: 50%;
     height: 100%;
 }
 
-.login {
+.signup {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -42,7 +42,7 @@ body {
     background: #ffffff;
 }
 
-.login h4 {
+.signup h4 {
     margin-bottom: 25px;
     color: #45958e;
 }
@@ -51,19 +51,11 @@ body {
     color: #45958e;
 }
 
-.signup form .form-group {
+.signup form {
     margin-bottom: 12px;
 }
 
-.form-check-input {
-    margin-top: 0 !important;
-}
-
-.form-check {
-    font-size: 14px;
-}
-
-.signup form input[type="submit"] {
+.login form input[type="submit"] {
     font-size: 20px;
     margin: top 15px;
 }
