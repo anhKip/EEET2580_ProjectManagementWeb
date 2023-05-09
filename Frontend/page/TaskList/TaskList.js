@@ -14,17 +14,18 @@ function addTask() {
     // get input values
     const taskName = document.querySelector("#taskNameInput").value;
     const priority = document.querySelector("#prioritySelect").value;
-
-    // create new task object
-    const task = {
-        name: taskName,
-        priority: priority,
-        date: new Date(),
-    };
+    const dueDate = document.querySelector("#dueDateInput").value;
 
     if (taskName == null || taskName == "") {
         window.alert("Empty task name is not allowed!");
     } else {
+        // create new task object
+        const task = {
+            name: taskName,
+            priority: priority,
+            dueDate: new Date(dueDate),
+        };
+
         // add new task to array
         tasks.push(task);
 
@@ -35,9 +36,9 @@ function addTask() {
 
 // function to sort tasks
 function sortTasks(sortBy) {
-    if (sortBy === "date") {
-        // sort by date
-        tasks.sort((a, b) => b.date - a.date);
+    if (sortBy === "dueDate") {
+        // sort by due date
+        tasks.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
     } else if (sortBy === "name") {
         // sort by name
         tasks.sort((a, b) => a.name.localeCompare(b.name));
@@ -64,20 +65,35 @@ function updateTaskList() {
         const taskItem = document.createElement("li");
         taskItem.classList.add("list-group-item");
         taskItem.innerHTML = `
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h6 class="mb-1">${task.name}</h6>
-            <small>Priority: ${task.priority}</small>
-          </div>
-          <div>
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h6 class="mb-1">${task.name}</h6>
+                <small>Priority: ${task.priority}</small>
+            </div>
+            <div class="mx-auto">
+                <small>Due Date: ${task.dueDate}</small>
+            </div>
             <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
-            <small>${task.date.toLocaleString()}</small>
-            <a href="#" class="edit-task">
-            <div class="edit-task-icon"><i class="fa-regular fa-pen-to-square"></i></div>
-            </a>
-          </div>
+            <div class="d-flex justify-content-end">
+                <small class="me-3">Assigned to:</small>
+                <a href="#" class="edit-task">
+                    <div class="edit-task-icon" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></div>
+                </a>
+            </div>
         </div>
       `;
+
+        // get all edit icons
+        const editIcons = taskItem.querySelectorAll(".edit-task-icon");
+        // add event listener to each edit icon
+        editIcons.forEach((editIcon) => {
+            editIcon.addEventListener("click", () => {
+                // show the gray overlay
+                $(".overlay").fadeIn();
+                // open edit popup
+                openEditPopup(task, index);
+            });
+        });
 
         // add task list item to task list
         taskList.appendChild(taskItem);
@@ -103,12 +119,17 @@ function updateCompletedTaskList() {
         const taskItem = document.createElement("li");
         taskItem.classList.add("list-group-item");
         taskItem.innerHTML = `
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h6 class="mb-1">${task.name}</h6>
-            <small>Priority: ${task.priority}</small>
-          </div>
-          <small>${task.date.toLocaleString()}</small>
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h6 class="mb-1">${task.name}</h6>
+                <small>Priority: ${task.priority}</small>
+            </div>
+            <div class="mx-auto">
+                <small>Due Date: ${task.dueDate}</small>
+            </div>
+            <div class="d-flex justify-content-end">
+                <small class="me-3">Assigned to:</small>
+            </div>
         </div>
       `;
 
@@ -171,3 +192,99 @@ $(document).ready(function () {
         $(".overlay, .add-task-popup").fadeOut();
     });
 });
+
+function openEditPopup(task, index) {
+    // find the task object in the tasks array by index
+    const taskObj = tasks[index];
+
+    // get edit popup elements
+    const editPopup = document.querySelector(".edit-task-popup");
+    const taskNameInput = document.querySelector("#editTaskNameInput");
+    const prioritySelect = document.querySelector("#editPrioritySelect");
+    const dueDateInput = document.querySelector("#editDueDateInput");
+
+    // fill in input fields with task information
+    taskNameInput.value = taskObj.name;
+    prioritySelect.value = taskObj.priority;
+    dueDateInput.value = taskObj.dueDate.toISOString().substring(0, 10);
+
+    // store taskObj and index as properties of the editPopup element
+    editPopup.taskObj = taskObj;
+    editPopup.index = index;
+
+    // show edit popup
+    editPopup.style.display = "block";
+
+    // add event listener to prevent the edit popup from closing when clicking on any of its child elements
+    editPopup.addEventListener("click", (event) => {
+        event.stopPropagation();
+    });
+}
+
+// get edit popup elements
+const editPopup = document.querySelector(".edit-task-popup");
+const updateBtn = document.querySelector("#editTaskSubmitBtn");
+const cancelBtn = document.querySelector("#cancelEditBtn");
+
+// add event listener to update button in edit popup
+updateBtn.addEventListener("click", () => {
+    // get taskObj and index from the editPopup element
+    const taskObj = editPopup.taskObj;
+    const index = editPopup.index;
+
+    // get input values
+    const taskName = document.querySelector("#editTaskNameInput").value;
+    const priority = document.querySelector("#editPrioritySelect").value;
+    const dueDate = document.querySelector("#editDueDateInput").value;
+
+    // update task object with new values
+    taskObj.name = taskName;
+    taskObj.priority = priority;
+    taskObj.dueDate = new Date(dueDate);
+
+    // update task list
+    updateTaskList();
+
+    // close edit popup
+    closeEditPopup();
+});
+
+// add event listener to cancel button in edit popup
+cancelBtn.addEventListener("click", () => {
+    // close edit popup
+    closeEditPopup();
+});
+
+function closeEditPopup() {
+    // get edit popup elements
+    const editPopup = document.querySelector(".edit-task-popup");
+
+    // hide edit popup
+    editPopup.style.display = "none";
+
+    // clear input fields
+    document.querySelector("#editTaskNameInput").value = "";
+    document.querySelector("#editPrioritySelect").value = "";
+    document.querySelector("#editDueDateInput").value = "";
+
+    // hide gray overlay
+    document.querySelector(".overlay").style.display = "none";
+
+    // remove the event listener from the update button
+    document
+        .querySelector("#editTaskSubmitBtn")
+        .removeEventListener("click", updateTask);
+}
+
+function updateTask(index, taskName, priority, dueDate) {
+    // update task object with new values
+    tasks[index].name = taskName;
+    tasks[index].priority = priority;
+    tasks[index].dueDate = new Date(dueDate);
+
+    // update task list
+    updateTaskList();
+
+    // close edit popup
+    closeEditPopup();
+}
