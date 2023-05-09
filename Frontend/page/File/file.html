@@ -34,30 +34,32 @@
         </div>
     </div>    
 
+    <div class="buttons-flex">
+        <input type="file" id="upload" class="upload-button" value="upload"> 
+        <label for="upload"> <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload </label>
+        <input type="submit" id="download" class="download-button" value="download">
+        <label for="download"> <i class="fa-solid fa-download"></i> Download </label>
+    </div>
+    
     <div class="container">
-        <form action="#">
-            <div class="buttons-flex">
-                <input type="file" id="upload" class="upload-button" value="upload"> 
-                <label for="upload"> <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload </label>
-                <input type="submit" id="download" class="download-button" value="download">
-                <label for="download"> <i class="fa-solid fa-download"></i> Download </label>
-            </div>
-        
-            <table class="table-sortable">
-                <thead>
-                    <tr>
-                        <th></th> 
-                        <th> Name </th> 
-                        <th> Date</th> 
-                        <th> Size </th> 
-                        <th> Owner </th> 
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </form>
+        <div class="m-auto w-75">
+            <form action="#">
+                <table class="table-sortable">
+                    <thead>
+                        <tr>
+                            <th></th> 
+                            <th> Name </th> 
+                            <th> Date</th> 
+                            <th> Size </th> 
+                            <th> Owner </th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+    
+                    </tbody>
+                </table>
+            </form>
+        </div>
     </div>
 
     <script src="./file.js"></script>
