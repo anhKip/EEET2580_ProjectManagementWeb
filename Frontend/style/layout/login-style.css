@@ -1,54 +1,78 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.login-container {
+    display: flex;
+    height: 100%;
+    width: 100vw;
+    padding: 0;
+    margin: 0 !important;
 }
 
 .imgbox {
-  display: flex;
-  height: 100%;
-  width: 100%;
+    width: 50%;
+    height: 100%;
+}
+
+.imgbox > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
 }
 
 body {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #ffffff;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+}
+
+.login-sizing {
+  width: 50%;
+  height: 100%;
 }
 
 .login {
-  width: 600px;
-  height: min-content;
-  padding: 20px;
-  border-radius: 12px;
-  background: #ffffff;
-  margin-left: auto;
-  margin-right: 18rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+    height: 100%;
+    width: 50%;
+    padding: 20px;
+    border-radius: 12px;
+    background: #ffffff;
 }
 
-.login h1 {
-  font-size: 36px;
-  margin-bottom: 25px;
-  color: #45958e;
+.login h4 {
+    margin-bottom: 25px;
+    color: #45958e;
 }
 
-.login form {
-  font-size: 20px;
-  color: #45958e;
-}
+
 
 .login form .form-group {
-  margin-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+.form-check-input {
+  margin-top: 0 !important;
+
+}
+
+.form-check {
+  font-size: 14px;
 }
 
 .login form input[type="submit"] {
-  font-size: 20px;
-  margin: top 15px;
+    font-size: 20px;
+    margin: top 15px;
 }
 
 .btn {
-  background-color: #fbe7ab;
-  color: #45958e;
+    background-color: #fbe7ab;
+    color: #45958e;
+    margin-bottom: 15px;
+}
+
+.form-control {
+  font-size: 14px;
 }

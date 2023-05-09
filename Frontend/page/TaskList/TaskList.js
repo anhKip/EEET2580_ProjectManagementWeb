@@ -23,7 +23,7 @@ function addTask() {
     };
 
     if (taskName == null || taskName == "") {
-        window.alert("Empty task name is not allowed!")
+        window.alert("Empty task name is not allowed!");
     } else {
         // add new task to array
         tasks.push(task);

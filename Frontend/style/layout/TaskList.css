@@ -153,12 +153,16 @@
     margin-left: 10px;
 }
 
+.list-box {
+    width: 100%;
+    height: 100%;
+    padding-left: 50px;
+}
+
 #taskList,
 #completedTaskList {
   border: 10px solid #D4D7C6;
   padding: 10px;
-  width: 1025px;
-  margin-left: 220px;
 }
 
 .list-group {
@@ -168,9 +172,8 @@
     padding-left: 200px;
   } 
   
-  h5 {
+  .heading-container {
     padding-top: 50px;
-    padding-left: 220px;
   }
 
   .list-group-item {
@@ -179,7 +182,6 @@
   
   .list-group-item h5 {
     font-size: 20px;
-    font-family: Arial, sans-serif;
     margin-bottom: 10px;
   }
   
