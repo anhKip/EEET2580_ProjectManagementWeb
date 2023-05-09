@@ -72,3 +72,7 @@ body {
     color: #45958e;
     margin-bottom: 15px;
 }
+
+.form-control {
+  font-size: 14px;
+}
