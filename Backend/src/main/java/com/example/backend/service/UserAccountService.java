@@ -4,13 +4,18 @@ import com.example.backend.model.UserAccount;
 import com.example.backend.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
 @Service
-public class UserAccountService implements CrudService<UserAccount> {
+public class UserAccountService implements CrudService<UserAccount>, UserDetailsService {
     @Autowired
     private UserAccountRepository userAccountRepository;
 
@@ -44,5 +49,12 @@ public class UserAccountService implements CrudService<UserAccount> {
     @Override
     public void delete(Long id) {
         userAccountRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserAccount userAccount = userAccountRepository.findUserAccountByEmail(username).orElseThrow(() ->
+                new UsernameNotFoundException("User not found"));
+        return new User(userAccount.getUsername(), userAccount.getPassword(), userAccount.getAuthorities());
     }
 }
