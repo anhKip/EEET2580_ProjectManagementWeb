@@ -88,7 +88,7 @@
     left: 0;
 }
 
-.menu-container :nth-child(4) {
+.menu-container :nth-child(5) {
     background-color: rgba(250, 212, 166, 0.6);
     border-radius: 20px;
     -webkit-border-radius: 20px;
@@ -129,82 +129,27 @@
     left: -250px;
 }
 
-.buttons-flex {
-    display: flex;
-    margin-top: 70px;
-    margin-bottom: 60px;
+/* .page-content {
+    height: 100%;
+    width: 100%;
 }
 
-.upload-button, .download-button {
-    width: 0px;
-    height: 0px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
+.side-bar {
+    width: 25%;
+    height: 100%;
+    border-right: 1px solid #ABABAB;
+    float: left;
 }
 
-.buttons-flex label {
-    margin-right: 10px;
-    border: 0;
-    background-color: rgb(233, 242, 241);
-    padding: 10px 15px;
-    border-radius: 20px;
-    font-size: medium;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
+.content {
+    width: 75%;
+    float: right;
 }
 
-.buttons-flex label:hover {
-    background-color: #FBE7AB;
-    cursor: pointer;
-}
+.edit-tab, .notification-tab, .security-tab {
+    padding-bottom: 10px;
+    border: 1px solid #ABABAB;
+    border-bottom: 0;
+    border-right: 0;
+} */
 
-table th {
-    text-align: left;
-    font-family: "Montserrat";
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
-    align-items: center;
-    cursor: pointer;
-}
-
-td {
-    text-align: left;
-    font-family: "Roboto", sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 24px;
-    align-items: center;
-}
-
-tr td:first-child {
-    text-align: center;
-    vertical-align: middle;
-    padding: 5px 0;
-}
-
-table tr:first-child th:nth-child(1) {
-    width: 5%;
-}
-
-table tr:first-child th:nth-child(2) {
-    width: 35%;
-}
-
-table tr:first-child th:nth-child(3) {
-    width: 12%;
-}
-
-table tr:first-child th:nth-child(4) {
-    width: 10%;
-}
-
-table tr:first-child th:nth-child(5) {
-    width: 21%;
-}

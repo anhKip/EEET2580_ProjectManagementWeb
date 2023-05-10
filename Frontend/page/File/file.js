@@ -4,34 +4,65 @@ $(document).ready(function() {
     });
 })
 
-function sortTable(table, column, asc = true) {
-  const direction = asc ? 1 : -1
-  const tBody = table.tBodies[0]
-  const rows = Array.from(tBody.querySelectorAll("tr"))
-
-  const sortedRows = rows.sort((a,  b) => {
-    const aColText = a.querySelector(`td:nth-child(${ column + 1})`).textContent.trim()
-    const bColText = b.querySelector(`td:nth-child(${ column + 1})`).textContent.trim()
-    return aColText > bColText ? (1 * direction) : (-1 * direction)
-  })
-
-	while (tBody.firstChild) {
-		tBody.removeChild(tBody.firstChild);
+$(function() {
+	const ths = $("th");
+	let sortOrder = 1;
+  
+	ths.on("click", function() {
+	  const rows = sortRows(this);
+	  rebuildTbody(rows);
+	  updateClassName(this);
+	  sortOrder *= -1;
+	})
+  
+	function sortRows(th) {
+	  const rows = $.makeArray($('tbody > tr'));
+	  const col = th.cellIndex;
+	  const type = th.dataset.type;
+	  rows.sort(function(a, b) {
+		return compare(a, b, col, type) * sortOrder;      
+	  });
+	  return rows;
 	}
-
-	tBody.append(...sortedRows);
-
-	table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
-	table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-asc", asc);
-	table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-desc", !asc);
-}
-
-document.querySelectorAll(".table-sortable th").forEach(headerCell => {
-	headerCell.addEventListener("click", () => {
-		const tableElement = headerCell.parentElement.parentElement.parentElement;
-		const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
-		const currentIsAscending = headerCell.classList.contains("th-sort-asc");
-
-		sortTable(tableElement, headerIndex, !currentIsAscending);
-	});
+  
+	function compare(a, b, col, type) {
+	  let _a = a.children[col].textContent;
+	  let _b = b.children[col].textContent;
+	  if (type === "number") {
+		_a *= 1;
+		_b *= 1;
+	  } else if (type === "string") {
+		_a = _a.toLowerCase();
+		_b = _b.toLowerCase();
+	  }
+  
+	  if (_a < _b) {
+		return -1;
+	  }
+	  if (_a > _b) {
+		return 1;
+	  }
+	  return 0;
+	}
+  
+	function rebuildTbody(rows) {
+	  const tbody = $("tbody");
+	  while (tbody.firstChild) {
+		tbody.remove(tbody.firstChild);
+	  }
+  
+	  let j;
+	  for (j=0; j<rows.length; j++) {
+		tbody.append(rows[j]);
+	  }
+	}
+  
+	function updateClassName(th) {
+	  let k;
+	  for (k=0; k<ths.length; k++) {
+		ths[k].className = "";
+	  }
+	  th.className = sortOrder === 1 ? "asc" : "desc";   
+	}
+	
 });

@@ -55,6 +55,7 @@ function buttonChange() {
   n.removeAttribute("readonly")
   n.style.outlineStyle = "solid"
   n.style.outlineWidth = "medium"
+  n.style.outlineColor = "#ABABAB"
 }
 
 function buttonCancel() {
