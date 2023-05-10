@@ -9,6 +9,7 @@ public record SignUpRecord(
         @Email
         String email,
         @NotNull
+        @Size(min = 3, max = 32)
         String username,
         @NotNull
         @Size(min = 8, max = 64)
