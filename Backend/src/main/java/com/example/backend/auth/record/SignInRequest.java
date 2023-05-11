@@ -1,9 +1,9 @@
-package com.example.backend.auth.config.record;
+package com.example.backend.auth.record;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record SignInRecord(
+public record SignInRequest(
         @NotNull
         @Size(min = 3, max = 32)
         String username,
