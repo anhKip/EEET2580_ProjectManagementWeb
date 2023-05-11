@@ -1,0 +1,355 @@
+.topnav {
+    background-color: #d4d7c6;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+.topnav a {
+    float: left;
+    color: #333;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #efefef;
+    color: #333;
+}
+
+.topnav a.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+.right-icons {
+    float: right;
+}
+
+.right-icons a {
+    display: inline-block;
+    color: #333;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.right-icons a:hover {
+    background-color: #efefef;
+    color: #333;
+}
+
+.fa {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.menu-icon {
+    float: right;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.menu-container {
+    position: fixed;
+    top: 46px;
+    left: -250px;
+    width: 250px;
+    height: calc(100% - 60px);
+    background-color: #8fbfbb;
+    transition: all 0.3s ease-in-out;
+    z-index: 9998;
+    padding-top: 14px;
+}
+
+.menu-container a {
+    display: block;
+    text-align: left;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    clear: left;
+    width: 100%;
+}
+
+.menu-container a:hover {
+    background-color: #b0c7c4;
+    color: #fff;
+    width: 100%;
+}
+
+.menu-container.open {
+    left: 0;
+}
+
+.menu-container :nth-child(5) {
+    background-color: rgba(250, 212, 166, 0.6);
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+
+.hide-menu {
+    position: fixed;
+    top: 46px;
+    left: 0;
+    width: 50px;
+    height: calc(100%);
+    background-color: #8fbfbb;
+    transition: all 0.3s ease-in-out;
+    z-index: 9998;
+    padding-top: 14px;
+}
+
+.hide-menu a {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    clear: left;
+    width: 100%;
+}
+
+.hide-menu a:hover {
+    background-color: #b0c7c4;
+    color: #fff;
+    width: 100%;
+}
+
+.hide-menu.open {
+    left: -250px;
+}
+
+.content-container {
+    display: flex;
+    margin-top: 100px;
+    width: 100%;
+    height: 100%;
+    padding-left: 50px;
+}
+
+.settings {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+
+.name-setting, .contributor-setting, .delete-project {
+    width: 75%;
+    margin-bottom: 60px;
+}
+
+h4 {
+    border-bottom: 2px solid black;
+}
+
+#project-name, .change-buttons {
+    border: 0;
+}
+
+#project-name {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    width: 70%;
+}
+
+#project-name:focus {
+    outline: none;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.change-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+button {
+    background-color: rgba(251, 231, 171, 0.6);
+    border: 0;
+    color: #45958E;
+    padding: 10px;
+    cursor: pointer;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 34px;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+}
+
+button:hover {
+    background-color: rgb(175, 158, 158);
+}
+
+#save, #cancel {
+    display: none;
+}
+
+#save {
+    margin: 0 8px;
+}
+
+.contributors {
+    width: 70%;
+}
+
+.add-button {
+    display: flex;
+    justify-content: right;
+}
+
+.contributor {
+    display: flex;
+    margin-bottom: 5px;
+    justify-content: space-between;
+}
+
+#add-contributor {
+    height: 38px;
+}
+
+#change, #save, #cancel, #add-contributor {
+    width: 90px;
+}
+
+.add-form {
+    display: none;
+    position: fixed;
+    border-radius: 10px;
+    box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.1);
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    transform: translate(-50%, -50%);
+    background-color: #d4d7c6;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9998;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-content: center;
+}
+
+form > * {
+    margin: 5px 0 5px 0;
+}
+
+form > input {
+    border: 0;
+    text-align: center;
+    font-size: large;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    padding: 10px;
+    width: 260px;
+    height: 39px;
+}
+
+form > label {
+    font-size: medium;
+}
+
+h6 {
+    text-align: center;
+}
+
+.remove-btn {
+    float: right;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.remove-btn:hover {
+    background-color: transparent;
+}
+
+.delete-project {
+    display: flex;
+    justify-content: right;
+}
+
+.delete-project-btn {
+    position: absolute;
+    padding: 10px;
+    background-color: rgba(217, 25, 25, 0.6);
+    color: white;
+    width: 140px;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+}
+
+#id-input:focus {
+    outline: none;
+}
+
+#id-input:focus::placeholder {
+    color: transparent;
+}
+
+#id-input:focus::-webkit-input-placeholder {
+    color: transparent;
+  }
+   
+#id-input:focus:-ms-input-placeholder {
+    color: transparent;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
