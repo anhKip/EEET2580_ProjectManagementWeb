@@ -1,11 +1,17 @@
 package com.example.backend.controller;
 
-import com.example.backend.auth.config.record.SignInRecord;
-import com.example.backend.auth.config.record.SignUpRecord;
+import com.example.backend.auth.record.SignInRequest;
+import com.example.backend.auth.record.SignInResponse;
+import com.example.backend.auth.record.SignUpRequest;
+import com.example.backend.auth.record.SignUpResponse;
+import com.example.backend.auth.token.Token;
+import com.example.backend.auth.token.TokenRepository;
+import com.example.backend.auth.token.TokenService;
 import com.example.backend.model.UserAccount;
 import com.example.backend.repository.UserAccountRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -29,25 +37,48 @@ public class AuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private TokenRepository tokenRepository;
+    @Value("${application.security.jwt.accessTokenMin}")
+    private int accessTokenMin;
+    @Value("${application.security.jwt.refreshTokenMin}")
+    private int refreshTokenMin;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> authenticateUser(@RequestBody @Valid SignInRecord signInRecord) {
+    public ResponseEntity<SignInResponse> authenticateUser(@RequestBody @Valid SignInRequest signInRecord) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 signInRecord.username(), signInRecord.password()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User signed in successfully.", HttpStatus.OK);
+
+        UserAccount userAccount = (UserAccount) authentication.getPrincipal();
+        String refreshTokenValue = tokenService.generateJwtToken(authentication.getName(), refreshTokenMin);
+        String accessTokenValue = tokenService.generateJwtToken(authentication.getName(), accessTokenMin);
+
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        Token refreshToken = Token.builder()
+                .value(refreshTokenValue)
+                .createdAt(currentDateTime)
+                .expiresAt(currentDateTime.plusMinutes(refreshTokenMin))
+                .revoked(false)
+                .userAccount(userAccount)
+                .build();
+        tokenRepository.save(refreshToken);
+        SignInResponse response = new SignInResponse(userAccount.getId(), refreshTokenValue, accessTokenValue);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody @Valid SignUpRecord signUpRecord) {
+    public ResponseEntity<SignUpResponse> registerUser(@RequestBody @Valid SignUpRequest signUpRecord) {
         // check if username already exists in DB
         if (userAccountRepository.existsByUsername(signUpRecord.username())) {
-            return new ResponseEntity<>("Username is already taken.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new SignUpResponse("Username is already taken."), HttpStatus.BAD_REQUEST);
         }
 
         // check if email already exists in DB
         if (userAccountRepository.existsByEmail(signUpRecord.email())) {
-            return new ResponseEntity<>("Email is already taken.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new SignUpResponse("Email is already taken."), HttpStatus.BAD_REQUEST);
         }
 
         // finished checking, now create user object
@@ -59,6 +90,6 @@ public class AuthController {
 
         userAccountRepository.save(userAccount);
 
-        return new ResponseEntity<>("User registered successfully.", HttpStatus.OK);
+        return new ResponseEntity<>(new SignUpResponse("User registered successfully."), HttpStatus.OK);
     }
 }
