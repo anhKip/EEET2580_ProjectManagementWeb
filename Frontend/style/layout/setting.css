@@ -149,12 +149,13 @@
     margin-bottom: 60px;
 }
 
-h4 {
+.titles {
     border-bottom: 2px solid black;
-}
-
-#project-name, .change-buttons {
-    border: 0;
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 65px;
 }
 
 #project-name {
@@ -163,22 +164,13 @@ h4 {
     font-weight: 400;
     font-size: 24px;
     line-height: 28px;
-    width: 70%;
-}
-
-#project-name:focus {
-    outline: none;
+    width: 88%;
 }
 
 .content {
     display: flex;
     justify-content: space-between;
-}
-
-.change-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: right;
+    margin-top: 20px;
 }
 
 button {
@@ -187,32 +179,19 @@ button {
     color: #45958E;
     padding: 10px;
     cursor: pointer;
-    font-family: 'Open Sans';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 25px;
-    line-height: 34px;
-    border-radius: 15px;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    -ms-border-radius: 15px;
-    -o-border-radius: 15px;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
 }
 
 button:hover {
     background-color: rgb(175, 158, 158);
 }
 
-#save, #cancel {
-    display: none;
-}
-
-#save {
-    margin: 0 8px;
-}
-
 .contributors {
-    width: 70%;
+    width: 88%;
 }
 
 .add-button {
@@ -220,21 +199,21 @@ button:hover {
     justify-content: right;
 }
 
-.contributor {
+.contributor, .you {
     display: flex;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     justify-content: space-between;
 }
 
 #add-contributor {
-    height: 38px;
+    height: 39px;
 }
 
-#change, #save, #cancel, #add-contributor {
+#change, #add-contributor, .remove-btn {
     width: 90px;
 }
 
-.add-form {
+.add-form, .name-change-form {
     display: none;
     position: fixed;
     border-radius: 10px;
@@ -290,21 +269,6 @@ form > label {
 
 h6 {
     text-align: center;
-}
-
-.remove-btn {
-    float: right;
-    background-color: white;
-    color: black;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-}
-
-.remove-btn:hover {
-    background-color: transparent;
 }
 
 .delete-project {

@@ -12,7 +12,7 @@
         crossorigin="anonymous"></script>
 
     <script src="https://kit.fontawesome.com/5f92c9aea9.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="./../../style/layout/profile.css">
+    <link rel="stylesheet" href="./../../style/layout/account.css">
     <link rel="stylesheet" href="./../../style/global.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title> Profile </title>
@@ -41,9 +41,49 @@
         </div>
     </div>    
 
-    <div class="page-container" >
-        <div class="m-auto w-75">
+    <div class="content-container" >
+        <div class="side-tabs">
+            <div class="tabs">
+                <a class="tab selected" href="#"> <i class="fa-sharp fa-solid fa-pen"></i> Profile <i class="fa-sharp fa-solid fa-angle-right"></i></a>
+                <a class="tab" href="notification.html"> <i class="fa-sharp fa-solid fa-bell"></i> Notification </a>
+                <a class="tab" href="security.html"> <i class="fa-sharp fa-solid fa-shield"></i> Password & Security </a>
+            </div>
         </div>
+        <div class="content">
+            <div class="content-div">
+                <div class="title"> Edit profile </div>
+                <div class="profile-content"> 
+                    <div class="img-div">
+                        <img src="./../../static/pic_4.png" alt="blank-profile">
+                        <button class="change-img-btn"> <i class="fa-solid fa-pen"></i> </button>
+                    </div>
+                    <form>
+                        <div class="inputs">
+                            <label> E-mail </label>
+                            <input type="text" id="email-input">
+
+                            <label> Username </label>
+                            <input type="text" id="username-input">
+
+                            <label> Password </label>
+                            <div class="password-div">
+                                <input type="password" id="password-input"> 
+                                <button type="button" id="show-hide-btn"> <i class="fa-solid fa-eye"></i> </button>
+                            </div>
+
+                            <label> Description </label>
+                            <textarea id="description-input"> </textarea> 
+
+                            <button type="submit" id="save-btn"> Save </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
     </div>
+
+    <script src="account.js"></script>
 </body>
 </html>

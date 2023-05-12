@@ -162,7 +162,7 @@
     cursor: pointer;
 }
 
-table th {
+table thead {
     text-align: left;
     font-family: "Montserrat";
     font-style: normal;
@@ -194,11 +194,11 @@ table tr:first-child th:nth-child(1) {
 }
 
 table tr:first-child th:nth-child(2) {
-    width: 35%;
+    width: 50%;
 }
 
 table tr:first-child th:nth-child(3) {
-    width: 12%;
+    width: 10%;
 }
 
 table tr:first-child th:nth-child(4) {
@@ -206,5 +206,27 @@ table tr:first-child th:nth-child(4) {
 }
 
 table tr:first-child th:nth-child(5) {
-    width: 21%;
+    width: 20%;
+}
+
+#delete-file-btn {
+    border: 0;
+    background-color: transparent;
+}
+
+.table th {
+	cursor: pointer;
+}
+
+.table .th-sort-asc::after {
+	content: "\25b4";
+}
+
+.table .th-sort-desc::after {
+	content: "\25be";
+}
+
+.table .th-sort-asc::after,
+.table .th-sort-desc::after {
+	margin-left: 5px;
 }

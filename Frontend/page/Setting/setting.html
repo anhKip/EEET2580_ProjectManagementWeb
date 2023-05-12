@@ -37,7 +37,7 @@
         <div class="right-icons">
             <a href="#"><i class="fa-regular fa-bell"></i></a>
             <a href="#"><i class="fa-solid fa-rotate"></i></a>
-            <a href="#"><i class="fa-regular fa-user"></i></a>
+            <a href="../Account/profile.html"><i class="fa-regular fa-user"></i></a>
         </div>
     </div>    
 
@@ -45,20 +45,17 @@
         <div class="m-auto w-75">
             <div class="settings">
                 <div class="name-setting">
-                    <h4> Project name </h4>
+                    <div class="titles"> Project name </div>
                     <div class="content">
-                        <input readonly type="text" value="My project" id="project-name">
-                        <div class="change-buttons">
-                            <button type="button" id="change"> Change </button>
-                            <button type="submit" id="save"> Save </button>
-                            <button type="button" id="cancel"> Cancel </button>
-                        </div>
+                        <div id="project-name"> My project </div>
+                        <button type="button" id="change"> Change </button>
                     </div>
                 </div>
                 <div class="contributor-setting">
-                    <h4> Contributors </h4>
+                    <div class="titles"> Contributors </div>
                     <div class="content">
                         <div class="contributors">
+                            <div class="you"> <h5> You </h5> </div>
                             <div class="contributor">
                                 <h5> User 1 </h5>
                             </div>
@@ -72,6 +69,16 @@
                 </div>
         
                 <div class="overlay"></div>
+                <div class="name-change-form">
+                    <h6> Change project name </h6>
+                    <form>
+                        <input type="text" id="name-input">
+        
+                        <button type="submit" id="confirm-change-button"> Change </button>
+                        <button type="button" id="cancel-change-button"> Cancel </button>
+                    </form>
+                </div>
+
                 <div class="add-form">
                     <h6> Add user </h6>
                     <form>
