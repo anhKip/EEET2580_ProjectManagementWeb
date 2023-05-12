@@ -6,6 +6,7 @@
     left: 0;
     width: 100%;
     z-index: 9999;
+    height: 46px;
 }
 
 .topnav a {
@@ -86,6 +87,7 @@
 
 .menu-container.open {
     left: 0;
+    height: 100%;
 }
 
 .hide-menu {
@@ -128,7 +130,7 @@
 }
 
 .side-tabs {
-    top: 46px;
+    top: 45.8px;
     position: absolute;
     bottom: 0;
     width: 20%;
