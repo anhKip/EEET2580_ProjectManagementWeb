@@ -2,38 +2,72 @@ $(document).ready(function () {
     $(".menu-icon").click(function () {
         $(".hide-menu, .menu-container").toggleClass("open");
     });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
     var calendarEl = document.getElementById("calendar");
     var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: "dayGridMonth",
+        headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+        },
+        navLinks: true,
+        events: getTasksData().map(convertTaskToEvent),
+        eventClick: function (info) {
+            alert("Task Name: " + info.event.title);
+        },
+        eventRender: function (info) {
+            info.el.style.color = "black";
+        },
     });
+
     calendar.render();
 });
 
-var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: "dayGridMonth",
-    events: getEventsData(),
-});
-
-function getEventsData() {
-    // create an array of events based on the due date of the tasks
-    var events = [];
-    var tasks = [
+function getTasksData() {
+    const tasks = [
         {
-            name: "Sample Task",
-            priority: "High",
-            date: new Date(),
-            dueDate: new Date("2023-05-10"),
+            id: 1,
+            name: "Task 1",
+            priority: 1,
+            dueDate: "2023-05-01",
+        },
+        {
+            id: 2,
+            name: "Task 2",
+            priority: 2,
+            dueDate: "2023-05-05",
+        },
+        {
+            id: 3,
+            name: "Task 3",
+            priority: 3,
+            dueDate: "2023-05-10",
         },
     ];
-    tasks.forEach(function (task) {
-        events.push({
-            title: task.name,
-            start: task.dueDate,
-            allDay: true,
-        });
-    });
-    return events;
+
+    return tasks;
+}
+
+function convertTaskToEvent(task) {
+    let color;
+    switch (task.priority) {
+        case 1:
+            color = "red";
+            break;
+        case 2:
+            color = "#FFEB99";
+            break;
+        case 3:
+            color = "green";
+            break;
+        default:
+            color = "blue";
+    }
+
+    return {
+        id: task.id,
+        title: task.name,
+        start: task.dueDate,
+        color: color,
+    };
 }

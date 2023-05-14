@@ -98,11 +98,16 @@
     transition: all 0.3s ease-in-out;
     z-index: 9998;
     padding-top: 14px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .hide-menu a {
-    display: block;
-    text-align: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
@@ -161,39 +166,39 @@
 
 #taskList,
 #completedTaskList {
-  border: 10px solid #D4D7C6;
-  padding: 10px;
+    border: 10px solid #d4d7c6;
+    padding: 10px;
 }
 
 .list-group {
-    border: 10px solid #D4D7C6;
+    border: 10px solid #d4d7c6;
     border-radius: 10px;
     padding: 10px;
     padding-left: 200px;
-  } 
-  
-  .heading-container {
-    padding-top: 50px;
-  }
+}
 
-  .list-group-item {
+.heading-container {
+    padding-top: 50px;
+}
+
+.list-group-item {
     padding: 10px;
-  }
-  
-  .list-group-item h5 {
+}
+
+.list-group-item h5 {
     font-size: 20px;
     margin-bottom: 10px;
-  }
-  
-  .list-group-item small {
-    font-size: 14px;
-  }
-  
-  .list-group-item .take-task-btn {
-    margin-right: 10px;
-  }
+}
 
-  .add-task-popup {
+.list-group-item small {
+    font-size: 14px;
+}
+
+.list-group-item .take-task-btn {
+    margin-right: 10px;
+}
+
+.add-task-popup {
     border-radius: 10px;
     display: none;
     position: fixed;
@@ -243,7 +248,7 @@
 .add-task-popup label:first-child {
     margin-top: 40px;
 }
-  
+
 .edit-task-popup {
     border-radius: 10px;
     display: none;
@@ -256,16 +261,16 @@
     background-color: #d4d7c6;
     padding: 20px;
     z-index: 9999;
-  }
-  
-  .edit-task-popup h6 {
+}
+
+.edit-task-popup h6 {
     text-align: center;
     font-size: 24px;
     margin-bottom: 0px;
     position: relative;
-  }
-  
-  .edit-task-popup h6:after {
+}
+
+.edit-task-popup h6:after {
     content: "";
     position: absolute;
     bottom: -5px;
@@ -273,29 +278,29 @@
     right: 0;
     height: 2px;
     background-color: black;
-  }
-  
-  .edit-task-popup label {
+}
+
+.edit-task-popup label {
     display: block;
     margin-bottom: 10px;
     margin-top: 20px;
     font-size: 18px;
-  }
-  
-  .edit-task-popup input {
+}
+
+.edit-task-popup input {
     display: block;
     width: 100%;
     padding: 8px;
     margin-bottom: 20px;
     border: none;
     border-radius: 4px;
-  }
-  
-  .edit-task-popup label:first-child {
+}
+
+.edit-task-popup label:first-child {
     margin-top: 40px;
-  }
-  
-  .overlay {
+}
+
+.overlay {
     position: fixed;
     top: 0;
     left: 0;
