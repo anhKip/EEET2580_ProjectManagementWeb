@@ -5,6 +5,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function(){
+    $(".updates-box").hide();
     $(".button-leaderboard").click(function(){
         $(".leaderboard-box").toggle();
         $(".updates-box").hide();
