@@ -133,8 +133,19 @@
 
 #calendar {
     height: 600px;
+    font-size: small;
+    margin-top: 7%;
 }
 
 .task-name {
     font-size: small;
+    padding: 3px;
+}
+
+.assigned-to {
+    margin-top: 0.5rem;
+}
+
+.fc-event {
+    overflow: auto;
 }
