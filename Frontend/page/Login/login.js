@@ -35,21 +35,26 @@ function getTokenCookie(cname) {
     return "";
 }
 
-setTokenCookies('name2', 'Long', 0.05)
+// setTokenCookies('name2', 'Long', 0.05)
 // console.log(getTokenCookie("name2"));
 
-document.querySelector("#login-btn").addEventListener("click", function() {
+document.querySelector("#login-btn").addEventListener("click", async function() {
     console.log("button pressed");
 
-    let url = 'http://localhost:8080/api/auth/signup'
+    let url = 'http://localhost:8080/api/auth/signin'
+
+    const username = await document.querySelector('#username').value
+    const password = await document.querySelector('#password').value
+
     let inputs = {
-        email: "456789@emal.com",
-        username: "long",
-        password: "abcdef",
+        username: username,
+        password: password
     }
 
+    console.log(inputs)
+    console.log(JSON.stringify(inputs))
+
     fetch (url, {
-        // mode: "no-cors",
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -59,16 +64,16 @@ document.querySelector("#login-btn").addEventListener("click", function() {
     .then(response => response.json())
     .then(json => {
         console.log(json);
-        // if (json.userId >= 0) {
-        //     console.log("Log in successfully")
-        //     setTokenCookies('accessToken', json.accessToken, 0.2)
-        //     setTokenCookies('refreshToken', json.refreshToken, 0.2)
-        //     setIdToken('userId', json.userId, 0.2)
-        //     document.location = 'home.html'
-        // }
-        // else {
-        //     console.log("Log in fails")
-        // }
+        // console.log('userId is' + json.userId);
+        if (json.userId >= 0) {
+            console.log("Log in successfully")
+            // setTokenCookies('accessToken', json.accessToken, 0.1)
+            // setTokenCookies('refreshToken', json.refreshToken, 0.1)
+            // window.location.assign('../Home/home.html')
+        }
+        else {
+            console.log("Log in fails")
+        }
     })
     .catch(e => {
         console.log(e)
