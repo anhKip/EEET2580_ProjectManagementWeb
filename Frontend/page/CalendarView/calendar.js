@@ -13,10 +13,31 @@ $(document).ready(function () {
         navLinks: true,
         events: getTasksData().map(convertTaskToEvent),
         eventClick: function (info) {
-            alert("Task Name: " + info.event.title);
+            alert(
+                "Task Name: " +
+                    info.event.title +
+                    "\nAssigned To: " +
+                    info.event.extendedProps.assignedTo
+            );
         },
-        eventRender: function (info) {
-            info.el.style.color = "black";
+        eventContent: function (arg) {
+            var assignedToHtml = "";
+            if (arg.view.type === "listMonth") {
+                assignedToHtml =
+                    "<div class='assigned-to'>Assigned To: " +
+                    arg.event.extendedProps.assignedTo +
+                    "</div>";
+            }
+
+            return {
+                html:
+                    "<div class='task-event'>" +
+                    "<div class='task-name'>" +
+                    arg.event.title +
+                    "</div>" +
+                    assignedToHtml +
+                    "</div>",
+            };
         },
     });
 
@@ -30,18 +51,21 @@ function getTasksData() {
             name: "Task 1",
             priority: 1,
             dueDate: "2023-05-01",
+            assignedTo: "John Doe",
         },
         {
             id: 2,
             name: "Task 2",
             priority: 2,
             dueDate: "2023-05-05",
+            assignedTo: "Jane Smith",
         },
         {
             id: 3,
             name: "Task 3",
             priority: 3,
             dueDate: "2023-05-10",
+            assignedTo: "David Johnson",
         },
     ];
 
@@ -52,13 +76,13 @@ function convertTaskToEvent(task) {
     let color;
     switch (task.priority) {
         case 1:
-            color = "red";
+            color = "#f8a580";
             break;
         case 2:
-            color = "#FFEB99";
+            color = "#fad3a5";
             break;
         case 3:
-            color = "green";
+            color = "#46958d";
             break;
         default:
             color = "blue";
@@ -69,5 +93,6 @@ function convertTaskToEvent(task) {
         title: task.name,
         start: task.dueDate,
         color: color,
+        assignedTo: task.assignedTo,
     };
 }

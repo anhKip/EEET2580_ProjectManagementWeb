@@ -61,7 +61,7 @@
     top: 46px;
     left: -250px;
     width: 250px;
-    height: calc(100% - 60px);
+    height: 100vh;
     background-color: #8fbfbb;
     transition: all 0.3s ease-in-out;
     z-index: 9998;
@@ -133,4 +133,8 @@
 
 #calendar {
     height: 600px;
+}
+
+.task-name {
+    font-size: small;
 }
