@@ -172,16 +172,22 @@
 }
 
 button {
-    background-color: rgba(251, 231, 171, 0.6);
-    border: 0;
-    color: #45958E;
-    padding: 10px;
+    background-color: #8fbfbb;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 2rem;
     cursor: pointer;
-    border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+    -webkit-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -ms-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
 }
 
 button:hover {
@@ -204,7 +210,7 @@ button:hover {
 }
 
 #add-contributor {
-    height: 39px;
+    height: 33px;
 }
 
 #change, #add-contributor, .remove-btn {
