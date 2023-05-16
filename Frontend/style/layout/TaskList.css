@@ -136,7 +136,7 @@
 }
 
 .btn {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     padding: 0.5rem 1.5rem;
     background-color: #8fbfbb;
     border: none;
@@ -144,7 +144,7 @@
 }
 
 .btn-primary:hover {
-    background-color: #b0c7c4 !important;
+    background-color: #fad4a6 !important;
     color: #fff !important;
 }
 
@@ -313,4 +313,12 @@
 /* hide the overlay and popup by default */
 .overlay {
     display: none;
+}
+
+.dropdown-menu {
+    font-size: 1.2rem;
+}
+
+.btn.show {
+    background-color: #fad4a6;
 }
