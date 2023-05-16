@@ -39,6 +39,18 @@ $(document).ready(function () {
                     "</div>",
             };
         },
+        editable: true,
+        droppable: true,
+        drop: function (info) {
+            // Handle dropped events
+            console.log("Dropped event:", info.event);
+        },
+        eventDrop: function (info) {
+            // Update the due date of the task
+            const taskId = info.event.id;
+            const newDueDate = info.event.start;
+            updateTaskDueDate(taskId, newDueDate);
+        },
     });
 
     calendar.render();
@@ -97,3 +109,7 @@ function convertTaskToEvent(task) {
     };
 }
 
+function updateTaskDueDate(taskId, newDueDate) {
+    console.log("Task ID:", taskId);
+    console.log("New Due Date:", newDueDate);
+}

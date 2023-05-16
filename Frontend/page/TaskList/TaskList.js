@@ -10,6 +10,8 @@ document.querySelector(".fa-rotate").addEventListener("click", function () {
 
 // initialize task array
 let tasks = [];
+// initialize my task array
+let myTasks = [];
 // initialize completed task array
 let completedTasks = [];
 
@@ -55,7 +57,6 @@ function sortTasks(sortBy) {
     updateTaskList();
 }
 
-// function to update task list
 function updateTaskList() {
     // get task list element
     const taskList = document.querySelector("#taskList");
@@ -75,7 +76,7 @@ function updateTaskList() {
                 <small>Priority: ${task.priority}</small>
             </div>
             <div class="mx-auto">
-                <small>Due Date: ${task.dueDate}</small>
+                <small>Due Date: ${formatDueDate(task.dueDate)}</small>
             </div>
             <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
             <div class="d-flex justify-content-end">
@@ -110,6 +111,56 @@ function updateTaskList() {
     });
 }
 
+// function to format due date
+function formatDueDate(dueDate) {
+    const options = {
+        weekday: "long",
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    };
+    const formattedDate = dueDate.toLocaleDateString(undefined, options);
+    return formattedDate;
+}
+
+function updateMyTaskList() {
+    // get task list element
+    const myTaskList = document.querySelector("#myTaskList");
+
+    // clear task list
+    myTaskList.innerHTML = "";
+
+    // add each task to list
+    myTasks.forEach((task, index) => {
+        // create task list item
+        const taskItem = document.createElement("li");
+        taskItem.classList.add("list-group-item");
+        taskItem.innerHTML = `
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h6 class="mb-1">${task.name}</h6>
+                <small>Priority: ${task.priority}</small>
+            </div>
+            <div class="mx-auto">
+                <small>Due Date: ${formatDueDate(task.dueDate)}</small>
+            </div>
+            <button type="button" class="btn btn-success complete-task-btn" data-task-index="${index}">Complete Task</button>
+        </div>
+      `;
+
+        // add task list item to task list
+        myTaskList.appendChild(taskItem);
+    });
+
+    // attach click event listeners to take task buttons
+    const completeTaskBtns = document.querySelectorAll(".complete-task-btn");
+    completeTaskBtns.forEach((btn) => {
+        btn.addEventListener("click", completeTask);
+    });
+}
+
 function updateCompletedTaskList() {
     // get completed task list element
     const completedTaskList = document.querySelector("#completedTaskList");
@@ -129,7 +180,7 @@ function updateCompletedTaskList() {
                 <small>Priority: ${task.priority}</small>
             </div>
             <div class="mx-auto">
-                <small>Due Date: ${task.dueDate}</small>
+                <small>Due Date: ${formatDueDate(task.dueDate)}</small>
             </div>
             <div class="d-flex justify-content-end">
                 <small class="me-3">Assigned to:</small>
@@ -146,12 +197,26 @@ function takeTask(event) {
     // get the task index
     const taskIndex = event.target.dataset.taskIndex;
 
-    // move the task from tasks array to completedTasks array
-    const completedTask = tasks.splice(taskIndex, 1)[0];
+    // move the task from tasks array to myTasks array
+    const myTask = tasks.splice(taskIndex, 1)[0];
+    myTasks.push(myTask);
+
+    // update task list and my task list
+    updateTaskList();
+    updateMyTaskList();
+}
+
+function completeTask(event) {
+    // get the task index
+    const taskIndex = event.target.dataset.taskIndex;
+
+    // move the task from myTasks array to completedTasks array
+    const completedTask = myTasks.splice(taskIndex, 1)[0];
     completedTasks.push(completedTask);
 
-    // update task list and completed task list
+    // update task list, my task list, and completed task list
     updateTaskList();
+    updateMyTaskList();
     updateCompletedTaskList();
 }
 
