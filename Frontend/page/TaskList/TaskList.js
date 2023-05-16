@@ -4,6 +4,10 @@ $(document).ready(function () {
     });
 });
 
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
+
 // initialize task array
 let tasks = [];
 // initialize completed task array

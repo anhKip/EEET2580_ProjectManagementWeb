@@ -153,16 +153,12 @@
 
 .titles {
     border-bottom: 2px solid black;
-    font-family: 'Open Sans';
-    font-style: normal;
     font-weight: 400;
     font-size: 48px;
     line-height: 65px;
 }
 
 #project-name {
-    font-family: "Roboto", sans-serif;
-    font-style: normal;
     font-weight: 400;
     font-size: 24px;
     line-height: 28px;
@@ -189,7 +185,7 @@ button {
 }
 
 button:hover {
-    background-color: rgb(175, 158, 158);
+    background-color: #fad4a6;
 }
 
 .contributors {
@@ -281,7 +277,7 @@ h6 {
 .delete-project-btn {
     position: absolute;
     padding: 10px;
-    background-color: rgba(217, 25, 25, 0.6);
+    background-color: #f8a580;
     color: white;
     width: 140px;
     border-radius: 20px;
