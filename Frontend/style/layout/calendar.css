@@ -166,3 +166,11 @@
     background-color: #fad4a6 !important;
 }
 
+a {
+    color: black !important;
+    text-decoration: none !important;
+}
+
+.fc-scrollgrid-sync-inner {
+    background-color: #8fbfbb;
+}
