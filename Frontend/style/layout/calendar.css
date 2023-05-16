@@ -156,7 +156,6 @@
     border: none !important;
     padding: 0.5rem 1rem !important;
     font-size: 1.25rem !important;
-    border-radius: 0.5rem !important;
     cursor: pointer !important;
     transition: background-color 0.3s ease !important;
     padding: 0.5rem 1rem !important;
@@ -171,6 +170,12 @@ a {
     text-decoration: none !important;
 }
 
-.fc-scrollgrid-sync-inner {
+thead {
     background-color: #8fbfbb;
+}
+
+.fc-button-group {
+    border: 1px solid white!important;
+    border-radius: 0.5rem;
+    overflow: hidden;
 }

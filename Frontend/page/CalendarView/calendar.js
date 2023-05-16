@@ -96,3 +96,4 @@ function convertTaskToEvent(task) {
         assignedTo: task.assignedTo,
     };
 }
+
