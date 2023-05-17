@@ -1,34 +1,50 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.UserAccount;
-import com.example.backend.service.CrudService;
+import com.example.backend.record.GetProjectRespone;
+import com.example.backend.repository.UserAccountRepository;
+import com.example.backend.service.UserAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/user")
 public class UserAccountController {
     @Autowired
-    private CrudService<UserAccount> userAccountCrudService;
+    private UserAccountService userAccountService;
+    @Autowired
+    private UserAccountRepository userAccountRepository;
 
     @PostMapping(value = "/", consumes = "application/json")
     public UserAccount create(@RequestBody UserAccount userAccount) {
-        return userAccountCrudService.create(userAccount);
+        return userAccountService.create(userAccount);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public UserAccount retrieve(@PathVariable Long id) {
-        return userAccountCrudService.retrieve(id);
+        return userAccountService.retrieve(id);
     }
 
     @PutMapping(value = "/", consumes = "application/json")
     public UserAccount update(@RequestBody UserAccount userAccount) {
-        return userAccountCrudService.update(userAccount);
+        return userAccountService.update(userAccount);
     }
 
-    @DeleteMapping(value = "/")
-    public String delete(Long id) {
-        userAccountCrudService.delete(id);
+    @DeleteMapping(value = "/{id}")
+    public String delete(@PathVariable Long id) {
+        userAccountService.delete(id);
         return "Done";
+    }
+
+    @GetMapping(value = "/{id}/my-projects", produces = "application/json")
+    public ResponseEntity<?> getAllProjects(@PathVariable Long id) {
+        if (userAccountRepository.existsById(id)) {
+            return new ResponseEntity<>(userAccountService.getAllProjects(id), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("An error has occured.", HttpStatus.BAD_REQUEST);
     }
 }

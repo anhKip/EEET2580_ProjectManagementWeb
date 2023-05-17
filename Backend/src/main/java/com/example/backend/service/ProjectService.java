@@ -3,7 +3,7 @@ package com.example.backend.service;
 import com.example.backend.model.Project;
 import com.example.backend.model.ProjectMember;
 import com.example.backend.model.UserAccount;
-import com.example.backend.record.CreateProjectRecord;
+import com.example.backend.record.CreateProjectRequest;
 import com.example.backend.repository.ProjectMemberRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.UserAccountRepository;
@@ -55,14 +55,14 @@ public class ProjectService implements CrudService<Project> {
         projectRepository.deleteById(id);
     }
 
-    public Project create(CreateProjectRecord createProjectRecord) {
+    public Project create(CreateProjectRequest createProjectRequest) {
         Project project = new Project();
-        project.setName(createProjectRecord.name());
+        project.setName(createProjectRequest.name());
 
         List<ProjectMember> members = new ArrayList<>();
         ProjectMember member = new ProjectMember();
-        UserAccount user = userAccountRepository.findById(createProjectRecord.userId()).orElseThrow(
-                () -> new EntityNotFoundException("Cannot find user with id " + createProjectRecord.userId()));
+        UserAccount user = userAccountRepository.findById(createProjectRequest.userId()).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find user with id " + createProjectRequest.userId()));
         member.setProject(project);
         member.setUser(user);
         member.setIsAdmin(true);

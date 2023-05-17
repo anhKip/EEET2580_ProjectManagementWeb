@@ -1,6 +1,7 @@
 package com.example.backend.service;
 
 import com.example.backend.model.UserAccount;
+import com.example.backend.record.GetProjectRespone;
 import com.example.backend.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -52,8 +54,12 @@ public class UserAccountService implements CrudService<UserAccount>, UserDetails
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserAccount userAccount = userAccountRepository.findUserAccountByEmail(username).orElseThrow(() ->
+        UserAccount userAccount = userAccountRepository.findUserAccountByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found"));
         return new User(userAccount.getUsername(), userAccount.getPassword(), userAccount.getAuthorities());
+    }
+
+    public List<GetProjectRespone> getAllProjects(Long id) {
+
     }
 }
