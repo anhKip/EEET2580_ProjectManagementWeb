@@ -357,3 +357,11 @@ textarea {
     align-items: center;
     margin-top: 3px;
 }
+
+form {
+    width: 57%;
+}
+
+.form-check-input:checked {
+    background-color: #8fbfbb;
+}

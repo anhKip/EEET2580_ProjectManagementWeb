@@ -152,6 +152,9 @@
 }
 
 .titles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 2px solid black;
     font-weight: 400;
     font-size: 48px;
@@ -195,7 +198,7 @@ button:hover {
 }
 
 .contributors {
-    width: 88%;
+    width: 100%;
 }
 
 .add-button {
@@ -215,6 +218,10 @@ button:hover {
 
 #change, #add-contributor, .remove-btn {
     width: 90px;
+}
+
+#change {
+    height: 33px;
 }
 
 .add-form, .name-change-form {
