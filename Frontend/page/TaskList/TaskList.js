@@ -20,11 +20,16 @@ function addTask() {
     // get input values
     const taskName = document.querySelector("#taskNameInput").value;
     const priority = document.querySelector("#prioritySelect").value;
-    const dueDate = document.querySelector("#dueDateInput").value;
+    let dueDate = document.querySelector("#dueDateInput").value;
 
     if (taskName == null || taskName == "") {
         window.alert("Empty task name is not allowed!");
     } else {
+        // Check if hour input is empty
+        if (!dueDate.includes(":")) {
+            dueDate += " 23:59"; // Set default time to 23:59
+        }
+
         // create new task object
         const task = {
             name: taskName,
@@ -37,8 +42,13 @@ function addTask() {
 
         // update task list
         updateTaskList();
+
+        // Clear input fields
+        taskNameInput.value = "";
+        dueDateInput.value = "";
     }
 }
+
 
 // function to sort tasks
 function sortTasks(sortBy) {
@@ -269,6 +279,8 @@ $(document).ready(function () {
     });
 });
 
+// ...
+
 function openEditPopup(task, index) {
     // find the task object in the tasks array by index
     const taskObj = tasks[index];
@@ -278,6 +290,7 @@ function openEditPopup(task, index) {
     const taskNameInput = document.querySelector("#editTaskNameInput");
     const prioritySelect = document.querySelector("#editPrioritySelect");
     const dueDateInput = document.querySelector("#editDueDateInput");
+    const deleteTaskBtn = document.querySelector("#deleteTaskBtn");
 
     // fill in input fields with task information
     taskNameInput.value = taskObj.name;
@@ -295,7 +308,25 @@ function openEditPopup(task, index) {
     editPopup.addEventListener("click", (event) => {
         event.stopPropagation();
     });
+
+    // add event listener to delete button
+    deleteTaskBtn.addEventListener("click", () => {
+        // Call the deleteTask function to remove the task
+        deleteTask(index);
+
+        // Close the edit popup
+        closeEditPopup();
+    });
 }
+
+function deleteTask(index) {
+    // Remove the task from the tasks array
+    tasks.splice(index, 1);
+
+    // Update the task list
+    updateTaskList();
+}
+
 
 // get edit popup elements
 const editPopup = document.querySelector(".edit-task-popup");
