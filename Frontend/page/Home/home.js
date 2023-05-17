@@ -1,7 +1,24 @@
+// Import from authentication.js
+import { getIdCookie, reLog } from "../../functions/authentications.js";
+// Redirect to login page
+reLog()
+// Get userID
+const userId = getIdCookie('userId')
+
+// Start fetching here
+
+
+
 $(document).ready(function () {
     $(".menu-icon").click(function () {
         $(".menu-container").toggleClass("open");
     });
+
+    $(document).click(function(event) {
+        if(!$('.menu-container').is(event.target) && !$('.menu-icon').is(event.target) && !$("#menu-i").is(event.target)) {
+            $('.menu-container').removeClass("open");
+        }
+    })
 
     // click event handler for create project card
     $(".project-card-create").click(function (event) {

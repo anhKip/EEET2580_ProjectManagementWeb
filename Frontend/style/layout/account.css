@@ -285,14 +285,13 @@ textarea {
 
 #show-hide-btn {
     height: 32px;
-    width: 10%;
     border: 0;
     background-color: transparent;
-    transform: translate(0, -38px);
-    -webkit-transform: translate(0, -38px);
-    -moz-transform: translate(0, -38px);
-    -ms-transform: translate(0, -38px);
-    -o-transform: translate(0, -38px);
+    transform: translate(-9px, -37px);
+    -webkit-transform: translate(-9px, -37px);
+    -moz-transform: translate(-9px, -37px);
+    -ms-transform: translate(-9px, -37px);
+    -o-transform: translate(-9px, -37px);
 }
 
 #save-btn {
