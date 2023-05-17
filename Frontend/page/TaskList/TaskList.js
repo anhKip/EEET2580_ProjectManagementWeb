@@ -10,6 +10,8 @@ document.querySelector(".fa-rotate").addEventListener("click", function () {
 
 // initialize task array
 let tasks = [];
+// initialize my task array
+let onGoingTasks = [];
 // initialize completed task array
 let completedTasks = [];
 
@@ -18,11 +20,16 @@ function addTask() {
     // get input values
     const taskName = document.querySelector("#taskNameInput").value;
     const priority = document.querySelector("#prioritySelect").value;
-    const dueDate = document.querySelector("#dueDateInput").value;
+    let dueDate = document.querySelector("#dueDateInput").value;
 
     if (taskName == null || taskName == "") {
         window.alert("Empty task name is not allowed!");
     } else {
+        // Check if hour input is empty
+        if (!dueDate.includes(":")) {
+            dueDate += " 23:59"; // Set default time to 23:59
+        }
+
         // create new task object
         const task = {
             name: taskName,
@@ -35,8 +42,13 @@ function addTask() {
 
         // update task list
         updateTaskList();
+
+        // Clear input fields
+        taskNameInput.value = "";
+        dueDateInput.value = "";
     }
 }
+
 
 // function to sort tasks
 function sortTasks(sortBy) {
@@ -55,7 +67,6 @@ function sortTasks(sortBy) {
     updateTaskList();
 }
 
-// function to update task list
 function updateTaskList() {
     // get task list element
     const taskList = document.querySelector("#taskList");
@@ -75,9 +86,11 @@ function updateTaskList() {
                 <small>Priority: ${task.priority}</small>
             </div>
             <div class="mx-auto">
-                <small>Due Date: ${task.dueDate}</small>
+                <small>Due Date: ${formatDueDate(task.dueDate)}</small>
             </div>
-            <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
+            <div class="btn-container">
+                <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
+            </div>
             <div class="d-flex justify-content-end">
                 <small class="me-3">Assigned to:</small>
                 <a href="#" class="edit-task">
@@ -110,6 +123,61 @@ function updateTaskList() {
     });
 }
 
+// function to format due date
+function formatDueDate(dueDate) {
+    const options = {
+        weekday: "long",
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    };
+    const formattedDate = dueDate.toLocaleDateString(undefined, options);
+    return formattedDate;
+}
+
+function updateOnGoingTaskList() {
+    // get task list element
+    const onGoingTaskList = document.querySelector("#onGoingTaskList");
+
+    // clear task list
+    onGoingTaskList.innerHTML = "";
+
+    // add each task to list
+    onGoingTasks.forEach((task, index) => {
+        // create task list item
+        const taskItem = document.createElement("li");
+        taskItem.classList.add("list-group-item");
+        taskItem.innerHTML = `
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h6 class="mb-1">${task.name}</h6>
+                <small>Priority: ${task.priority}</small>
+            </div>
+            <div class="mx-auto">
+                <small>Due Date: ${formatDueDate(task.dueDate)}</small>
+            </div>
+            <div class="btn-container">
+                <button type="button" class="btn btn-success complete-task-btn" data-task-index="${index}">Complete Task</button>
+            </div>    
+            <div class="d-flex justify-content-end">
+                <small class="me-3">Assigned to:</small>
+            </div>
+        </div>
+      `;
+
+        // add task list item to task list
+        onGoingTaskList.appendChild(taskItem);
+    });
+
+    // attach click event listeners to take task buttons
+    const completeTaskBtns = document.querySelectorAll(".complete-task-btn");
+    completeTaskBtns.forEach((btn) => {
+        btn.addEventListener("click", completeTask);
+    });
+}
+
 function updateCompletedTaskList() {
     // get completed task list element
     const completedTaskList = document.querySelector("#completedTaskList");
@@ -129,7 +197,7 @@ function updateCompletedTaskList() {
                 <small>Priority: ${task.priority}</small>
             </div>
             <div class="mx-auto">
-                <small>Due Date: ${task.dueDate}</small>
+                <small>Due Date: ${formatDueDate(task.dueDate)}</small>
             </div>
             <div class="d-flex justify-content-end">
                 <small class="me-3">Assigned to:</small>
@@ -146,12 +214,26 @@ function takeTask(event) {
     // get the task index
     const taskIndex = event.target.dataset.taskIndex;
 
-    // move the task from tasks array to completedTasks array
-    const completedTask = tasks.splice(taskIndex, 1)[0];
+    // move the task from tasks array to onGoingTasks array
+    const onGoingTask = tasks.splice(taskIndex, 1)[0];
+    onGoingTasks.push(onGoingTask);
+
+    // update task list and my task list
+    updateTaskList();
+    updateOnGoingTaskList();
+}
+
+function completeTask(event) {
+    // get the task index
+    const taskIndex = event.target.dataset.taskIndex;
+
+    // move the task from onGoingTasks array to completedTasks array
+    const completedTask = onGoingTasks.splice(taskIndex, 1)[0];
     completedTasks.push(completedTask);
 
-    // update task list and completed task list
+    // update task list, my task list, and completed task list
     updateTaskList();
+    updateOnGoingTaskList();
     updateCompletedTaskList();
 }
 
@@ -197,6 +279,8 @@ $(document).ready(function () {
     });
 });
 
+// ...
+
 function openEditPopup(task, index) {
     // find the task object in the tasks array by index
     const taskObj = tasks[index];
@@ -206,6 +290,7 @@ function openEditPopup(task, index) {
     const taskNameInput = document.querySelector("#editTaskNameInput");
     const prioritySelect = document.querySelector("#editPrioritySelect");
     const dueDateInput = document.querySelector("#editDueDateInput");
+    const deleteTaskBtn = document.querySelector("#deleteTaskBtn");
 
     // fill in input fields with task information
     taskNameInput.value = taskObj.name;
@@ -223,7 +308,25 @@ function openEditPopup(task, index) {
     editPopup.addEventListener("click", (event) => {
         event.stopPropagation();
     });
+
+    // add event listener to delete button
+    deleteTaskBtn.addEventListener("click", () => {
+        // Call the deleteTask function to remove the task
+        deleteTask(index);
+
+        // Close the edit popup
+        closeEditPopup();
+    });
 }
+
+function deleteTask(index) {
+    // Remove the task from the tasks array
+    tasks.splice(index, 1);
+
+    // Update the task list
+    updateTaskList();
+}
+
 
 // get edit popup elements
 const editPopup = document.querySelector(".edit-task-popup");
