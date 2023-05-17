@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class UserAccount implements UserDetails {
 
     @NotBlank
     @Size(min = 3, max = 32)
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @NotBlank
@@ -39,19 +40,8 @@ public class UserAccount implements UserDetails {
     @Column(name = "user_password")
     private String password;
 
-    @Nullable
-    @Column(name = "user_score", columnDefinition = "integer default 0")
-    private int score;
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "project_user",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "project_id"))
-    private List<Project> projects;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private List<Task> tasks;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<ProjectMember> memberships = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

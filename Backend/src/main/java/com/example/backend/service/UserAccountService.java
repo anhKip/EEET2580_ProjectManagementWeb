@@ -41,7 +41,6 @@ public class UserAccountService implements CrudService<UserAccount>, UserDetails
         userAccountDb.setUsername(userAccount.getUsername());
         userAccountDb.setEmail(userAccount.getEmail());
         userAccountDb.setPassword(userAccount.getPassword());
-        userAccountDb.setScore(userAccount.getScore());
 
         return userAccountRepository.save(userAccountDb);
     }

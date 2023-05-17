@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.model.Project;
 import com.example.backend.record.CreateProjectRecord;
+import com.example.backend.repository.ProjectMemberRepository;
 import com.example.backend.repository.UserAccountRepository;
 import com.example.backend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +16,21 @@ import org.springframework.web.bind.annotation.*;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
+//    @Autowired
+//    private ProjectMemberRepository projectMemberRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
 
     @PostMapping(value = "/", consumes = "application/json")
     public ResponseEntity<String> create(@RequestBody CreateProjectRecord createProjectRecord) {
-        if(userAccountRepository.existsById(createProjectRecord.userId()))
+        System.out.println("Test: inside create project controller");
+        System.out.println(createProjectRecord);
+        try{
             projectService.create(createProjectRecord);
-        else
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User cannot be found.");
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ResponseEntity("An error has occured.", HttpStatus.BAD_REQUEST);
+        }
         return ResponseEntity.ok("Project has been created.");
     }
 
@@ -37,8 +44,8 @@ public class ProjectController {
         return projectService.update(project);
     }
 
-    @DeleteMapping(value = "/")
-    public String delete(Long id) {
+    @DeleteMapping(value = "/{id}")
+    public String delete(@PathVariable Long id) {
         projectService.delete(id);
         return "Done";
     }
