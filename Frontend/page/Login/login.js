@@ -11,6 +11,13 @@ function setTokenCookies(cname, c_value, expire) {
     document.cookie = cname + '=' + c_value + ';' + expires + '; path=/' + '; SameSite=None' + '; Secure';
 }
 
+function setIdToken(cname, c_value, expire) {
+    const d = new Date();
+    d.setTime(d.getTime() + (expire*60*60*1000));
+    let expires = " expires="+ d.toUTCString();
+    document.cookie = cname + '=' + c_value + ';' + expires + '; path=/' + '; SameSite=None' + '; Secure';
+}
+
 function getTokenCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -46,10 +53,8 @@ document.getElementById("login-btn").addEventListener("click", function(event) {
     })
     .then(response => response.json())
     .then(json => {
-        // console.log(json);
         if (json.userId >= 0) {
             console.log("Log in successfully")
-            setTokenCookies('userId', json.userId, 1)
         }
         else {
             console.log("Log in fails")

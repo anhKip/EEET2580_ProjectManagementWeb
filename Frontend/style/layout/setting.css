@@ -152,17 +152,16 @@
 }
 
 .titles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 2px solid black;
-    font-family: 'Open Sans';
-    font-style: normal;
     font-weight: 400;
     font-size: 48px;
     line-height: 65px;
 }
 
 #project-name {
-    font-family: "Roboto", sans-serif;
-    font-style: normal;
     font-weight: 400;
     font-size: 24px;
     line-height: 28px;
@@ -176,24 +175,30 @@
 }
 
 button {
-    background-color: rgba(251, 231, 171, 0.6);
-    border: 0;
-    color: #45958E;
-    padding: 10px;
+    background-color: #8fbfbb;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 2rem;
     cursor: pointer;
-    border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
+    border-radius: 0.5rem;
+    -webkit-border-radius: 0.5rem;
+    -moz-border-radius: 0.5rem;
+    -ms-border-radius: 0.5rem;
+    -o-border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+    -webkit-transition: background-color 0.3s ease;
+    -moz-transition: background-color 0.3s ease;
+    -ms-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: rgb(175, 158, 158);
+    background-color: #fad4a6;
 }
 
 .contributors {
-    width: 88%;
+    width: 100%;
 }
 
 .add-button {
@@ -208,11 +213,15 @@ button:hover {
 }
 
 #add-contributor {
-    height: 39px;
+    height: 33px;
 }
 
 #change, #add-contributor, .remove-btn {
     width: 90px;
+}
+
+#change {
+    height: 33px;
 }
 
 .add-form, .name-change-form {
@@ -281,7 +290,7 @@ h6 {
 .delete-project-btn {
     position: absolute;
     padding: 10px;
-    background-color: rgba(217, 25, 25, 0.6);
+    background-color: #f8a580;
     color: white;
     width: 140px;
     border-radius: 20px;

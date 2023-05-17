@@ -151,10 +151,7 @@
 
 .tabs a {
     display: block;
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
+    font-size: 1.75rem;
     line-height: 24px;
     text-decoration: none;
     color: black;
@@ -181,8 +178,6 @@
 }
 
 .title {
-    font-family: 'Open Sans';
-    font-style: normal;
     font-weight: 400;
     font-size: 48px;
     line-height: 65px;
@@ -225,8 +220,6 @@
 }
 
 label {
-    font-family: 'Montserrat';
-    font-style: normal;
     font-weight: 400;
     font-size: 20px;
     line-height: 24px;
@@ -252,8 +245,6 @@ form {
     margin: 5px 0;
     width: 100%;
     height: 32px;
-    font-family: 'Montserrat';
-    font-style: normal;
     font-weight: 400;
     font-size: 20px;
     line-height: 24px;
@@ -271,8 +262,6 @@ textarea {
     margin: 5px 0;
     width: 100%;
     height: 150px;
-    font-family: 'Montserrat';
-    font-style: normal;
     font-weight: 400;
     font-size: 20px;
     line-height: 20px;
@@ -307,29 +296,21 @@ textarea {
 }
 
 #save-btn {
-    margin-top: 10px;
-    align-self: center;
-    background-color: rgba(251, 231, 171, 0.6);
-    border: 0;
-    color: #45958E;
-    padding: 1px;
+    background-color: #8fbfbb;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 2rem;
+    border-radius: 0.5rem;
     cursor: pointer;
-    font-family: "Roboto", sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 19px;
-    width: 90px;
-    height: 38px;
-    border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
+    transition: background-color 0.3s ease;
+    padding: 1rem 2rem;
+    align-self: center;
+    margin-top: 1rem;
 }
 
 #save-btn:hover {
-    background-color: rgb(175, 158, 158);
+    background-color: #fad4a6;
 }
 
 .update-container {
@@ -351,4 +332,36 @@ textarea {
 .update-title {
     width: 80%;
     border-right: 1px solid #C5B7B7;
+}
+
+.form-switch {
+    font-size: 2rem;
+    margin-right: 1.5rem;
+}
+
+.update-title {
+    text-align: left;
+    vertical-align:middle;
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+}
+
+.title {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.fa-angle-right {
+    display: inline-block;
+    vertical-align: middle;
+    align-items: center;
+    margin-top: 3px;
+}
+
+form {
+    width: 57%;
+}
+
+.form-check-input:checked {
+    background-color: #8fbfbb;
 }
