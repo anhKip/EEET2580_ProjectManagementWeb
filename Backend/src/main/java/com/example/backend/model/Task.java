@@ -36,11 +36,11 @@ public class Task {
     @Column(name = "completed", columnDefinition = "boolean default false")
     private Boolean completed;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Project.class)
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserAccount assignedTo;
+    @ManyToOne(targetEntity = ProjectMember.class)
+    @JoinColumn(name = "member_id")
+    private ProjectMember assignedTo;
 }
