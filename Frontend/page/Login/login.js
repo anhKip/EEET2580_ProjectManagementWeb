@@ -53,6 +53,7 @@ document.getElementById("login-btn").addEventListener("click", function(event) {
     })
     .then(response => response.json())
     .then(json => {
+        console.log(json)
         if (json.userId >= 0) {
             console.log("Log in successfully")
         }
