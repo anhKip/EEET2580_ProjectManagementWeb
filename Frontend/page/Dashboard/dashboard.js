@@ -4,14 +4,18 @@ $(document).ready(function () {
     });
 });
 
-$(document).ready(function(){
+$(document).ready(function () {
     $(".updates-box").hide();
-    $(".button-leaderboard").click(function(){
+    $(".button-leaderboard").click(function () {
         $(".leaderboard-box").toggle();
         $(".updates-box").hide();
     });
-    $(".button-updates").click(function(){
+    $(".button-updates").click(function () {
         $(".updates-box").toggle();
         $(".leaderboard-box").hide();
     });
+});
+
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
 });

@@ -1,61 +1,65 @@
-$(document).ready(function() {
-    $('.menu-icon').click(function() {
-      $('.menu-container, .hide-menu').toggleClass('open');
+$(document).ready(function () {
+    $(".menu-icon").click(function () {
+        $(".menu-container, .hide-menu").toggleClass("open");
     });
 
     // Pop-up form for changing project name
-    $('#change').click(function(event) {
-      event.preventDefault();
-  
-      $('.overlay').fadeIn();
-  
-      $('.name-change-form').fadeIn();
+    $("#change").click(function (event) {
+        event.preventDefault();
 
-      $('#name-input').val($('#project-name').text().trim());
+        $(".overlay").fadeIn();
+
+        $(".name-change-form").fadeIn();
+
+        $("#name-input").val($("#project-name").text().trim());
     });
 
-    $('#cancel-change-button').click(function() {
-      $('.overlay, .name-change-form').fadeOut();
+    $("#cancel-change-button").click(function () {
+        $(".overlay, .name-change-form").fadeOut();
     });
 
-    $('#confirm-button').click(function(event) {
-      event.preventDefault();
-  
-      $('.overlay, .name-change-form').fadeOut();
-    });
+    $("#confirm-button").click(function (event) {
+        event.preventDefault();
 
+        $(".overlay, .name-change-form").fadeOut();
+    });
 
     // Pop-up form for add contributors
-    $('#add-contributor').click(function(event) {
-      event.preventDefault();
-  
-      $('.overlay').fadeIn();
-  
-      $('.add-form').fadeIn();
+    $("#add-contributor").click(function (event) {
+        event.preventDefault();
 
-    });
-  
-    $('#cancel-button').click(function() {
-      $('.overlay, .add-form').fadeOut();
+        $(".overlay").fadeIn();
+
+        $(".add-form").fadeIn();
     });
 
-    $('#confirm-button').click(function(event) {
-      event.preventDefault();
-  
-      $('.overlay, .add-form').fadeOut();
+    $("#cancel-button").click(function () {
+        $(".overlay, .add-form").fadeOut();
+    });
+
+    $("#confirm-button").click(function (event) {
+        event.preventDefault();
+
+        $(".overlay, .add-form").fadeOut();
     });
 
     // Add leave button for user account
-    $('.you').append("<button type=\"button\" class=\"remove-btn\"> Leave </button>")
+    $(".you").append(
+        '<button type="button" class="remove-btn"> Leave </button>'
+    );
 
     // Add remove button for each contributors
-    $('.contributor').append("<button type=\"button\" class=\"remove-btn\"> Remove </button>")
+    $(".contributor").append(
+        '<button type="button" class="remove-btn"> Remove </button>'
+    );
 
-    $('.remove-btn').click(function(event) {
-      event.preventDefault();
+    $(".remove-btn").click(function (event) {
+        event.preventDefault();
 
-      // Remove user from db
-      
-    })
-})
+        // Remove user from db
+    });
+});
 
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
