@@ -1,4 +1,8 @@
-document.getElementById("sign-up-btn").addEventListener('click', function(event) {
+const sign_up_btn = document.getElementById("sign-up-btn");
+
+sign_up_btn.addEventListener("click", signUp)
+
+function signUp(event) {
     event.preventDefault();
 
     let pass1 = document.getElementById("password");
@@ -32,9 +36,10 @@ document.getElementById("sign-up-btn").addEventListener('click', function(event)
         .then(json => {
             console.log(json.message);
             window.location.assign('../Login/login.html')
+            sign_up_btn.removeEventListener("click", signUp)
         })
         .catch(e => {
             console.log(e)
         })
     }
-});
+};
