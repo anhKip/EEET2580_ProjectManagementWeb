@@ -9,6 +9,7 @@ function setTokenCookies(cname, c_value, expire) {
     d.setTime(d.getTime() + (expire*60*60*1000));
     let expires = " expires="+ d.toUTCString();
     document.cookie = cname + '=' + c_value + ';' + expires + '; path=/' + '; SameSite=None' + '; Secure';
+    // document.cookie = cname + '=' + c_value + ';' + expires + '; path=/' + '; SameSite=None' + '; Secure' + '; HttpOnly';
 }
 
 function getTokenCookie(cname) {
@@ -49,7 +50,7 @@ document.getElementById("login-btn").addEventListener("click", function(event) {
         // console.log(json);
         if (json.userId >= 0) {
             console.log("Log in successfully")
-            setTokenCookies('userId', json.userId, 1)
+            window.location.assign('../Home/home.html' + '?u=' + json.userId)
         }
         else {
             console.log("Log in fails")
@@ -59,5 +60,3 @@ document.getElementById("login-btn").addEventListener("click", function(event) {
         console.log(e)
     })
 })
-
-

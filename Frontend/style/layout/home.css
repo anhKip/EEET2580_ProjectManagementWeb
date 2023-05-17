@@ -273,7 +273,6 @@
     background-color: rgba(0, 0, 0, 0.6);
 }
 
-/* hide the overlay and popup by default */
 .overlay,
 .create-project-popup {
     display: none;

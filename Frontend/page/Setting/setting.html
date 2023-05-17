@@ -21,21 +21,21 @@
     <div class="topnav">
         <a class="menu-icon" href="#"><i class="fa-solid fa-bars"></i></a>
         <div class="menu-container">
-            <a href="#"><i class="fa-solid fa-house"></i> Dashboard</a>
-            <a href="#"><i class="fa-regular fa-clipboard"></i> Task</a>
-            <a href="#"><i class="fa-solid fa-list"></i> View</a>
+            <a href="./../Dashboard/dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="./../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i> Task</a>
+            <a href="./../CalendarView/calendar.html"><i class="fa-solid fa-list"></i> View</a>
             <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i> File management</a>
-            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+            <a href="../Setting/setting.html"><i class="fa-solid fa-gear"></i> Settings</a>
         </div>
         <div class="hide-menu">
-            <a href="#"><i class="fa-solid fa-house"></i></a>
-            <a href="#"><i class="fa-regular fa-clipboard"></i></a>
-            <a href="#"><i class="fa-solid fa-list"></i></a>
-            <a href="#"><i class="fa-regular fa-file-lines"></i></a>
-            <a href="#"><i class="fa-solid fa-gear"></i></a>
+            <a href="./../Dashboard/dashboard.html"><i class="fa-solid fa-house"></i></a>
+            <a href="./../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i></a>
+            <a href="./../CalendarView/calendar.html"><i class="fa-solid fa-list"></i></a>
+            <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i></a>
+            <a href="../Setting/setting.html"><i class="fa-solid fa-gear"></i></a>
         </div>
         <div class="right-icons">
-            <a href="#"><i class="fa-regular fa-bell"></i></a>
+            <a href="../Account/notification.html"><i class="fa-regular fa-bell"></i></a>
             <a href="#"><i class="fa-solid fa-rotate"></i></a>
             <a href="../Account/profile.html"><i class="fa-regular fa-user"></i></a>
         </div>
@@ -52,7 +52,12 @@
                     </div>
                 </div>
                 <div class="contributor-setting">
-                    <div class="titles"> Contributors </div>
+                    <div class="titles">
+                        Members 
+                        <div class="add-button">
+                            <button type="button" id="add-contributor"> Add </button>
+                        </div>
+                    </div>
                     <div class="content">
                         <div class="contributors">
                             <div class="you"> <h5> You </h5> </div>
@@ -61,9 +66,6 @@
                             </div>
                             <div class="contributor"> <h5> User 2 </h5> </div>
                             <div class="contributor"> <h5> User 3 </h5> </div>
-                        </div>
-                        <div class="add-button">
-                            <button type="button" id="add-contributor"> Add </button>
                         </div>
                     </div>
                 </div>
