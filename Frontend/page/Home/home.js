@@ -14,6 +14,7 @@ $(document).ready(function () {
         $(".menu-container").toggleClass("open");
     });
 
+    // click event handler to close menu-container
     $(document).click(function(event) {
         if(!$('.menu-container').is(event.target) && !$('.menu-icon').is(event.target) && !$("#menu-i").is(event.target)) {
             $('.menu-container').removeClass("open");
