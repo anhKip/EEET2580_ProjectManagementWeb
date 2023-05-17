@@ -1,15 +1,15 @@
 /**
  * Create/Set cookie for UserId
- * @param {string} cname Cookie name
+ * @param {string} c_name Cookie name
  * @param {string} c_value Cookie value
  * @param {float} expire Expiration Time in Hour
  */
-function setIdCookies(cname, c_value, expire) {
+function setIdCookies(c_name, c_value, expire) {
     const d = new Date();
     d.setTime(d.getTime() + expire * 60 * 60 * 1000);
     let expires = " expires=" + d.toUTCString();
     document.cookie =
-        cname +
+    c_name +
         "=" +
         c_value +
         ";" +
@@ -21,11 +21,11 @@ function setIdCookies(cname, c_value, expire) {
 
 /**
  * Get the value of cookie given the cookie name
- * @param {string} cname Cookie name
+ * @param {string} c_name Cookie name
  * @returns {string} Cookie value
  */
-function getIdCookie(cname) {
-    let name = cname + "=";
+function getIdCookie(c_name) {
+    let name = c_name + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(";");
     for (let i = 0; i < ca.length; i++) {

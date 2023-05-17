@@ -2,6 +2,15 @@ $(document).ready(function () {
     $(".menu-icon").click(function () {
         $(".menu-container, .hide-menu").toggleClass("open");
     });
+
+    // click event handler to close menu-container
+    $(document).click(function(event) {
+        if(!$('.menu-container').is(event.target) && !$('.menu-icon').is(event.target) && !$("#menu-i").is(event.target)) {
+            $('.menu-container').removeClass("open");
+            $('.hide-menu').removeClass("open");
+        }
+    })
+    
 });
 
 function sortTableByColumn(table, column, asc = true) {

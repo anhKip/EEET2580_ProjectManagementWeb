@@ -3,6 +3,14 @@ $(document).ready(function () {
         $(".menu-container, .hide-menu").toggleClass("open");
     });
 
+    // click event handler to close menu-container
+    $(document).click(function(event) {
+        if(!$('.menu-container').is(event.target) && !$('.menu-icon').is(event.target) && !$("#menu-i").is(event.target)) {
+            $('.menu-container').removeClass("open");
+            $('.hide-menu').removeClass("open");
+        }
+    })
+
     // Pop-up form for changing project name
     $("#change").click(function (event) {
         event.preventDefault();
