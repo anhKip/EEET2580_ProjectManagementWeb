@@ -41,7 +41,7 @@ public class UserAccountController {
     }
 
     @GetMapping(value = "/{id}/my-projects", produces = "application/json")
-    public ResponseEntity<?> getAllProjects(@PathVariable Long id) {
+    public ResponseEntity<List<GetProjectRespone>> getAllProjects(@PathVariable Long id) {
         if (userAccountRepository.existsById(id)) {
             return new ResponseEntity<>(userAccountService.getAllProjects(id), HttpStatus.OK);
         }
