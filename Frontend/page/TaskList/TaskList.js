@@ -11,7 +11,7 @@ document.querySelector(".fa-rotate").addEventListener("click", function () {
 // initialize task array
 let tasks = [];
 // initialize my task array
-let myTasks = [];
+let onGoingTasks = [];
 // initialize completed task array
 let completedTasks = [];
 
@@ -78,7 +78,9 @@ function updateTaskList() {
             <div class="mx-auto">
                 <small>Due Date: ${formatDueDate(task.dueDate)}</small>
             </div>
-            <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
+            <div class="btn-container">
+                <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
+            </div>
             <div class="d-flex justify-content-end">
                 <small class="me-3">Assigned to:</small>
                 <a href="#" class="edit-task">
@@ -125,15 +127,15 @@ function formatDueDate(dueDate) {
     return formattedDate;
 }
 
-function updateMyTaskList() {
+function updateOnGoingTaskList() {
     // get task list element
-    const myTaskList = document.querySelector("#myTaskList");
+    const onGoingTaskList = document.querySelector("#onGoingTaskList");
 
     // clear task list
-    myTaskList.innerHTML = "";
+    onGoingTaskList.innerHTML = "";
 
     // add each task to list
-    myTasks.forEach((task, index) => {
+    onGoingTasks.forEach((task, index) => {
         // create task list item
         const taskItem = document.createElement("li");
         taskItem.classList.add("list-group-item");
@@ -146,12 +148,17 @@ function updateMyTaskList() {
             <div class="mx-auto">
                 <small>Due Date: ${formatDueDate(task.dueDate)}</small>
             </div>
-            <button type="button" class="btn btn-success complete-task-btn" data-task-index="${index}">Complete Task</button>
+            <div class="btn-container">
+                <button type="button" class="btn btn-success complete-task-btn" data-task-index="${index}">Complete Task</button>
+            </div>    
+            <div class="d-flex justify-content-end">
+                <small class="me-3">Assigned to:</small>
+            </div>
         </div>
       `;
 
         // add task list item to task list
-        myTaskList.appendChild(taskItem);
+        onGoingTaskList.appendChild(taskItem);
     });
 
     // attach click event listeners to take task buttons
@@ -197,26 +204,26 @@ function takeTask(event) {
     // get the task index
     const taskIndex = event.target.dataset.taskIndex;
 
-    // move the task from tasks array to myTasks array
-    const myTask = tasks.splice(taskIndex, 1)[0];
-    myTasks.push(myTask);
+    // move the task from tasks array to onGoingTasks array
+    const onGoingTask = tasks.splice(taskIndex, 1)[0];
+    onGoingTasks.push(onGoingTask);
 
     // update task list and my task list
     updateTaskList();
-    updateMyTaskList();
+    updateOnGoingTaskList();
 }
 
 function completeTask(event) {
     // get the task index
     const taskIndex = event.target.dataset.taskIndex;
 
-    // move the task from myTasks array to completedTasks array
-    const completedTask = myTasks.splice(taskIndex, 1)[0];
+    // move the task from onGoingTasks array to completedTasks array
+    const completedTask = onGoingTasks.splice(taskIndex, 1)[0];
     completedTasks.push(completedTask);
 
     // update task list, my task list, and completed task list
     updateTaskList();
-    updateMyTaskList();
+    updateOnGoingTaskList();
     updateCompletedTaskList();
 }
 

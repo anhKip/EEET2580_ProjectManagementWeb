@@ -163,7 +163,7 @@
     padding-left: 50px;
 }
 
-#taskList, #myTaskList,
+#taskList, #onGoingTaskList,
 #completedTaskList {
     border: 10px solid #d4d7c6;
     padding: 10px;
@@ -193,8 +193,8 @@
     font-size: 14px;
 }
 
-.list-group-item .take-task-btn {
-    margin-right: 10px;
+.btn-container {
+    margin-right: 2rem;
 }
 
 .add-task-popup {
