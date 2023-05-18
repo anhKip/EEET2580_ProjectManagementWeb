@@ -24,8 +24,8 @@ import java.util.List;
 public class ProjectService implements CrudService<Project> {
     @Autowired
     private ProjectRepository projectRepository;
-//    @Autowired
-//    private ProjectMemberRepository projectMemberRepository;
+    @Autowired
+    private ProjectMemberRepository projectMemberRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
 
@@ -101,16 +101,15 @@ public class ProjectService implements CrudService<Project> {
         // get user
         UserAccount user = userAccountRepository.findUserAccountByUsername(username).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find user account with username " + username));
-//        if(projectMemberRepository.isAlreadyMember(user.getId(), projectId))
-//            return "This user is already a member.";
+        // check if user is already a member
+        if(!projectMemberRepository.isAlreadyMember(user.getId(), projectId).isEmpty())
+            return "This user is already a member.";
         // create and set data for member
         ProjectMember newMember = new ProjectMember();
         newMember.setProject(project);
         newMember.setUser(user);
         newMember.setIsAdmin(false);
         newMember.setScore(0);
-        // add to user table
-        user.getMemberships().add(newMember);
         // add to project table
         project.getMembers().add(newMember);
         // saving project
