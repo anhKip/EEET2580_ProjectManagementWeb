@@ -38,7 +38,6 @@ function login(event) {
             setIdCookies('userId', json.userId, 1); // 1-hour long cookie
             window.location.assign('../Home/home.html');
             login_btn.removeEventListener("click", login);
-            console.log("event removed");
         }
     })
     .catch((e) => {
