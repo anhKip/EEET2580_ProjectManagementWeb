@@ -30,7 +30,6 @@ public class Task {
     @Column(name = "task_detail")
     private String detail;
 
-    @Enumerated(EnumType.ORDINAL)
     @Column(name = "task_priority")
     private String priority;
 

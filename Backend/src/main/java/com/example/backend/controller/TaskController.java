@@ -13,7 +13,7 @@ public class TaskController {
     private CrudService<Task> taskCrudService;
 
     @PostMapping(value = "/", consumes = "application/json")
-    public Task create(@RequestBody CreateTaskRequest createTaskRequest) {
+    public Task create(@RequestBody Task task) {
         return taskCrudService.create(task);
     }
 
