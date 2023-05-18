@@ -71,12 +71,12 @@ public class AuthController {
     public ResponseEntity<SignUpResponse> registerUser(@RequestBody @Valid SignUpRequest signUpRecord) {
         // check if username already exists in DB
         if (userAccountRepository.existsByUsername(signUpRecord.username())) {
-            return new ResponseEntity<>(new SignUpResponse("Username is already taken."), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new SignUpResponse("Username is already taken.", null), HttpStatus.BAD_REQUEST);
         }
 
         // check if email already exists in DB
         if (userAccountRepository.existsByEmail(signUpRecord.email())) {
-            return new ResponseEntity<>(new SignUpResponse("Email is already taken."), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new SignUpResponse("Email is already taken.", null), HttpStatus.BAD_REQUEST);
         }
 
         // finished checking, now create user object
@@ -88,6 +88,6 @@ public class AuthController {
 
         userAccountRepository.save(userAccount);
 
-        return new ResponseEntity<>(new SignUpResponse("User registered successfully."), HttpStatus.OK);
+        return new ResponseEntity<>(new SignUpResponse("User registered successfully.", userAccount.getId()), HttpStatus.OK);
     }
 }
