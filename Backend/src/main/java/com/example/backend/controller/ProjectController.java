@@ -2,6 +2,8 @@ package com.example.backend.controller;
 
 import com.example.backend.model.Project;
 import com.example.backend.record.CreateProjectRequest;
+import com.example.backend.record.GetMemberResponse;
+import com.example.backend.record.GetProjectRespone;
 import com.example.backend.repository.UserAccountRepository;
 import com.example.backend.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,27 +11,29 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("api/project")
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
-//    @Autowired
+    //    @Autowired
 //    private ProjectMemberRepository projectMemberRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
 
     @PostMapping(value = "/", consumes = "application/json")
     public ResponseEntity<String> create(@RequestBody CreateProjectRequest createProjectRequest) {
-        System.out.println("Test: inside create project controller");
+        System.out.println("Test: inside createProject project controller");
         System.out.println(createProjectRequest);
-        return new ResponseEntity<>(projectService.create(createProjectRequest), HttpStatus.OK);
+        return new ResponseEntity<>(projectService.createProject(createProjectRequest), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public Project retrieve(@PathVariable Long id) {
-        return projectService.retrieve(id);
+    public ResponseEntity<GetProjectRespone> retrieve(@PathVariable Long id) {
+        return new ResponseEntity<>(projectService.getProject(id), HttpStatus.OK);
     }
 
     @PutMapping(value = "/", consumes = "application/json")
@@ -41,5 +45,15 @@ public class ProjectController {
     public String delete(@PathVariable Long id) {
         projectService.delete(id);
         return "Done";
+    }
+
+    @GetMapping(value = "/{id}/members", produces = "application/json")
+    public ResponseEntity<List<GetMemberResponse>> getMembers(@PathVariable Long id) {
+        return new ResponseEntity<>(projectService.getMembers(id), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/{id}/add-member", consumes = "application/json")
+    public ResponseEntity<String> addMember(@PathVariable Long projectId, @RequestBody String username) {
+        return new ResponseEntity<>(projectService.addMember(projectId, username), HttpStatus.OK);
     }
 }

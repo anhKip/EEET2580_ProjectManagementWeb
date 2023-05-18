@@ -77,7 +77,7 @@ public class AuthController {
             return new ResponseEntity<>(new SignUpResponse("Email is already taken.", null), HttpStatus.BAD_REQUEST);
         }
 
-        // finished checking, now create user object
+        // finished checking, now createProject user object
         UserAccount userAccount = UserAccount.builder()
                 .username(signUpRecord.username())
                 .email(signUpRecord.email())
