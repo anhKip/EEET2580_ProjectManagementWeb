@@ -4,8 +4,6 @@ import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 
 // add spinner
 addWrapper();
-
-// page loader
 pageLoader();
 
 // Redirect to login page, comment this out for testing
