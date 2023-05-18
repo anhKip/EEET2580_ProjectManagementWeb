@@ -3,20 +3,95 @@ import { getIdCookie, reLog } from "../../functions/authentications.js";
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 
 // add spinner
-addWrapper()
+addWrapper();
 
 // page loader
-pageLoader()
+pageLoader();
 
 // Redirect to login page, comment this out for testing
-// reLog()
+reLog();
 
 // Get userID
-const userId = getIdCookie('userId')
+const userId = getIdCookie("userId");
 
 // Start fetching here
 
+fetchProjects();
 
+function fetchProjects() {
+    const url = `http://localhost:8080/api/user/${userId}/my-projects`;
+
+    fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            renderProjectCards(data);
+        })
+        .catch((error) => {
+            console.error("Error fetching projects:", error);
+        });
+}
+
+function renderProjectCards(projects) {
+    const projectGrid = document.querySelector(".project-grid");
+
+    // Iterate over the projects and create project cards
+    projects.forEach((project) => {
+        const projectName = project.name; // Get the project name
+
+        const projectCard = document.createElement("a");
+        projectCard.href = `http://127.0.0.1:5500/Frontend/page/Dashboard/dashboard.html?pId=${project.id}`;
+        projectCard.classList.add("project-card");
+
+        const projectLogoWrapper = document.createElement("div");
+        projectLogoWrapper.classList.add("project-logo-wrapper");
+
+        const projectLogo = document.createElement("span");
+        projectLogo.classList.add("project-logo");
+        projectLogo.innerHTML = '<i class="fa-solid fa-circle-user"></i>';
+
+        const projectTitle = document.createElement("div");
+        projectTitle.classList.add("project-title");
+        projectTitle.textContent = projectName; // Display project name
+
+        projectLogoWrapper.appendChild(projectLogo);
+        projectCard.appendChild(projectLogoWrapper);
+        projectCard.appendChild(projectTitle);
+
+        projectGrid.appendChild(projectCard);
+    });
+}
+
+function createProject() {
+    const url = "http://localhost:8080/api/project/";
+
+    const projectName = document.querySelector("#project-name").value;
+
+    const projectData = {
+        name: projectName,
+        userId: userId,
+    };
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(projectData),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            // Handle the response data as needed
+            console.log("Project created:", data);
+        })
+        .catch((error) => {
+            console.error("Error creating project:", error);
+        });
+}
 
 $(document).ready(function () {
     $(".menu-icon").click(function () {
@@ -24,11 +99,15 @@ $(document).ready(function () {
     });
 
     // click event handler to close menu-container
-    $(document).click(function(event) {
-        if(!$('.menu-container').is(event.target) && !$('.menu-icon').is(event.target) && !$("#menu-i").is(event.target)) {
-            $('.menu-container').removeClass("open");
+    $(document).click(function (event) {
+        if (
+            !$(".menu-container").is(event.target) &&
+            !$(".menu-icon").is(event.target) &&
+            !$("#menu-i").is(event.target)
+        ) {
+            $(".menu-container").removeClass("open");
         }
-    })
+    });
 
     // click event handler for create project card
     $(".project-card-create").click(function (event) {
@@ -51,8 +130,8 @@ $(document).ready(function () {
     // click event handler for submit button
     $(".submit-button").click(function (event) {
         // prevent the default submit behavior, which is to refresh the page
-        event.preventDefault();
-
+        createProject();
+        fetchProjects();
         // hide the gray overlay and create project box
         $(".overlay, .create-project-popup").fadeOut();
     });
