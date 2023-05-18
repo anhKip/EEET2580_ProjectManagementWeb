@@ -300,19 +300,19 @@ h6 {
     -o-border-radius: 20px;
 }
 
-#id-input:focus {
+#user-input:focus {
     outline: none;
 }
 
-#id-input:focus::placeholder {
+#user-input:focus::placeholder {
     color: transparent;
 }
 
-#id-input:focus::-webkit-input-placeholder {
+#user-input:focus::-webkit-input-placeholder {
     color: transparent;
   }
    
-#id-input:focus:-ms-input-placeholder {
+#user-input:focus:-ms-input-placeholder {
     color: transparent;
 }
 

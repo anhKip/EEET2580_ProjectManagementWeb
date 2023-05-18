@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", function() {
           password: pass1.value
         };
   
-        console.log(inputs);
-  
         fetch(url, {
           method: "POST",
           headers: {
@@ -45,8 +43,18 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(json => {
-          console.log(json.subErrors[0].message);
-          // window.location.assign('../Login/login.html');
+          // console.log(json.message);
+          document.getElementById("invalid-email").style.display = 'none';
+          document.getElementById("invalid-username").style.display = 'none';
+          if (json.message == 'User registered successfully.') {
+            window.location.assign('../Login/login.html');
+          }
+          else if (json.message == "Email is already taken.") {
+            document.getElementById("invalid-email").style.display = 'block';
+          }
+          else if (json.message == "Username is already taken.") {
+            document.getElementById("invalid-username").style.display = 'block';
+          }
         })
         .catch(e => {
           console.log(e);
@@ -54,3 +62,15 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   });
+
+var username_check = document.getElementById("username")
+username_check.addEventListener("change", function() {
+  if (!username_check.checkValidity()) {
+    document.querySelector("#invalid-username").style.display = "block";
+    document.querySelector("#invalid-username").innerHTML = "Username must contain 3 to 32 characters";
+  }
+  else {
+    document.querySelector("#invalid-username").style.display = "none";
+    document.querySelector("#invalid-username").innerHTML = "";
+  }
+})

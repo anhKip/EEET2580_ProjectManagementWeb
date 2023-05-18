@@ -36,9 +36,12 @@
                         <label class="form-label" for="email">
                             <body1>E-mail</body1>
                         </label>
-                        <input class="form-control" type="email" id="email" required />
+                        <input class="form-control" type="email" id="email" pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" required />
                         <div class="invalid-feedback">
                             Please enter your E-mail
+                        </div>
+                        <div class="invalid-feedback" id="invalid-email">
+                            Email is already taken
                         </div>
                     </div>
 
@@ -46,9 +49,12 @@
                         <label class="form-label" for="email">
                             <body1>Username</body1>
                         </label>
-                        <input class="form-control" type="username" id="username" required />
+                        <input class="form-control" type="username" id="username" minlength="3" maxlength="32" required/>
                         <div class="invalid-feedback">
                             Please enter your username
+                        </div>
+                        <div class="invalid-feedback" id="invalid-username">
+                            Username is already taken
                         </div>
                     </div>
 
@@ -56,7 +62,7 @@
                         <label class="form-label" for="password">
                             <body1>Password</body1>
                         </label>
-                        <input class="form-control" type="password" id="password" required />
+                        <input class="form-control" type="password" id="password" minlength="8" maxlength="64" required />
                         <div class="invalid-feedback">
                             Please enter your password
                         </div>
@@ -66,7 +72,7 @@
                         <label class="form-label" for="password">
                             <body1>Confirm password</body1>
                         </label>
-                        <input class="form-control" type="password" id="password-confirm" required />
+                        <input class="form-control" type="password" id="password-confirm" minlength="8" maxlength="64" required />
                         <div class="invalid-feedback">
                             Please confirm your password
                         </div>

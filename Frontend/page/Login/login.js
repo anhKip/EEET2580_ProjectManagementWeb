@@ -42,5 +42,9 @@ function login(event) {
     })
     .catch((e) => {
         console.log(e);
+        document.getElementById("invalid-username").style.display = 'block';
+        document.getElementById("invalid-password").style.display = 'block';
+        document.getElementById("invalid-username").innerHTML = "Incorrect username";
+        document.getElementById("invalid-password").innerHTML = "Incorrect password";
     });
 };

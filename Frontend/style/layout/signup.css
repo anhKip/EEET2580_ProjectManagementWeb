@@ -76,3 +76,7 @@ body {
 #password-error {
     display: none;
 }
+
+#invalid-email, #invalid-username {
+    display: none;
+}
