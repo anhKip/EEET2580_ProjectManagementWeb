@@ -1,9 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.auth.record.SignInRequest;
-import com.example.backend.auth.record.SignInResponse;
-import com.example.backend.auth.record.SignUpRequest;
-import com.example.backend.auth.record.SignUpResponse;
+import com.example.backend.auth.record.*;
 import com.example.backend.auth.token.Token;
 import com.example.backend.auth.token.TokenRepository;
 import com.example.backend.auth.token.TokenService;
@@ -18,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +23,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-@RequestMapping("/api/auth")
+@RequestMapping(value = "/api/auth")
 public class AuthController {
     @Autowired
     private UserAccountRepository userAccountRepository;
@@ -44,7 +42,7 @@ public class AuthController {
     @Value("${application.security.jwt.refreshTokenMin}")
     private int refreshTokenMin;
 
-    @PostMapping("/signin")
+    @PostMapping(value = "/signin")
     public ResponseEntity<SignInResponse> authenticateUser(@RequestBody @Valid SignInRequest signInRecord) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 signInRecord.username(), signInRecord.password()));
@@ -67,7 +65,7 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup")
     public ResponseEntity<SignUpResponse> registerUser(@RequestBody @Valid SignUpRequest signUpRecord) {
         // check if username already exists in DB
         if (userAccountRepository.existsByUsername(signUpRecord.username())) {
@@ -89,5 +87,13 @@ public class AuthController {
         userAccountRepository.save(userAccount);
 
         return new ResponseEntity<>(new SignUpResponse("User registered successfully.", userAccount.getId()), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/change-password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        // get user
+        UserAccount user = userAccountRepository.findById(changePasswordRequest.id()).orElseThrow(() ->
+                new UsernameNotFoundException("User not found"));
+        return null;
     }
 }
