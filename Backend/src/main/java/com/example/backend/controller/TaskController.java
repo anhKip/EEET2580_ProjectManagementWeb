@@ -2,7 +2,6 @@ package com.example.backend.controller;
 
 import com.example.backend.model.Task;
 import com.example.backend.record.CreateTaskRequest;
-import com.example.backend.service.CrudService;
 import com.example.backend.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @Operation(description = "Create a task")
+    @Operation(description = "Create a task. Note: The JSON date format is yyyy-MM-dd HH:mm:ss")
     @PostMapping(value = "/{projectId}", consumes = "application/json")
     public ResponseEntity<String> create(@PathVariable Long projectId, @RequestBody CreateTaskRequest createTaskRequest) {
         return new ResponseEntity<>(taskService.create(projectId, createTaskRequest), HttpStatus.OK);
@@ -29,9 +28,9 @@ public class TaskController {
     }
 
     @Operation(description = "Update a task")
-    @PutMapping(value = "/", consumes = "application/json")
-    public ResponseEntity<Task> update(@RequestBody Task task) {
-        return new ResponseEntity<>(taskService.update(task), HttpStatus.OK);
+    @PutMapping(value = "/{taskId}", consumes = "application/json")
+    public ResponseEntity<String> update(@PathVariable Long taskId, @RequestBody CreateTaskRequest createTaskRequest) {
+        return new ResponseEntity<>(taskService.update(taskId, createTaskRequest), HttpStatus.OK);
     }
 
     @Operation(description = "Delete a task by id")
@@ -39,5 +38,11 @@ public class TaskController {
     public ResponseEntity<String> delete(Long id) {
         taskService.delete(id);
         return new ResponseEntity<>("Done", HttpStatus.OK);
+    }
+
+    @Operation(description = "Assign a task to user")
+    @PostMapping(value = "/{taskId}/assign/{memberId}")
+    public ResponseEntity<String> assignTask(@PathVariable Long taskId, @PathVariable Long memberId) {
+        return new ResponseEntity<>(taskService.assignTask(taskId, memberId), HttpStatus.OK);
     }
 }

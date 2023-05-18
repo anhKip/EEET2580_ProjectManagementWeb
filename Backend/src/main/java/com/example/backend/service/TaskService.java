@@ -1,8 +1,10 @@
 package com.example.backend.service;
 
 import com.example.backend.model.Project;
+import com.example.backend.model.ProjectMember;
 import com.example.backend.model.Task;
 import com.example.backend.record.CreateTaskRequest;
+import com.example.backend.repository.ProjectMemberRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,11 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TaskService implements CrudService<Task>{
+public class TaskService implements CrudService<Task> {
     @Autowired
     private TaskRepository taskRepository;
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    private ProjectMemberRepository projectMemberRepository;
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
@@ -65,5 +69,27 @@ public class TaskService implements CrudService<Task>{
                 .build();
         taskRepository.save(task);
         return "Task has been created";
+    }
+
+    public String update(Long taskId, CreateTaskRequest createTaskRequest) {
+        Task taskDb = taskRepository.findById(taskId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find project with id " + taskId)
+        );
+        taskDb.setName(createTaskRequest.name());
+        taskDb.setDeadline(createTaskRequest.deadline());
+        taskDb.setDetail(createTaskRequest.detail());
+        taskDb.setPriority(createTaskRequest.priority());
+        taskRepository.save(taskDb);
+        return "Task has been updated";
+    }
+
+    public String assignTask(Long taskId, Long memberId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find project with id " + taskId));
+        ProjectMember projectMember = projectMemberRepository.findById(memberId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find member with id " + memberId));
+        task.setAssignedTo(projectMember);
+
+        return "Task has been assigned";
     }
 }
