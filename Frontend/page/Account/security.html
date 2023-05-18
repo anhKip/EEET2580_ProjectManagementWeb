@@ -104,15 +104,20 @@
 
             <form>
               <div class="input-container">
-                <div class="inputs">
+                <div class="form-group was-validated inputs">
                   <label> Add recover e-mail </label>
-                  <input type="text" id="email-input" />
+                  <input class="form-control" type="text" id="email-input" />
 
                   <label> Change password </label>
-                  <input type="password" id="password-input" />
+                  <input class="form-control" type="password" id="change-password-input" minlength="8" maxlength="64" required/>
 
                   <label> Confirm changed password </label>
-                  <input type="password" id="confirm-password-input" />
+                  <input class="form-control" type="password" id="confirm-change-password-input" minlength="8" maxlength="64" required/>
+
+                  <div class="invalid-feedback">
+                    Passwords do not match
+                  </div>
+                  
                   <button type="submit" id="save-btn">Save</button>
                 </div>
               </div>

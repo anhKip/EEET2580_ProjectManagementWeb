@@ -1,6 +1,5 @@
 import { getIdCookie, reLog } from "../../functions/authentications.js";
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
-import { getIdCookie, reLog } from "../../functions/authentications.js";
 
 addWrapper()
 pageLoader()
@@ -32,39 +31,61 @@ $(document).ready(function () {
     });
 });
 
+const password = document.querySelector("#change-password-input");
+const password_confirm = document.querySelector("#confirm-change-password-input");
+
 document.getElementById("save-btn").addEventListener("click", changePassword)
 
 function changePassword(event) {
     event.preventDefault();
 
-    const url = "http://localhost:8080/api/auth/change-password"
-
-    const password = document.querySelector("#password-input").value;
-
-    let data = {
-        'id': parseInt(userId),
-        'newPassword': password,
+    if (password_confirm.value == password.value) {
+        const url = "http://localhost:8080/api/auth/change-password"
+    
+        let data = {
+            'id': parseInt(userId),
+            'newPassword': password.value,
+        }
+    
+        // console.log(data);
+        console.log(JSON.stringify(data));
+        // console.log(typeof JSON.stringify(data));
+    
+        fetch (url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        })
+        .then((response) => response.json())
+        .then((json) => {
+            console.log(json);
+        })
+        .catch((e) => {
+            console.log(e)
+        })
     }
 
-    console.log(data);
-    console.log(JSON.stringify(data));
-    console.log(typeof JSON.stringify(data));
+    else {
+        document.querySelector(".invalid-feedback").style.display = 'block';
+    }
 
-    fetch (url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
-    })
-    .then((response) => response.json())
-    .then((json) => {
-        console.log(json);
-    })
-    .catch((e) => {
-        console.log(e)
-    })
+    password.value = ""
+    password_confirm.value = ""
+
 }
+
+password.addEventListener("change", function() {
+    if (!password.checkValidity()) {
+        document.querySelector(".invalid-feedback").style.display = "block";
+        document.querySelector(".invalid-feedback").innerHTML = "Password must contain at least 8 characters";
+      }
+      else {
+        document.querySelector(".invalid-feedback").style.display = "none";
+        document.querySelector(".invalid-feedback").innerHTML = "";
+      }
+})
 
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
