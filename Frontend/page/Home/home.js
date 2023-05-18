@@ -39,9 +39,8 @@ function fetchProjects() {
 function renderProjectCards(projects) {
     const projectGrid = document.querySelector(".project-grid");
 
-    // Iterate over the projects and create project cards
     projects.forEach((project) => {
-        const projectName = project.name; // Get the project name
+        const projectName = project.name;
 
         const projectCard = document.createElement("a");
         projectCard.href = `http://127.0.0.1:5500/Frontend/page/Dashboard/dashboard.html?pId=${project.id}`;
@@ -85,7 +84,6 @@ function createProject() {
     })
         .then((response) => response.json())
         .then((data) => {
-            // Handle the response data as needed
             console.log("Project created:", data);
         })
         .catch((error) => {
