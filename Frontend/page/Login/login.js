@@ -1,83 +1,46 @@
-/**
- * 
- * @param {string} cname Token name
- * @param {string} cvalue Token value
- * @param {float} expire Expiration Time in Hour
- */
-function setTokenCookies(cname, cvalue, expire) {
-    const d = new Date();
-    d.setTime(d.getTime() + (expire*60*60*1000));
-    let expires = " expires="+ d.toUTCString();
-    document.cookie = cname + '=' + cvalue + ';' + expires + '; path=/' + '; SameSite=None' + '; Secure';
-    // document.cookie = cname + '=' + cvalue + ';' + expires + '; path=/' + '; SameSite=None' + '; Secure' + '; HttpOnly';
-}
+import {setIdCookies} from "../../functions/authentications.js";
+import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 
-function setIdToken(cname, cvalue, expire) {
-    const d = new Date();
-    d.setTime(d.getTime() + (expire*60*60*1000));
-    let expires = " expires="+ d.toUTCString();
-    document.cookie = cname + '=' + cvalue + ';' + expires + '; path=/' + '; SameSite=None' + '; Secure';
-}
+addWrapper()
 
-function getTokenCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
+pageLoader()
 
-// setTokenCookies('name2', 'Long', 0.05)
-// console.log(getTokenCookie("name2"));
+const login_btn = document.querySelector("#login-btn");
 
-document.querySelector("#login-btn").addEventListener("click", async function() {
-    console.log("button pressed");
+login_btn.addEventListener("click", login)
 
-    let url = 'http://localhost:8080/api/auth/signin'
+function login(event) {
 
-    const username = await document.querySelector('#username').value
-    const password = await document.querySelector('#password').value
+    event.preventDefault();
+
+    let url = "http://localhost:8080/api/auth/signin";
+
+    const username = document.querySelector("#username").value;
+    const password = document.querySelector("#password").value;
 
     let inputs = {
         username: username,
-        password: password
-    }
+        password: password,
+    };
 
-    console.log(inputs)
-    console.log(JSON.stringify(inputs))
+    console.log(JSON.stringify(inputs));
 
-    fetch (url, {
+    fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(inputs)
+        body: JSON.stringify(inputs),
     })
-    .then(response => response.json())
-    .then(json => {
-        console.log(json);
-        // console.log('userId is' + json.userId);
-        if (json.userId >= 0) {
-            console.log("Log in successfully")
-            // setTokenCookies('accessToken', json.accessToken, 0.1)
-            // setTokenCookies('refreshToken', json.refreshToken, 0.1)
-            // window.location.assign('../Home/home.html')
-        }
-        else {
-            console.log("Log in fails")
+    .then((response) => response.json())
+    .then((json) => {
+        if (json.userId > 0) {
+            setIdCookies('userId', json.userId, 1); // 1-hour long cookie
+            window.location.assign('../Home/home.html');
+            login_btn.removeEventListener("click", login);
         }
     })
-    .catch(e => {
-        console.log(e)
-    })
-})
-
-
+    .catch((e) => {
+        console.log(e);
+    });
+};

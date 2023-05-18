@@ -1,3 +1,8 @@
+import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
+
+addWrapper()
+pageLoader()
+
 $(document).ready(function () {
     $(".menu-icon").click(function () {
         $(".hide-menu, .menu-container").toggleClass("open");
@@ -38,6 +43,18 @@ $(document).ready(function () {
                     assignedToHtml +
                     "</div>",
             };
+        },
+        editable: true,
+        droppable: true,
+        drop: function (info) {
+            // Handle dropped events
+            console.log("Dropped event:", info.event);
+        },
+        eventDrop: function (info) {
+            // Update the due date of the task
+            const taskId = info.event.id;
+            const newDueDate = info.event.start;
+            updateTaskDueDate(taskId, newDueDate);
         },
     });
 
@@ -95,4 +112,9 @@ function convertTaskToEvent(task) {
         color: color,
         assignedTo: task.assignedTo,
     };
+}
+
+function updateTaskDueDate(taskId, newDueDate) {
+    console.log("Task ID:", taskId);
+    console.log("New Due Date:", newDueDate);
 }

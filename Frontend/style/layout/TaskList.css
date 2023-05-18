@@ -128,7 +128,6 @@
 .button-container {
     display: flex;
     margin-top: 1rem;
-    margin-bottom: 1rem;
 }
 
 .sort-btn {
@@ -136,15 +135,18 @@
 }
 
 .btn {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    font-size: 1.5rem;
     padding: 0.5rem 1.5rem;
     background-color: #8fbfbb;
     border: none;
-    color: black;
+    color: white;
+    color: white;
 }
 
 .btn-primary:hover {
-    background-color: #b0c7c4 !important;
+    background-color: #fad4a6 !important;
+    background-color: #fad4a6 !important;
     color: #fff !important;
 }
 
@@ -152,6 +154,11 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 35px;
+}
+
+.btn-primary {
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 #cancelBtn {
@@ -164,7 +171,7 @@
     padding-left: 50px;
 }
 
-#taskList,
+#taskList, #onGoingTaskList,
 #completedTaskList {
     border: 10px solid #d4d7c6;
     padding: 10px;
@@ -194,8 +201,12 @@
     font-size: 14px;
 }
 
-.list-group-item .take-task-btn {
-    margin-right: 10px;
+.btn-container {
+    margin-right: 2rem;
+}
+
+.btn:hover {
+    background-color: #fad4a6;
 }
 
 .add-task-popup {
@@ -239,6 +250,7 @@
 .add-task-popup input {
     display: block;
     width: 100%;
+    font-size: 1.5rem;
     padding: 8px;
     margin-bottom: 20px;
     border: none;
@@ -256,7 +268,7 @@
     box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.1);
     top: 50%;
     left: 50%;
-    width: 300px;
+    width: 370px;
     transform: translate(-50%, -50%);
     background-color: #d4d7c6;
     padding: 20px;
@@ -289,6 +301,7 @@
 
 .edit-task-popup input {
     display: block;
+    font-size: 1.5rem;
     width: 100%;
     padding: 8px;
     margin-bottom: 20px;
@@ -313,4 +326,26 @@
 /* hide the overlay and popup by default */
 .overlay {
     display: none;
+}
+
+.dropdown-menu {
+    font-size: 1.2rem;
+}
+
+.btn.show {
+    background-color: #fad4a6;
+}
+
+.form-control {
+    font-size: 1.5rem;
+}
+
+#editPrioritySelect {
+    font-size: 1.5rem;
+}
+
+a {
+    color: #8fbfbb;
+    text-decoration: none;
+    font-size: 1.5rem;
 }

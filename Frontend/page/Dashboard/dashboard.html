@@ -15,35 +15,13 @@
     <link rel="stylesheet" href="./../../style/layout/dashboard.css" />
     <link rel="stylesheet" href="./../../style/global.css" />
     <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script defer src="./dashboard.js"></script>
+    <script type="module" defer src="./dashboard.js"></script>
     <title>Document</title>
 </head>
 
 <body>
-    <div class="topnav">
-        <a class="menu-icon" href="#"><i class="fa-solid fa-bars"></i></a>
-        <div class="menu-container">
-            <a href="./../Dashboard/dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
-            <a href="./../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i> Task</a>
-            <a href="./../CalendarView/calendar.html"><i class="fa-solid fa-list"></i> View</a>
-            <a href="#"><i class="fa-regular fa-file-lines"></i> File management</a>
-            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
-        </div>
-        <div class="hide-menu">
-            <a href="./../Dashboard/dashboard.html"><i class="fa-solid fa-house"></i></a>
-            <a href="./../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i></a>
-            <a href="./../CalendarView/calendar.html"><i class="fa-solid fa-list"></i></a>
-            <a href="#"><i class="fa-regular fa-file-lines"></i></a>
-            <a href="#"><i class="fa-solid fa-gear"></i></a>
-        </div>
-        <div class="right-icons">
-            <a href="#"><i class="fa-regular fa-bell"></i></a>
-            <a href="#"><i class="fa-solid fa-rotate"></i></a>
-            <a href="#"><i class="fa-regular fa-user"></i></a>
-        </div>
-    </div>
+    <div class="topnav" id="top_nav_bar"></div>
         <div class="dashboard-container">
-            <h3>PROJECT NAME</h3>
             <div class="container">
                 <div class="button-container">
                     <button class="button-leaderboard">Leaderboard</button>
@@ -155,7 +133,6 @@
                     </div>
                 </div>
             </div>
-            
         </div>
     </div>
 </body>

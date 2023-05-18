@@ -12,7 +12,7 @@
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
     <script defer src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script defer src="./TaskList.js"></script>
+    <script type="module" defer src="./TaskList.js"></script>
     <script src="https://kit.fontawesome.com/5f92c9aea9.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./../../style/layout/TaskList.css" />
     <link rel="stylesheet" href="./../../style/global.css" />
@@ -26,20 +26,20 @@
             <a href="./../Dashboard/dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
             <a href="./../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i> Task</a>
             <a href="./../CalendarView/calendar.html"><i class="fa-solid fa-list"></i> View</a>
-            <a href="#"><i class="fa-regular fa-file-lines"></i> File management</a>
-            <a href="#"><i class="fa-solid fa-gear"></i> Settings</a>
+            <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i> File management</a>
+            <a href="../Setting/setting.html"><i class="fa-solid fa-gear"></i> Settings</a>
         </div>
         <div class="hide-menu">
             <a href="./../Dashboard/dashboard.html"><i class="fa-solid fa-house"></i></a>
             <a href="./../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i></a>
             <a href="./../CalendarView/calendar.html"><i class="fa-solid fa-list"></i></a>
-            <a href="#"><i class="fa-regular fa-file-lines"></i></a>
-            <a href="#"><i class="fa-solid fa-gear"></i></a>
+            <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i></a>
+            <a href="../Setting/setting.html"><i class="fa-solid fa-gear"></i></a>
         </div>
         <div class="right-icons">
-            <a href="#"><i class="fa-regular fa-bell"></i></a>
+            <a href="../Account/notification.html"><i class="fa-regular fa-bell"></i></a>
             <a href="#"><i class="fa-solid fa-rotate"></i></a>
-            <a href="#"><i class="fa-regular fa-user"></i></a>
+            <a href="../Account/profile.html"><i class="fa-regular fa-user"></i></a>
         </div>
     </div>
     <div class="container">
@@ -81,7 +81,7 @@
                             <button type="button" class="btn btn-primary mb-2" id="addTaskBtn">
                                 Add
                             </button>
-                            <button type="button" class="btn btn-primary mb-2" id="cancelBtn">
+                            <button type="button" class="btn btn-secondary mb-2" id="cancelBtn">
                                 Cancel
                             </button>
                         </div>
@@ -104,9 +104,11 @@
 
                     <label for="editDueDateInput">Due Date:</label>
                     <input type="date" id="editDueDateInput" name="editDueDateInput">
-
+                    <div class="popupBtn">
                     <button type="button" id="editTaskSubmitBtn" class="btn btn-primary">Update Task</button>
                     <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancel</button>
+                    <button type="button" id="deleteTaskBtn" class="btn btn-primary">Delete Task</button>
+                </div>
                 </form>
             </div>
         </div>
@@ -119,6 +121,13 @@
                     <h5 class="list-title">Task List</h5>
                 </div>
                 <ul class="list-group" id="taskList"></ul>
+            </div>
+
+            <div class="list-container">
+                <div class="heading-container">
+                    <h5 class="list-title">On-going Tasks</h5>
+                </div>
+                <ul class="list-group" id="onGoingTaskList"></ul>
             </div>
 
             <div class="list-container">

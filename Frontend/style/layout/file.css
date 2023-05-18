@@ -147,27 +147,30 @@
 }
 
 .buttons-flex label {
-    margin-right: 10px;
-    border: 0;
-    background-color: rgb(233, 242, 241);
-    padding: 10px 15px;
-    border-radius: 20px;
-    font-size: medium;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
+    background-color: #8fbfbb;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    padding: 1rem 2rem;
+    align-self: center;
+    margin-top: 1rem;
+}
+
+.buttons-flex label:last-child {
+    margin-left: 1rem;
 }
 
 .buttons-flex label:hover {
-    background-color: #FBE7AB;
+    background-color: #fad4a6;
     cursor: pointer;
 }
 
 table thead {
     text-align: left;
-    font-family: "Montserrat";
-    font-style: normal;
     font-weight: 500;
     font-size: 20px;
     line-height: 24px;

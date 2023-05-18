@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.Task;
+import com.example.backend.record.CreateTaskRequest;
 import com.example.backend.service.CrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
