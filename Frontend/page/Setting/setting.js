@@ -7,6 +7,8 @@ const queryString = window.location.search;
 const urlPrarams = new URLSearchParams(queryString);
 const pId = urlPrarams.get("pId");
 
+getContributors();
+
 $(document).ready(function () {
     $(".menu-icon").click(function () {
         $(".menu-container, .hide-menu").toggleClass("open");
@@ -55,8 +57,8 @@ $(document).ready(function () {
     });
 
     $("#confirm-button").click(function (event) {
-        event.preventDefault();
-
+        addContributors();
+        location.reload();
         $(".overlay, .add-form").fadeOut();
     });
 
@@ -80,6 +82,40 @@ $(document).ready(function () {
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
+
+function getContributors() {
+    const url = `http://localhost:8080/api/project/${pId}/members`;
+
+    fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => response.json())
+        .then((contributors) => {
+            const contributorsList = document.querySelector(".contributors");
+
+            // Clear previous list items
+            contributorsList.innerHTML = "";
+
+            // Add each contributor to the list
+            contributors.forEach((contributor) => {
+                const listItem = document.createElement("li");
+                listItem.classList.add("contributor");
+                listItem.innerHTML = `
+                    <h5>${contributor.username}</h5>
+                    <button type="button" class="remove-btn">Remove</button>
+                `;
+
+                // Append the list item to the contributors list
+                contributorsList.appendChild(listItem);
+            });
+        })
+        .catch((error) => {
+            console.error("Error getting contributors", error);
+        });
+}
 
 function getProjectName() {
 
@@ -111,3 +147,45 @@ function getProjectName() {
 
 // Call the getProjectName function
 getProjectName();
+
+function addContributors() {
+    const fetch_url = `http://localhost:8080/api/project/${pId}/add-member`;
+    const name = document.getElementById("user-input").value;
+
+    const member = {
+        username: name
+    };
+
+    fetch(fetch_url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(member),
+    })
+        .then((response) => response.json())
+        .then((contributors) => {
+            const contributorsList = document.querySelector(".contributors");
+
+            // Clear previous list items
+            contributorsList.innerHTML = "";
+
+            // Add each contributor to the list
+            contributors.forEach((contributor) => {
+                const listItem = document.createElement("li");
+                listItem.classList.add("contributor");
+                listItem.innerHTML = `
+                <h5>${contributor.username}</h5>
+                <button type="button" class="remove-btn"> Remove </button>
+                `;
+
+                // Append the list item to the contributors list
+                contributorsList.appendChild(listItem);
+                getContributors();
+            });
+        })
+        .catch((error) => {
+            console.error("Error getting user", error);
+        });
+}
+
