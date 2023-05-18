@@ -45,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(json => {
-          console.log(json.message);
-          window.location.assign('../Login/login.html');
+          console.log(json.subErrors[0].message);
+          // window.location.assign('../Login/login.html');
         })
         .catch(e => {
           console.log(e);
