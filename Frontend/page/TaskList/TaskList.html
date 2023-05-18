@@ -74,6 +74,9 @@
                             <option value="3">Low Priority</option>
                         </select>
 
+                        <label for="taskDetailsInput">Task Details:</label>
+                        <textarea class="form-control mb-2" id="taskDetailsInput" placeholder="Task Details"></textarea>
+
                         <label for="dueDateInput">Due date:</label>
                         <input type="datetime-local" class="form-control mb-2" id="dueDateInput" />
 
@@ -102,18 +105,31 @@
                         <option value="3">Low</option>
                     </select>
 
+                    <label for="editTaskDetailsInput">Task Details:</label>
+                    <input type="text" id="editTaskDetailsInput" name="editTaskDetailsInput">
+
                     <label for="editDueDateInput">Due Date:</label>
                     <input type="date" id="editDueDateInput" name="editDueDateInput">
                     <div class="popupBtn">
-                    <button type="button" id="editTaskSubmitBtn" class="btn btn-primary">Update Task</button>
-                    <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancel</button>
-                    <button type="button" id="deleteTaskBtn" class="btn btn-primary">Delete Task</button>
-                </div>
+                        <button type="button" id="editTaskSubmitBtn" class="btn btn-primary">Update Task</button>
+                        <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancel</button>
+                        <button type="button" id="deleteTaskBtn" class="btn btn-primary">Delete Task</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
     <hr />
+    <div class="task-details-popup">
+        <h6 class="mb-1" id="detailsTaskName"></h6>
+        <div class="details-content">
+            <medium>Priority: <span id="detailsTaskPriority"></span></medium><br>
+            <label for="detailsTaskDetails" id="details-label">Details:</label>
+            <p id="detailsTaskDetails"></p>
+            <medium>Due Date: <span id="detailsTaskDueDate"></span></medium>
+        </div>
+        <button type="button" id="closeDetailsBtn" class="btn btn-secondary popupBtn">Close</button>
+    </div>
     <div class="list-box">
         <div class="m-auto w-75">
             <div class="list-container">

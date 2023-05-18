@@ -1,7 +1,7 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 
-addWrapper()
-pageLoader()
+addWrapper();
+pageLoader();
 
 $(document).ready(function () {
     $(".menu-icon").click(function () {
@@ -26,6 +26,7 @@ function addTask() {
     const taskName = document.querySelector("#taskNameInput").value;
     const priority = document.querySelector("#prioritySelect").value;
     let dueDate = document.querySelector("#dueDateInput").value;
+    const taskDetails = document.querySelector("#taskDetailsInput").value;
 
     if (taskName == null || taskName == "") {
         window.alert("Empty task name is not allowed!");
@@ -40,6 +41,7 @@ function addTask() {
             name: taskName,
             priority: priority,
             dueDate: new Date(dueDate),
+            details: taskDetails,
         };
 
         // add new task to array
@@ -51,9 +53,9 @@ function addTask() {
         // Clear input fields
         taskNameInput.value = "";
         dueDateInput.value = "";
+        taskDetailsInput.value = "";
     }
 }
-
 
 // function to sort tasks
 function sortTasks(sortBy) {
@@ -73,15 +75,15 @@ function sortTasks(sortBy) {
 }
 
 function updateTaskList() {
-    // get task list element
+    // Get task list element
     const taskList = document.querySelector("#taskList");
 
-    // clear task list
+    // Clear task list
     taskList.innerHTML = "";
 
-    // add each task to list
+    // Add each task to the list
     tasks.forEach((task, index) => {
-        // create task list item
+        // Create task list item
         const taskItem = document.createElement("li");
         taskItem.classList.add("list-group-item");
         taskItem.innerHTML = `
@@ -104,23 +106,36 @@ function updateTaskList() {
         </div>
       `;
 
-        // get all edit icons
-        const editIcons = taskItem.querySelectorAll(".edit-task-icon");
-        // add event listener to each edit icon
-        editIcons.forEach((editIcon) => {
-            editIcon.addEventListener("click", () => {
-                // show the gray overlay
-                $(".overlay").fadeIn();
-                // open edit popup
-                openEditPopup(task, index);
-            });
+        // Get edit icon element
+        const editIcon = taskItem.querySelector(`#edit-${index}`);
+
+        // Add event listener to edit icon
+        editIcon.addEventListener("click", (event) => {
+            event.stopPropagation();
+            openEditPopup(task, index);
         });
 
-        // add task list item to task list
+        // Add event listener to open task details
+        taskItem.addEventListener("click", (event) => {
+            const clickedElement = event.target;
+            const takeTaskBtn = taskItem.querySelector(".take-task-btn");
+            const completeTaskBtn =
+                taskItem.querySelector(".complete-task-btn");
+
+            // Check if the clicked element is not "Take Task" or "Complete Task" button
+            if (
+                clickedElement !== takeTaskBtn &&
+                clickedElement !== completeTaskBtn
+            ) {
+                openTaskDetails(task);
+            }
+        });
+
+        // Add task item to task list
         taskList.appendChild(taskItem);
     });
 
-    // attach click event listeners to take task buttons
+    // Attach click event listeners to take task buttons
     const takeTaskBtns = document.querySelectorAll(".take-task-btn");
     takeTaskBtns.forEach((btn) => {
         btn.addEventListener("click", takeTask);
@@ -142,15 +157,15 @@ function formatDueDate(dueDate) {
 }
 
 function updateOnGoingTaskList() {
-    // get task list element
+    // Get on-going task list element
     const onGoingTaskList = document.querySelector("#onGoingTaskList");
 
-    // clear task list
+    // Clear task list
     onGoingTaskList.innerHTML = "";
 
-    // add each task to list
+    // Add each task to the list
     onGoingTasks.forEach((task, index) => {
-        // create task list item
+        // Create task list item
         const taskItem = document.createElement("li");
         taskItem.classList.add("list-group-item");
         taskItem.innerHTML = `
@@ -171,11 +186,23 @@ function updateOnGoingTaskList() {
         </div>
       `;
 
-        // add task list item to task list
+        // Add event listener to open task details
+        taskItem.addEventListener("click", (event) => {
+            const clickedElement = event.target;
+            const completeTaskBtn =
+                taskItem.querySelector(".complete-task-btn");
+
+            // Check if the clicked element is not "Complete Task" button
+            if (clickedElement !== completeTaskBtn) {
+                openTaskDetails(task);
+            }
+        });
+
+        // Add task item to on-going task list
         onGoingTaskList.appendChild(taskItem);
     });
 
-    // attach click event listeners to take task buttons
+    // Attach click event listeners to complete task buttons
     const completeTaskBtns = document.querySelectorAll(".complete-task-btn");
     completeTaskBtns.forEach((btn) => {
         btn.addEventListener("click", completeTask);
@@ -183,15 +210,15 @@ function updateOnGoingTaskList() {
 }
 
 function updateCompletedTaskList() {
-    // get completed task list element
+    // Get completed task list element
     const completedTaskList = document.querySelector("#completedTaskList");
 
-    // clear completed task list
+    // Clear completed task list
     completedTaskList.innerHTML = "";
 
-    // add each completed task to list
+    // Add each completed task to the list
     completedTasks.forEach((task) => {
-        // create completed task list item
+        // Create completed task list item
         const taskItem = document.createElement("li");
         taskItem.classList.add("list-group-item");
         taskItem.innerHTML = `
@@ -209,7 +236,13 @@ function updateCompletedTaskList() {
         </div>
       `;
 
-        // add completed task list item to completed task list
+        // Add event listener to open task details
+        taskItem.addEventListener("click", (event) => {
+            const clickedElement = event.target;
+            openTaskDetails(task);
+        });
+
+        // Add task item to completed task list
         completedTaskList.appendChild(taskItem);
     });
 }
@@ -277,7 +310,7 @@ $(document).ready(function () {
     });
 
     // click event handler for close button and overlay
-    $(".overlay, #cancelBtn").click(function () {
+    $("#cancelBtn").click(function () {
         // hide the gray overlay and create project box
         $(".overlay, .add-task-popup").fadeOut();
     });
@@ -294,24 +327,22 @@ function openEditPopup(task, index) {
     const taskNameInput = document.querySelector("#editTaskNameInput");
     const prioritySelect = document.querySelector("#editPrioritySelect");
     const dueDateInput = document.querySelector("#editDueDateInput");
+    const taskDetailsInput = document.querySelector("#editTaskDetailsInput");
     const deleteTaskBtn = document.querySelector("#deleteTaskBtn");
 
     // fill in input fields with task information
     taskNameInput.value = taskObj.name;
     prioritySelect.value = taskObj.priority;
+    taskDetailsInput.value = taskObj.details;
     dueDateInput.value = taskObj.dueDate.toISOString().substring(0, 10);
 
     // store taskObj and index as properties of the editPopup element
     editPopup.taskObj = taskObj;
     editPopup.index = index;
 
-    // show edit popup
+    // show edit popup and overlay
     editPopup.style.display = "block";
-
-    // add event listener to prevent the edit popup from closing when clicking on any of its child elements
-    editPopup.addEventListener("click", (event) => {
-        event.stopPropagation();
-    });
+    document.querySelector(".overlay").style.display = "block";
 
     // add event listener to delete button
     deleteTaskBtn.addEventListener("click", () => {
@@ -331,7 +362,6 @@ function deleteTask(index) {
     updateTaskList();
 }
 
-
 // get edit popup elements
 const editPopup = document.querySelector(".edit-task-popup");
 const updateBtn = document.querySelector("#editTaskSubmitBtn");
@@ -347,11 +377,13 @@ updateBtn.addEventListener("click", () => {
     const taskName = document.querySelector("#editTaskNameInput").value;
     const priority = document.querySelector("#editPrioritySelect").value;
     const dueDate = document.querySelector("#editDueDateInput").value;
+    const details = document.querySelector("#editTaskDetailsInput").value;
 
     // update task object with new values
     taskObj.name = taskName;
     taskObj.priority = priority;
     taskObj.dueDate = new Date(dueDate);
+    taskObj.details = details;
 
     // update task list
     updateTaskList();
@@ -398,4 +430,31 @@ function updateTask(index, taskName, priority, dueDate) {
 
     // close edit popup
     closeEditPopup();
+}
+
+function openTaskDetails(task) {
+    // Get task details popup elements
+    const taskDetailsPopup = document.querySelector(".task-details-popup");
+    const detailsTaskName = document.querySelector("#detailsTaskName");
+    const detailsTaskPriority = document.querySelector("#detailsTaskPriority");
+    const detailsTaskDetails = document.querySelector("#detailsTaskDetails");
+    const detailsTaskDueDate = document.querySelector("#detailsTaskDueDate");
+    const closeDetailsBtn = document.querySelector("#closeDetailsBtn");
+
+    // Populate task details in the popup
+    detailsTaskName.textContent = task.name;
+    detailsTaskPriority.textContent = task.priority;
+    detailsTaskDetails.textContent = task.details;
+    detailsTaskDueDate.textContent = formatDueDate(task.dueDate);
+
+    // Show task details popup and overlay
+    taskDetailsPopup.style.display = "block";
+    document.querySelector(".overlay").style.display = "block";
+
+    // Add event listener to close button
+    closeDetailsBtn.addEventListener("click", () => {
+        // Hide task details popup and overlay
+        taskDetailsPopup.style.display = "none";
+        document.querySelector(".overlay").style.display = "none";
+    });
 }

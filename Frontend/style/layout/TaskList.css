@@ -171,7 +171,8 @@
     padding-left: 50px;
 }
 
-#taskList, #onGoingTaskList,
+#taskList,
+#onGoingTaskList,
 #completedTaskList {
     border: 10px solid #d4d7c6;
     padding: 10px;
@@ -311,6 +312,65 @@
 
 .edit-task-popup label:first-child {
     margin-top: 40px;
+}
+
+.task-details-popup {
+    border-radius: 10px;
+    display: none;
+    position: fixed;
+    box-shadow: 0px 5px 7px rgba(0, 0, 0, 0.1);
+    top: 50%;
+    left: 50%;
+    width: 350px;
+    transform: translate(-50%, -50%);
+    background-color: #d4d7c6;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.task-details-popup h6 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 0px;
+    position: relative;
+}
+
+.task-details-popup h6::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: black;
+}
+
+.details-content {
+    display: block;
+    font-size: 1.65rem;
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+}
+
+#details-label {
+    margin-top: 20px !important;
+    font-size: 1.65rem !important;
+}
+
+#detailsTaskDetails {
+    margin-bottom: 20px !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#closeDetailsBtn {
+    margin-top: 20px !important;
+    float: right;
 }
 
 .overlay {
