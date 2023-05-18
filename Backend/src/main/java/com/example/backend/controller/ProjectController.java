@@ -24,13 +24,7 @@ public class ProjectController {
     public ResponseEntity<String> create(@RequestBody CreateProjectRequest createProjectRequest) {
         System.out.println("Test: inside create project controller");
         System.out.println(createProjectRequest);
-        try{
-            projectService.create(createProjectRequest);
-        } catch (Exception e) {
-            System.out.println(e);
-            return new ResponseEntity("An error has occured.", HttpStatus.BAD_REQUEST);
-        }
-        return ResponseEntity.ok("Project has been created.");
+        return new ResponseEntity<>(projectService.create(createProjectRequest), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")

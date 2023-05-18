@@ -1,5 +1,6 @@
 package com.example.backend.service;
 
+import com.example.backend.model.ProjectMember;
 import com.example.backend.model.UserAccount;
 import com.example.backend.record.GetProjectRespone;
 import com.example.backend.repository.UserAccountRepository;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -60,6 +62,12 @@ public class UserAccountService implements CrudService<UserAccount>, UserDetails
     }
 
     public List<GetProjectRespone> getAllProjects(Long id) {
-
+        UserAccount userAccount = userAccountRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find user account with id " + id));
+        List<GetProjectRespone> projects = new ArrayList<>();
+        for (ProjectMember membership : userAccount.getMemberships()) {
+            projects.add(new GetProjectRespone(membership.getProject().getId(), membership.getProject().getName()));
+        }
+        return projects;
     }
 }

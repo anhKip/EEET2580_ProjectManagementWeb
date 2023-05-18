@@ -4,11 +4,17 @@ import com.example.backend.model.UserAccount;
 import com.example.backend.record.GetProjectRespone;
 import com.example.backend.repository.UserAccountRepository;
 import com.example.backend.service.UserAccountService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,11 +46,9 @@ public class UserAccountController {
         return "Done";
     }
 
+    @Operation(description = "Get all projects that the user has")
     @GetMapping(value = "/{id}/my-projects", produces = "application/json")
     public ResponseEntity<List<GetProjectRespone>> getAllProjects(@PathVariable Long id) {
-        if (userAccountRepository.existsById(id)) {
-            return new ResponseEntity<>(userAccountService.getAllProjects(id), HttpStatus.OK);
-        }
-        return new ResponseEntity<>("An error has occured.", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(userAccountService.getAllProjects(id), HttpStatus.OK);
     }
 }

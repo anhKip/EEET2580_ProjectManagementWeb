@@ -55,7 +55,7 @@ public class ProjectService implements CrudService<Project> {
         projectRepository.deleteById(id);
     }
 
-    public Project create(CreateProjectRequest createProjectRequest) {
+    public String create(CreateProjectRequest createProjectRequest) {
         Project project = new Project();
         project.setName(createProjectRequest.name());
 
@@ -71,7 +71,8 @@ public class ProjectService implements CrudService<Project> {
 
         members.add(member);
         project.setMembers(members);
+        projectRepository.save(project);
 
-        return projectRepository.save(project);
+        return "Project has been created.";
     }
 }
