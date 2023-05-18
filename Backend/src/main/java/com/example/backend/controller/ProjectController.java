@@ -48,9 +48,9 @@ public class ProjectController {
         return "Done";
     }
 
-    @GetMapping(value = "/{id}/members", produces = "application/json")
-    public ResponseEntity<List<GetMemberResponse>> getMembers(@PathVariable Long id) {
-        return new ResponseEntity<>(projectService.getMembers(id), HttpStatus.OK);
+    @GetMapping(value = "/{projectId}/members", produces = "application/json")
+    public ResponseEntity<List<GetMemberResponse>> getMembers(@PathVariable Long projectId) {
+        return new ResponseEntity<>(projectService.getMembers(projectId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/{projectId}/add-member", consumes = "application/json")

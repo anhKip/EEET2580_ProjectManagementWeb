@@ -5,7 +5,9 @@ import jakarta.validation.constraints.Size;
 
 public record GetMemberResponse(
         @NotNull
-        Long id,
+        Long memberId,
+        @NotNull
+        Long userId,
         @NotNull
         String username,
         @NotNull

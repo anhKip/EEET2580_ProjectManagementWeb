@@ -94,7 +94,8 @@ public class AuthController {
         // get user
         UserAccount user = userAccountRepository.findById(changePasswordRequest.id()).orElseThrow(() ->
                 new UsernameNotFoundException("User not found"));
-        user.setPassword(changePasswordRequest.newPassword());
+        user.setPassword(passwordEncoder.encode(changePasswordRequest.newPassword()));
+        userAccountRepository.save(user);
         return new ResponseEntity<>("Password has been changed.", HttpStatus.OK);
     }
 }

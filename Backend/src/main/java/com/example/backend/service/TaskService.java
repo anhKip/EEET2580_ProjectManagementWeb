@@ -1,6 +1,9 @@
 package com.example.backend.service;
 
+import com.example.backend.model.Project;
 import com.example.backend.model.Task;
+import com.example.backend.record.CreateTaskRequest;
+import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,8 @@ import org.springframework.stereotype.Service;
 public class TaskService implements CrudService<Task>{
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
@@ -45,5 +50,19 @@ public class TaskService implements CrudService<Task>{
     @Override
     public void delete(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    public String create(Long projectId, CreateTaskRequest createTaskRequest) {
+        // get project
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find project with id " + projectId));
+        Task task = Task.builder()
+                .name(createTaskRequest.name())
+                .priority(createTaskRequest.priority())
+                .deadline(createTaskRequest.deadline())
+                .build();
+        project.getTasks().add(task);
+        taskRepository.save(task);
+        return "Task has been created";
     }
 }

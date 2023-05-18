@@ -62,13 +62,14 @@ public class ProjectService implements CrudService<Project> {
         project.setName(createProjectRequest.name());
 
         List<ProjectMember> members = new ArrayList<>();
-        ProjectMember member = new ProjectMember();
         UserAccount user = userAccountRepository.findById(createProjectRequest.userId()).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find user with id " + createProjectRequest.userId()));
-        member.setProject(project);
-        member.setUser(user);
-        member.setIsAdmin(true);
-        member.setScore(0);
+        ProjectMember member = ProjectMember.builder()
+                .project(project)
+                .user(user)
+                .isAdmin(true)
+                .score(0)
+                .build();
         user.getMemberships().add(member);
 
         members.add(member);
@@ -89,7 +90,7 @@ public class ProjectService implements CrudService<Project> {
                 () -> new EntityNotFoundException("Cannot find project with id " + id));
         List<GetMemberResponse> members = new ArrayList<>();
         for (ProjectMember member : project.getMembers()) {
-            members.add(new GetMemberResponse(member.getId(), member.getUser().getUsername(), member.getScore()));
+            members.add(new GetMemberResponse(member.getId(), member.getUser().getId(), member.getUser().getUsername(), member.getScore()));
         }
         return members;
     }
@@ -105,11 +106,12 @@ public class ProjectService implements CrudService<Project> {
         if(!projectMemberRepository.isAlreadyMember(user.getId(), projectId).isEmpty())
             return "This user is already a member.";
         // create and set data for member
-        ProjectMember newMember = new ProjectMember();
-        newMember.setProject(project);
-        newMember.setUser(user);
-        newMember.setIsAdmin(false);
-        newMember.setScore(0);
+        ProjectMember newMember = ProjectMember.builder()
+                .project(project)
+                .user(user)
+                .isAdmin(false)
+                .score(0)
+                .build();
         // add to project table
         project.getMembers().add(newMember);
         // saving project

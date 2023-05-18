@@ -3,12 +3,18 @@ package com.example.backend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "task")
 public class Task {
     @Id
@@ -30,8 +36,9 @@ public class Task {
     @Column(name = "task_detail")
     private String detail;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "task_priority")
-    private String priority;
+    private Priority priority;
 
     @Column(name = "completed", columnDefinition = "boolean default false")
     private Boolean completed;
