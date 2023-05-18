@@ -1,7 +1,10 @@
+import { getIdCookie, reLog } from "../../functions/authentications.js";
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 
 addWrapper()
 pageLoader()
+
+reLog()
 
 $(document).ready(function () {
     $(".menu-icon").click(function () {
@@ -16,7 +19,6 @@ $(document).ready(function () {
         }
     })
     
-
     $("#show-hide-btn").click(function () {
         if ($("#password-input").attr("type") == "password") {
             $("#show-hide-btn").html('<i class="fa-solid fa-eye-slash"></i>');
