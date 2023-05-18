@@ -67,15 +67,24 @@
                         <label for="taskNameInput">Task name:</label>
                         <input type="text" class="form-control mb-2" id="taskNameInput" placeholder="Task Name" />
 
-                        <label for="prioritySelect">Select Priority:</label>
-                        <select class="form-control mb-2" id="prioritySelect">
-                            <option value="1">High Priority</option>
-                            <option value="2">Medium Priority</option>
-                            <option value="3">Low Priority</option>
-                        </select>
+                        <div class="pri-due-container">
+                            <div class="input-group">
+                                <label for="prioritySelect">Priority:</label>
+                                <select class="form-control mb-2" id="prioritySelect">
+                                    <option value="1">High</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3">Low</option>
+                                </select>
+                            </div>
 
-                        <label for="dueDateInput">Due date:</label>
-                        <input type="datetime-local" class="form-control mb-2" id="dueDateInput" />
+                            <div class="input-group">
+                                <label for="dueDateInput">Due date:</label>
+                                <input type="datetime-local" class="form-control mb-2" id="dueDateInput" />
+                            </div>
+                        </div>
+
+                        <label for="taskDetailsInput">Task Details:</label>
+                        <textarea class="form-control mb-2" id="taskDetailsInput" placeholder="Task Details"></textarea>
 
                         <div class="popupBtn">
                             <button type="button" class="btn btn-primary mb-2" id="addTaskBtn">
@@ -92,28 +101,60 @@
             <div class="edit-task-popup">
                 <h6>Edit Task</h6>
                 <form>
-                    <label for="editTaskNameInput">Task Name:</label>
-                    <input type="text" id="editTaskNameInput" name="editTaskNameInput">
+                    <div class="form-row align-items-center">
+                        <label for="editTaskNameInput">Task Name:</label>
+                        <input type="text" class="form-control mb-2" id="editTaskNameInput" name="editTaskNameInput" />
 
-                    <label for="editPrioritySelect">Priority:</label>
-                    <select id="editPrioritySelect" name="editPrioritySelect">
-                        <option value="1">High</option>
-                        <option value="2">Medium</option>
-                        <option value="3">Low</option>
-                    </select>
+                        <div class="pri-due-container">
+                            <div class="input-group">
+                                <label for="editPrioritySelect">Priority:</label>
+                                <select class="form-control mb-2" id="editPrioritySelect" name="editPrioritySelect">
+                                    <option value="1">High</option>
+                                    <option value="2">Medium</option>
+                                    <option value="3">Low</option>
+                                </select>
+                            </div>
 
-                    <label for="editDueDateInput">Due Date:</label>
-                    <input type="date" id="editDueDateInput" name="editDueDateInput">
-                    <div class="popupBtn">
-                    <button type="button" id="editTaskSubmitBtn" class="btn btn-primary">Update Task</button>
-                    <button type="button" id="cancelEditBtn" class="btn btn-secondary">Cancel</button>
-                    <button type="button" id="deleteTaskBtn" class="btn btn-primary">Delete Task</button>
-                </div>
+                            <div class="input-group">
+                                <label for="editDueDateInput">Due Date:</label>
+                                <input type="datetime-local" class="form-control mb-2" id="editDueDateInput"
+                                    name="editDueDateInput" />
+                            </div>
+                        </div>
+
+                        <label for="editTaskDetailsInput">Task Details:</label>
+                        <textarea class="form-control mb-2" id="editTaskDetailsInput"
+                            name="editTaskDetailsInput"></textarea>
+
+                        <div class="popupBtn">
+                            <button type="button" id="editTaskSubmitBtn" class="btn btn-primary">
+                                Update Task
+                            </button>
+                            <button type="button" id="cancelEditBtn" class="btn btn-secondary">
+                                Cancel
+                            </button>
+                            <button type="button" id="deleteTaskBtn" class="btn btn-primary">
+                                Delete Task
+                            </button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
     <hr />
+    <div class="task-details-popup">
+        <h6 class="mb-1" id="detailsTaskName"></h6>
+        <div class="details-content">
+            <medium>Priority: <span id="detailsTaskPriority"></span></medium><br />
+            <label for="detailsTaskDetails" id="details-label">Details:</label>
+            <p id="detailsTaskDetails"></p>
+            <medium>Due Date: <span id="detailsTaskDueDate"></span></medium>
+        </div>
+        <button type="button" id="closeDetailsBtn" class="btn btn-secondary popupBtn">
+            Close
+        </button>
+    </div>
     <div class="list-box">
         <div class="m-auto w-75">
             <div class="list-container">
