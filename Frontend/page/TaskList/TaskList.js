@@ -92,7 +92,6 @@ function updateTaskList() {
                 <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
             </div>
             <div class="d-flex justify-content-end">
-                <small class="me-3">Assigned to:</small>
                 <a href="#" class="edit-task">
                     <div class="edit-task-icon" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></div>
                 </a>
