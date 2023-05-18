@@ -22,19 +22,22 @@ public class TaskController {
         return new ResponseEntity<>(taskService.create(projectId, createTaskRequest), HttpStatus.OK);
     }
 
+    @Operation(description = "Get a task by id")
     @GetMapping(value = "/{id}", produces = "application/json")
-    public Task retrieve(@PathVariable Long id) {
-        return taskService.retrieve(id);
+    public ResponseEntity<Task> retrieve(@PathVariable Long id) {
+        return new ResponseEntity<>(taskService.retrieve(id), HttpStatus.OK);
     }
 
+    @Operation(description = "Update a task")
     @PutMapping(value = "/", consumes = "application/json")
-    public Task update(@RequestBody Task task) {
-        return taskService.update(task);
+    public ResponseEntity<Task> update(@RequestBody Task task) {
+        return new ResponseEntity<>(taskService.update(task), HttpStatus.OK);
     }
 
+    @Operation(description = "Delete a task by id")
     @DeleteMapping(value = "/")
-    public String delete(Long id) {
+    public ResponseEntity<String> delete(Long id) {
         taskService.delete(id);
-        return "Done";
+        return new ResponseEntity<>("Done", HttpStatus.OK);
     }
 }

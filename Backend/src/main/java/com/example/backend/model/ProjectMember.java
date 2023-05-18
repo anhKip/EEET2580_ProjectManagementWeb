@@ -26,13 +26,13 @@ public class ProjectMember {
     @Nullable
     @Column(name = "member_score", columnDefinition = "integer default 0")
     private int score;
-    @ManyToOne(targetEntity = Project.class)
+    @ManyToOne(targetEntity = Project.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
     private Project project;
-    @ManyToOne(targetEntity = UserAccount.class)
+    @ManyToOne(targetEntity = UserAccount.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private UserAccount user;
 
-    @OneToMany(mappedBy = "assignedTo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "assignedTo", fetch = FetchType.LAZY)
     private List<Task> tasks = new ArrayList<>();
 }

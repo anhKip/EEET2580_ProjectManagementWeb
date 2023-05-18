@@ -1,5 +1,6 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,9 +28,7 @@ public class Task {
     @Column(name = "task_name")
     private String name;
 
-    @Column(name = "task_label")
-    private String label;
-
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name = "task_deadline")
     private Date deadline;
 

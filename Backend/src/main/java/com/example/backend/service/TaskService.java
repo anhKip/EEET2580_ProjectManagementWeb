@@ -38,7 +38,6 @@ public class TaskService implements CrudService<Task>{
                 () -> new EntityNotFoundException("Cannot find project with id " + task.getId())
         );
         taskDb.setName(task.getName());
-        taskDb.setLabel(task.getLabel());
         taskDb.setDeadline(task.getDeadline());
         taskDb.setDetail(task.getDetail());
         taskDb.setPriority(task.getPriority());
@@ -57,11 +56,13 @@ public class TaskService implements CrudService<Task>{
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id " + projectId));
         Task task = Task.builder()
+                .project(project)
                 .name(createTaskRequest.name())
                 .priority(createTaskRequest.priority())
+                .detail(createTaskRequest.detail())
                 .deadline(createTaskRequest.deadline())
+                .completed(false)
                 .build();
-        project.getTasks().add(task);
         taskRepository.save(task);
         return "Task has been created";
     }

@@ -25,11 +25,11 @@ public class File {
     @Column(name = "file_upload_date")
     private Date uploadDate;
 
-    @ManyToOne(targetEntity = Project.class)
+    @ManyToOne(targetEntity = Project.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @ManyToOne(targetEntity = ProjectMember.class)
+    @ManyToOne(targetEntity = ProjectMember.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private ProjectMember member;
 }

@@ -1,6 +1,7 @@
 package com.example.backend.record;
 
 import com.example.backend.model.Priority;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,6 +13,9 @@ public record CreateTaskRequest(
         @NotNull
         Priority priority,
         @NotNull
+        String detail,
+        @NotNull
+        @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
         @Future
         Date deadline
 ) {

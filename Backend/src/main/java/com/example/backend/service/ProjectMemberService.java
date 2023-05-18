@@ -39,4 +39,10 @@ public class ProjectMemberService implements CrudService<ProjectMember> {
     public void delete(Long id) {
         projectMemberRepository.deleteById(id);
     }
+
+    public Boolean isAdmin(Long memberId) {
+        ProjectMember projectMember = projectMemberRepository.findById(memberId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find member with id " + memberId));
+        return projectMember.getIsAdmin();
+    }
 }

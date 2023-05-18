@@ -21,6 +21,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 @Slf4j
@@ -40,7 +42,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ServletWebRequest servletWebRequest = (ServletWebRequest) request;
         log.info("{} to {}", servletWebRequest.getHttpMethod(), servletWebRequest.getRequest().getServletPath());
         String error = "Malformed JSON request";
-        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
+        return buildResponseEntity(new ApiError(BAD_REQUEST, error, ex));
     }
 
     /**
@@ -71,7 +73,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             MissingServletRequestParameterException ex, HttpHeaders headers,
             HttpStatusCode status, WebRequest request) {
         String error = ex.getParameterName() + " parameter is missing";
-        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, error, ex));
+        return buildResponseEntity(new ApiError(BAD_REQUEST, error, ex));
+    }
+
+    /**
+     * Handles javax.validation.ConstraintViolationException. Thrown when @Validated fails.
+     *
+     * @param ex the ConstraintViolationException
+     * @return the ApiError object
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<Object> handleConstraintViolation(
+            ConstraintViolationException ex) {
+        ApiError apiError = new ApiError(BAD_REQUEST);
+        apiError.setMessage("Validation error");
+        apiError.addValidationErrors(ex.getConstraintViolations());
+        return buildResponseEntity(apiError);
     }
 
     /**
@@ -97,7 +114,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
                                                                       WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        ApiError apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName()));
         apiError.setDebugMessage(ex.getMessage());
         return buildResponseEntity(apiError);
@@ -118,7 +135,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             HttpHeaders headers,
             HttpStatusCode status,
             WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);
+        ApiError apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage("Validation error");
         apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
         apiError.addValidationError(ex.getBindingResult().getGlobalErrors());
