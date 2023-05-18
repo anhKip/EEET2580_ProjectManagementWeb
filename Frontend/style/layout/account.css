@@ -361,3 +361,7 @@ form {
 .input-container {
   margin-left: 20% + 50px;
 }
+
+.invalid-feedback {
+  display: none;
+}
