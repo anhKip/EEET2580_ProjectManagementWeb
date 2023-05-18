@@ -1,3 +1,8 @@
+import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
+
+addWrapper()
+pageLoader()
+
 document.addEventListener("DOMContentLoaded", function() {
     let pass1 = document.getElementById("password");
     let pass2 = document.getElementById("password-confirm");
@@ -40,8 +45,8 @@ document.addEventListener("DOMContentLoaded", function() {
         })
         .then(response => response.json())
         .then(json => {
-          console.log(json.message);
-          window.location.assign('../Login/login.html');
+          console.log(json.subErrors[0].message);
+          // window.location.assign('../Login/login.html');
         })
         .catch(e => {
           console.log(e);
@@ -49,4 +54,3 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     });
   });
-  

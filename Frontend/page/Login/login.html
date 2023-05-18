@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,81 +22,71 @@
     <!-- CSS File-->
     <link rel="stylesheet" href="./../../style/layout/login-style.css" />
     <link rel="stylesheet" href="./../../style/global.css" />
-    <script src="login.js"></script>
 
     <title>Login</title>
-  </head>
-    <body>
-        <div class="login-container">
-            <div class="imgbox">
-                <img
-                    src="./../../static/login-background.png"
-                    alt="login-background"
-                />
-            </div>
-
-            <div class="login-sizing">
-                <div class="login">
-                    <h4 class="text-center">WELCOME BACK</h4>
-
-                    <form class="needs-validation">
-                        <div class="form-group was-validated">
-                            <label class="form-label" for="username"><body1>Username</body1></label>
-                            <input
-                                class="form-control"
-                                type="text"
-                                id="username"
-                                required
-                            />
-                            <div class="invalid-feedback">
-                                Please enter your username
-                            </div>
-                        </div>
-
-                        <div class="form-group was-validated">
-                            <label class="form-label" for="password"
-                                ><body1>Password</body1></label
-                            >
-                            <input
-                                class="form-control"
-                                type="password"
-                                id="password"
-                                required
-                            />
-                            <div class="invalid-feedback">
-                                Please enter your password
-                            </div>
-                        </div>
-
-                        <div class="form-group form-check remember-me">
-                          <input class="form-check-input" type="checkbox" id="inlineCheckbox2">
-                          <label class="form-check-label" for="inlineCheckbox2">Remember me</label
-                            >
-                        </div>
-
-                        <input
-                            id="login-btn"
-                            class="btn btn-success w-100"
-                            type="submit"
-                            value="SIGN IN"
-                        />
-
-                        <div>Can't sign in? <a href="#">Sign up now</a></div>
-                        
-                    </form>
-                </div>
-            </div>
-
-            <div class="form-group form-check remember-me">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                id="inlineCheckbox2"
-              />
-            </div>
-          </form>
+</head>
+<body>
+    <div class="login-container">
+        <div class="imgbox">
+            <img
+                src="./../../static/login-background.png"
+                alt="login-background"
+            />
         </div>
-      </div>
+
+        <div class="login-sizing">
+            <div class="login">
+                <h4 class="text-center">WELCOME BACK</h4>
+
+                <form class="needs-validation" id="input-form">
+                    <div class="form-group was-validated">
+                        <label class="form-label" for="username"><body1>Username</body1></label>
+                        <input
+                            class="form-control"
+                            type="text"
+                            id="username"
+                            required
+                        />
+                        <div class="invalid-feedback">
+                            Please enter your username
+                        </div>
+                    </div>
+
+                    <div class="form-group was-validated">
+                        <label class="form-label" for="password"
+                            ><body1>Password</body1></label
+                        >
+                        <input
+                            class="form-control"
+                            type="password"
+                            id="password"
+                            required
+                        />
+                        <div class="invalid-feedback">
+                            Please enter your password
+                        </div>
+                    </div>
+
+                    <div class="form-group form-check remember-me">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2">
+                        <label class="form-check-label" for="inlineCheckbox2">Remember me</label
+                        >
+                    </div>
+
+                    <input
+                        id="login-btn"
+                        class="btn btn-success w-100"
+                        type="submit"
+                        value="SIGN IN"
+                    />
+
+                    <div>Can't sign in? <a href="../Sign up/signup.html">Sign up now</a></div>
+                </form>
+            </div>
+        </div>
     </div>
-  </body>
+
+    <script type= "module" src="login.js"></script>
+
+</body>
 </html>

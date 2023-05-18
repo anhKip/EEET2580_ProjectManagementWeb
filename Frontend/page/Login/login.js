@@ -1,64 +1,46 @@
-/**
- * 
- * @param {string} c_name Token name
- * @param {string} c_value Token value
- * @param {float} expire Expiration Time in Hour
- */
-function setTokenCookies(cname, c_value, expire) {
-    const d = new Date();
-    d.setTime(d.getTime() + (expire*60*60*1000));
-    let expires = " expires="+ d.toUTCString();
-    document.cookie = cname + '=' + c_value + ';' + expires + '; path=/' + '; SameSite=None' + '; Secure';
-    // document.cookie = cname + '=' + c_value + ';' + expires + '; path=/' + '; SameSite=None' + '; Secure' + '; HttpOnly';
-}
+import {setIdCookies} from "../../functions/authentications.js";
+import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 
-function getTokenCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
+addWrapper()
 
-document.getElementById("login-btn").addEventListener("click", function(event) {
-    event.preventDefault()
+pageLoader()
 
-    let url = 'http://localhost:8080/api/auth/signin'
+const login_btn = document.querySelector("#login-btn");
+
+login_btn.addEventListener("click", login)
+
+function login(event) {
+
+    event.preventDefault();
+
+    let url = "http://localhost:8080/api/auth/signin";
+
+    const username = document.querySelector("#username").value;
+    const password = document.querySelector("#password").value;
 
     let inputs = {
-        username: document.querySelector('#username').value,
-        password: document.querySelector('#password').value
-    }
+        username: username,
+        password: password,
+    };
 
-    fetch (url, {
+    console.log(JSON.stringify(inputs));
+
+    fetch(url, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify(inputs)
+        body: JSON.stringify(inputs),
     })
-    .then(response => response.json())
-    .then(json => {
-        // console.log(json);
-        if (json.userId >= 0) {
-            console.log("Log in successfully")
-            window.location.assign('../Home/home.html' + '?u=' + json.userId)
-        }
-        else {
-            console.log("Log in fails")
+    .then((response) => response.json())
+    .then((json) => {
+        if (json.userId > 0) {
+            setIdCookies('userId', json.userId, 1); // 1-hour long cookie
+            window.location.assign('../Home/home.html');
+            login_btn.removeEventListener("click", login);
         }
     })
-    .catch(e => {
-        console.log(e)
-    })
-})
-
-
+    .catch((e) => {
+        console.log(e);
+    });
+};
