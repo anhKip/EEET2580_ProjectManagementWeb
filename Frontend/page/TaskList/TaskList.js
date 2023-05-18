@@ -36,6 +36,19 @@ function addTask() {
             dueDate += " 23:59"; // Set default time to 23:59
         }
 
+        // Create a new Date object for today's date
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set the time to 00:00:00
+
+        // Create a new Date object to validate the due date
+        const dueDateObj = new Date(dueDate);
+
+        // Check if the due date is valid and not before today
+        if (isNaN(dueDateObj) || dueDateObj < today) {
+            window.alert("Invalid due date!");
+            return; // Exit the function if the due date is invalid
+        }
+
         // create new task object
         const task = {
             name: taskName,
@@ -83,28 +96,35 @@ function updateTaskList() {
 
     // Add each task to the list
     tasks.forEach((task, index) => {
+        // Map the priority value to the corresponding label
+        const priorityLabels = {
+            1: "High",
+            2: "Medium",
+            3: "Low",
+        };
+
         // Create task list item
         const taskItem = document.createElement("li");
         taskItem.classList.add("list-group-item");
         taskItem.innerHTML = `
-        <div class="d-flex align-items-center justify-content-between">
-            <div>
-                <h6 class="mb-1">${task.name}</h6>
-                <small>Priority: ${task.priority}</small>
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h6 class="mb-1">${task.name}</h6>
+                    <small>Priority: ${priorityLabels[task.priority]}</small>
+                </div>
+                <div class="mx-auto">
+                    <small>Due Date: ${formatDueDate(task.dueDate)}</small>
+                </div>
+                <div class="btn-container">
+                    <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a href="#" class="edit-task">
+                        <div class="edit-task-icon" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></div>
+                    </a>
+                </div>
             </div>
-            <div class="mx-auto">
-                <small>Due Date: ${formatDueDate(task.dueDate)}</small>
-            </div>
-            <div class="btn-container">
-                <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
-            </div>
-            <div class="d-flex justify-content-end">
-                <a href="#" class="edit-task">
-                    <div class="edit-task-icon" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></div>
-                </a>
-            </div>
-        </div>
-      `;
+        `;
 
         // Get edit icon element
         const editIcon = taskItem.querySelector(`#edit-${index}`);
@@ -334,7 +354,10 @@ function openEditPopup(task, index) {
     taskNameInput.value = taskObj.name;
     prioritySelect.value = taskObj.priority;
     taskDetailsInput.value = taskObj.details;
-    dueDateInput.value = taskObj.dueDate.toISOString().substring(0, 10);
+
+    // Format the due date to be in the format accepted by the input element
+    const formattedDueDate = taskObj.dueDate.toISOString().substring(0, 16);
+    dueDateInput.value = formattedDueDate;
 
     // store taskObj and index as properties of the editPopup element
     editPopup.taskObj = taskObj;
@@ -379,10 +402,23 @@ updateBtn.addEventListener("click", () => {
     const dueDate = document.querySelector("#editDueDateInput").value;
     const details = document.querySelector("#editTaskDetailsInput").value;
 
+    // Create a new Date object for today's date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set the time to 00:00:00
+
+    // Create a new Date object to validate the edited due date
+    const editedDueDateObj = new Date(dueDate);
+
+    // Check if the edited due date is valid and not before today
+    if (isNaN(editedDueDateObj) || editedDueDateObj < today) {
+        window.alert("Invalid due date!");
+        return; // Exit the function if the edited due date is invalid
+    }
+
     // update task object with new values
     taskObj.name = taskName;
     taskObj.priority = priority;
-    taskObj.dueDate = new Date(dueDate);
+    taskObj.dueDate = editedDueDateObj;
     taskObj.details = details;
 
     // update task list
@@ -441,9 +477,16 @@ function openTaskDetails(task) {
     const detailsTaskDueDate = document.querySelector("#detailsTaskDueDate");
     const closeDetailsBtn = document.querySelector("#closeDetailsBtn");
 
+    // Map the priority value to the corresponding label
+    const priorityLabels = {
+        1: "High",
+        2: "Medium",
+        3: "Low",
+    };
+
     // Populate task details in the popup
     detailsTaskName.textContent = task.name;
-    detailsTaskPriority.textContent = task.priority;
+    detailsTaskPriority.textContent = priorityLabels[task.priority];
     detailsTaskDetails.textContent = task.details;
     detailsTaskDueDate.textContent = formatDueDate(task.dueDate);
 
