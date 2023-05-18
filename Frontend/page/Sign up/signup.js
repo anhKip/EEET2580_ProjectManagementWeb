@@ -1,3 +1,8 @@
+import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
+
+addWrapper()
+pageLoader()
+
 const sign_up_btn = document.getElementById("sign-up-btn");
 
 sign_up_btn.addEventListener("click", signUp)

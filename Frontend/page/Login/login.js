@@ -1,4 +1,9 @@
 import {setIdCookies} from "../../functions/authentications.js";
+import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
+
+addWrapper()
+
+pageLoader()
 
 const login_btn = document.querySelector("#login-btn");
 

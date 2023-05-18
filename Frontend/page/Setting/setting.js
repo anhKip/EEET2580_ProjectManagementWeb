@@ -1,3 +1,8 @@
+import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
+
+addWrapper()
+pageLoader()
+
 $(document).ready(function () {
     $(".menu-icon").click(function () {
         $(".menu-container, .hide-menu").toggleClass("open");

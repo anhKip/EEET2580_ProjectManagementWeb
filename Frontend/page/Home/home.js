@@ -1,7 +1,16 @@
 // Import from authentication.js
 import { getIdCookie, reLog } from "../../functions/authentications.js";
-// Redirect to login page
-reLog()
+import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
+
+// add spinner
+addWrapper()
+
+// page loader
+pageLoader()
+
+// Redirect to login page, comment this out for testing
+// reLog()
+
 // Get userID
 const userId = getIdCookie('userId')
 
