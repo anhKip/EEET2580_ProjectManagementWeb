@@ -3,6 +3,10 @@ import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 addWrapper()
 pageLoader()
 
+const queryString = window.location.search;
+const urlPrarams = new URLSearchParams(queryString);
+const pId = urlPrarams.get("pId");
+
 $(document).ready(function () {
     $(".menu-icon").click(function () {
         $(".menu-container, .hide-menu").toggleClass("open");
@@ -76,3 +80,34 @@ $(document).ready(function () {
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
+
+function getProjectName() {
+
+    const fetch_url = `http://localhost:8080/api/project/${pId}`;
+
+    console.log(fetch_url);
+
+    fetch(fetch_url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => response.json())
+        .then((project) => {
+            const projectName = document.getElementById("project-name");
+            projectName.textContent = project.name;
+
+            const contentContainer = document.querySelector(".content");
+            contentContainer.insertBefore(
+                projectName,
+                contentContainer.firstChild
+            );
+        })
+        .catch((error) => {
+            console.error("Error getting project name", error);
+        });
+}
+
+// Call the getProjectName function
+getProjectName();
