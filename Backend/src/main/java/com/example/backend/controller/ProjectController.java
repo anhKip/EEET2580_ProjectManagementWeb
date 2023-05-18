@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.Project;
+import com.example.backend.record.AddMemberRequest;
 import com.example.backend.record.CreateProjectRequest;
 import com.example.backend.record.GetMemberResponse;
 import com.example.backend.record.GetProjectRespone;
@@ -52,8 +53,8 @@ public class ProjectController {
         return new ResponseEntity<>(projectService.getMembers(id), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/{id}/add-member", consumes = "application/json")
-    public ResponseEntity<String> addMember(@PathVariable Long projectId, @RequestBody String username) {
-        return new ResponseEntity<>(projectService.addMember(projectId, username), HttpStatus.OK);
+    @PostMapping(value = "/{projectId}/add-member", consumes = "application/json")
+    public ResponseEntity<String> addMember(@PathVariable Long projectId, @RequestBody AddMemberRequest addMemberRequest) {
+        return new ResponseEntity<>(projectService.addMember(projectId, addMemberRequest.username()), HttpStatus.OK);
     }
 }
