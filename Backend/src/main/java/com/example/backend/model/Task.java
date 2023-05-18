@@ -30,7 +30,8 @@ public class Task {
     @Column(name = "task_detail")
     private String detail;
 
-    @Column(name = "task_priority", columnDefinition = "text default 'LOW'")
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "task_priority")
     private String priority;
 
     @Column(name = "completed", columnDefinition = "boolean default false")
