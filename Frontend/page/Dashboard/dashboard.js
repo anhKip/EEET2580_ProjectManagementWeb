@@ -45,3 +45,34 @@ leaderboardMembers.forEach(member => {
     innerBar.style.width = `${percentage}%`;
 });
 
+function getProjectName() {
+    var url = window.location.href.split("/").reverse()[0];
+    var id = url.slice(url.indexOf("=") + 1);
+  
+    const fetch_url = `http://localhost:8080/api/project/${id}`;
+
+    console.log(fetch_url);
+  
+    fetch(fetch_url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((project) => {
+        const projectName = document.createElement("h3");
+        projectName.textContent = project.name;
+  
+        const dashboardContainer = document.querySelector(".dashboard-container");
+        dashboardContainer.insertBefore(projectName, dashboardContainer.firstChild);
+      })
+      .catch((error) => {
+        console.error("Error getting project name", error);
+      });
+  }
+  
+  // Call the getProjectName function
+  getProjectName();
+  
+
