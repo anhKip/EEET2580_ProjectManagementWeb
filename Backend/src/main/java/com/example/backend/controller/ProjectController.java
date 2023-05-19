@@ -1,12 +1,15 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.Project;
+import com.example.backend.model.ProjectMember;
 import com.example.backend.record.AddMemberRequest;
 import com.example.backend.record.CreateProjectRequest;
 import com.example.backend.record.GetMemberResponse;
 import com.example.backend.record.GetProjectRespone;
+import com.example.backend.repository.ProjectMemberRepository;
 import com.example.backend.repository.UserAccountRepository;
 import com.example.backend.service.ProjectService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +23,8 @@ import java.util.List;
 public class ProjectController {
     @Autowired
     private ProjectService projectService;
-    //    @Autowired
-//    private ProjectMemberRepository projectMemberRepository;
+        @Autowired
+    private ProjectMemberRepository projectMemberRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
 
