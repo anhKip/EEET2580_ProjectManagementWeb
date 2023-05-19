@@ -116,6 +116,7 @@ $(document).ready(function () {
 
     // click event handler for submit button
     $(".submit-button").click(function (event) {
+        event.preventDefault()
         // prevent the default submit behavior, which is to refresh the page
         createProject();
         fetchProjects();
