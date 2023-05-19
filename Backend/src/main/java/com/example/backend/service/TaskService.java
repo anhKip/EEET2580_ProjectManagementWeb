@@ -57,6 +57,8 @@ public class TaskService implements CrudService<Task> {
 
     @Override
     public void delete(Long id) {
+        Task task = taskRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find task with id " + id));
         taskRepository.deleteById(id);
     }
 

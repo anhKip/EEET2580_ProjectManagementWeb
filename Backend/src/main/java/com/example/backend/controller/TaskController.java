@@ -40,9 +40,9 @@ public class TaskController {
     }
 
     @Operation(description = "Delete a task by id")
-    @DeleteMapping(value = "/")
-    public ResponseEntity<String> delete(Long id) {
-        taskService.delete(id);
+    @DeleteMapping(value = "/{taskId}")
+    public ResponseEntity<String> delete(@PathVariable Long taskId) {
+        taskService.delete(taskId);
         return new ResponseEntity<>("Done", HttpStatus.OK);
     }
 
