@@ -1,6 +1,7 @@
 package com.example.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -46,6 +47,7 @@ public class Task {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @Nullable
     @ManyToOne(targetEntity = ProjectMember.class)
     @JoinColumn(name = "member_id")
     private ProjectMember assignedTo;

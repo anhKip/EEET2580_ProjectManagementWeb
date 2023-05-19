@@ -2,12 +2,15 @@ package com.example.backend.controller;
 
 import com.example.backend.model.Task;
 import com.example.backend.record.CreateTaskRequest;
+import com.example.backend.record.GetTaskResponse;
 import com.example.backend.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/task")
@@ -21,10 +24,13 @@ public class TaskController {
         return new ResponseEntity<>(taskService.create(projectId, createTaskRequest), HttpStatus.OK);
     }
 
-    @Operation(description = "Get a task by id")
-    @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Task> retrieve(@PathVariable Long id) {
-        return new ResponseEntity<>(taskService.retrieve(id), HttpStatus.OK);
+    @Operation(description = "Get a task by id. NOTE: *** If assignedTo == 0, task has not been assigned to anyone!!! ***")
+    @GetMapping(value = "/{taskId}", produces = "application/json")
+    public ResponseEntity<GetTaskResponse> retrieve(@PathVariable Long taskId) {
+        Task task = taskService.retrieve(taskId);
+        GetTaskResponse response = new GetTaskResponse(taskId, task.getName(), task.getDeadline(), task.getDetail(),
+                task.getPriority(), task.getCompleted(), task.getAssignedTo() == null ? 0 : task.getAssignedTo().getId());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(description = "Update a task")
@@ -44,5 +50,10 @@ public class TaskController {
     @PostMapping(value = "/{taskId}/assign/{memberId}")
     public ResponseEntity<String> assignTask(@PathVariable Long taskId, @PathVariable Long memberId) {
         return new ResponseEntity<>(taskService.assignTask(taskId, memberId), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/pId={projectId}", produces = "application/json")
+    public ResponseEntity<List<GetTaskResponse>> getAllTasks (@PathVariable Long projectId) {
+        return new ResponseEntity<>(taskService.getAllTasks(projectId), HttpStatus.OK);
     }
 }
