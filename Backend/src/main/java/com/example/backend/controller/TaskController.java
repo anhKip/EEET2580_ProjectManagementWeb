@@ -70,7 +70,7 @@ public class TaskController {
 
     @Operation(description = "Change deadline of a task")
     @PostMapping(value = "/{taskId}/deadline", consumes = "application/json")
-    public ResponseEntity<String> changeDeadline(@PathVariable Long taskId, @RequestBody ChangeTaskDeadlineRequest request) {
+    public ResponseEntity<String> changeDeadline(@PathVariable Long taskId, @RequestBody @Valid ChangeTaskDeadlineRequest request) {
         return new ResponseEntity<>(taskService.changeDeadline(taskId, request.deadline()), HttpStatus.OK);
     }
 }
