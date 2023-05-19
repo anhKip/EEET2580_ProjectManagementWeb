@@ -1,10 +1,19 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { urlGen } from "../../functions/topNavURL.js";
+import { reLog, logOut } from "../../functions/authentications.js";
 
+reLog()
 // Set href for top-nav anchors
 urlGen()
+
 addWrapper()
 pageLoader()
+
+document.getElementById("logOut-btn").addEventListener("click", logOut)
+
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
 
 const queryString = window.location.search;
 const urlPrarams = new URLSearchParams(queryString);
@@ -191,4 +200,5 @@ function addContributors() {
             console.error("Error getting user", error);
         });
 }
+
 

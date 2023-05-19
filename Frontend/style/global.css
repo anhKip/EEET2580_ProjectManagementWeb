@@ -160,3 +160,33 @@ caption {
   height: 80px;
   width: 80px;
 }
+
+.custom-toggle {
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #C7C8C9;
+  background-color: white;
+  border-radius: 5px;
+  transform: translateY(100%);
+  -webkit-transform: translateY(100%);
+  -moz-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  -o-transform: translateY(100%);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.toggle-body {
+  position: relative;
+}
+
+.toggle-body:hover .custom-toggle {
+  display: block;
+}
