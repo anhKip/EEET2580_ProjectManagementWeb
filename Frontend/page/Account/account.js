@@ -8,7 +8,11 @@ urlGen()
 addWrapper()
 pageLoader()
 
-reLog()
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
+
+document.getElementById("logOut-btn").addEventListener("click", logOut)
 const userId = getIdCookie("userId");
 
 $(document).ready(function () {
@@ -34,9 +38,3 @@ $(document).ready(function () {
         }
     });
 });
-
-document.querySelector(".fa-rotate").addEventListener("click", function () {
-    location.reload();
-});
-
-document.getElementById("logOut-btn").addEventListener("click", logOut)

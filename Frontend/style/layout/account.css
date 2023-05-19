@@ -276,15 +276,17 @@ textarea {
   width: 100%;
 }
 
-#show-hide-btn {
-    height: 32px;
-    border: 0;
-    background-color: transparent;
-    transform: translate(-9px, -37px);
-    -webkit-transform: translate(-9px, -37px);
-    -moz-transform: translate(-9px, -37px);
-    -ms-transform: translate(-9px, -37px);
-    -o-transform: translate(-9px, -37px);
+#change-password-input-btn {
+  float: right;
+  
+  /* height: 32px;
+  border: 0;
+  background-color: transparent;
+  transform: translate(-9px, -37px);
+  -webkit-transform: translate(-9px, -37px);
+  -moz-transform: translate(-9px, -37px);
+  -ms-transform: translate(-9px, -37px);
+  -o-transform: translate(-9px, -37px); */
 }
 
 #save-btn {

@@ -51,10 +51,6 @@ function changePassword(event) {
             'newPassword': password.value,
         }
     
-        // console.log(data);
-        console.log(JSON.stringify(data));
-        // console.log(typeof JSON.stringify(data));
-    
         fetch (url, {
             method: "POST",
             headers: {
