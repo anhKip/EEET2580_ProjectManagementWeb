@@ -2,12 +2,14 @@ package com.example.backend.service;
 
 import com.example.backend.model.Project;
 import com.example.backend.model.Update;
+import com.example.backend.repository.GetUpdateResponse;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.UpdateRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,11 +50,17 @@ public class UpdateService implements CrudService<Update> {
         return "Done";
     }
 
-    public List<Update> getUpdates(Long projectId) {
+    public List<GetUpdateResponse> getUpdates(Long projectId) {
         // get project
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id " + projectId));
-        return project.getUpdates();
+        // build response
+        List<GetUpdateResponse> responses = new ArrayList<>();
+        List<Update> updates = updateRepository.findTop7ByDateOrderByDateDateDesc();
+        for (Update update : updates) {
+            responses.add(new GetUpdateResponse(update.getMessage(), update.getDate()));
+        }
+        return responses;
     }
 
 }

@@ -2,14 +2,12 @@ package com.example.backend.service;
 
 import com.example.backend.model.Project;
 import com.example.backend.model.ProjectMember;
+import com.example.backend.model.Update;
 import com.example.backend.model.UserAccount;
 import com.example.backend.record.CreateProjectRequest;
 import com.example.backend.record.GetMemberResponse;
 import com.example.backend.record.GetProjectRespone;
-import com.example.backend.repository.ProjectMemberRepository;
-import com.example.backend.repository.ProjectRepository;
-import com.example.backend.repository.TaskRepository;
-import com.example.backend.repository.UserAccountRepository;
+import com.example.backend.repository.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -17,6 +15,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +26,13 @@ import java.util.List;
 @Service
 public class ProjectService implements CrudService<Project> {
     @Autowired
-    private EntityManager entityManager;
-    @Autowired
     private ProjectRepository projectRepository;
     @Autowired
     private ProjectMemberRepository projectMemberRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
     @Autowired
-    private TaskRepository taskRepository;
+    private UpdateRepository updateRepository;
 
     @Override
     public Project create(Project project) {
@@ -121,11 +120,16 @@ public class ProjectService implements CrudService<Project> {
                 .isAdmin(false)
                 .score(0)
                 .build();
-        System.out.println(newMember);
         // add to project table
         project.getMembers().add(newMember);
+        LocalDateTime now = LocalDateTime.now();
+        Update update = Update.builder()
+                .project(project)
+                .date(now)
+                .message(username + " has joined the project.")
+                .build();
+        updateRepository.save(update);
         // saving project
-//        projectRepository.save(project);
         projectMemberRepository.save(newMember);
 
         return "Member has been added";

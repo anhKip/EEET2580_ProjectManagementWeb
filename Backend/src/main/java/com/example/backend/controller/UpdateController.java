@@ -1,6 +1,7 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.Update;
+import com.example.backend.repository.GetUpdateResponse;
 import com.example.backend.service.UpdateService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class UpdateController {
 
     @Operation(description = "Get newest 7 updates of this project")
     @GetMapping(value = "/{projectId}", produces = "application/json")
-    public ResponseEntity<List<Update>> getUpdates(@PathVariable Long projectId) {
+    public ResponseEntity<List<GetUpdateResponse>> getUpdates(@PathVariable Long projectId) {
         return new ResponseEntity<>(updateService.getUpdates(projectId), HttpStatus.OK);
     }
 }
