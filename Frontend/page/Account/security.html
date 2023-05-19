@@ -93,26 +93,9 @@
         <div class="content-div">
           <div class="title">Password & Security</div>
           <div class="profile-content">
-            <div class="update-container">
-              <div class="update-title">
-                <h5>Turn on 2-step verification</h5>
-              </div>
-              <div class="form-check form-switch">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  role="switch"
-                  id="flexSwitchCheckDefault"
-                />
-              </div>
-            </div>
-
             <form>
               <div class="input-container">
                 <div class="form-group was-validated inputs">
-                  <label> Add recover e-mail </label>
-                  <input class="form-control" type="text" id="email-input" />
-
                   <label> Change password </label>
                   <input class="form-control" type="password" id="change-password-input" minlength="8" maxlength="64" required/>
                   <button type="button" id="change-password-input-btn"> <i class="fa-solid fa-eye"></i> </button>
@@ -122,6 +105,10 @@
                   <button type="button" id="confirm-change-password-input-btn"> <i class="fa-solid fa-eye"></i> </button>
 
                   <div class="invalid-feedback">
+                    Passwords must be at least 8 charcters
+                  </div>
+
+                  <div class="feedback">
                     Passwords do not match
                   </div>
                   

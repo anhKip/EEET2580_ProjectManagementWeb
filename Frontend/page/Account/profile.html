@@ -64,15 +64,18 @@
                         <img src="./../../static/profile.png" alt="blank-profile">
                     </div>
                     <form>
-                        <div class="inputs">
+                        <div class="form-group was-validated inputs">
                             <label> E-mail </label>
-                            <input type="text" id="email-input">
+                            <input class="form-control" type="email" id="email-input" pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" placeholder="name@gmail.com" required>
 
                             <label> Username </label>
-                            <input type="text" id="username-input">
+                            <input class="form-control" type="text" id="username-input" minlength="3" maxlength="32" required>
+                            <div class="invalid-feedback">
+                                Username must be at least 3 characters
+                            </div>
 
                             <label> Description </label>
-                            <textarea id="description-input"> </textarea> 
+                            <textarea id="description-input" placeholder="Describe yourself"> </textarea> 
 
                             <button type="submit" id="save-btn"> Save </button>
                         </div>

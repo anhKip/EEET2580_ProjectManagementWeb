@@ -11,6 +11,12 @@ pageLoader()
 reLog()
 const userId = getIdCookie("userId");
 
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
+
+document.getElementById("logOut-btn").addEventListener("click", logOut)
+
 $(document).ready(function () {
     $(".menu-icon").click(function () {
         $(".menu-container, .hide-menu").toggleClass("open");
@@ -70,7 +76,7 @@ function changePassword(event) {
         })
         .then((response) => response.json())
         .then((json) => {
-            console.log(json);
+            // console.log(json);
         })
         .catch((e) => {
             console.log(e)
@@ -78,27 +84,11 @@ function changePassword(event) {
     }
 
     else {
-        document.querySelector(".invalid-feedback").style.display = 'block';
+        document.querySelector(".feedback").style.display = 'block';
     }
 
     password.value = ""
     password_confirm.value = ""
-
 }
 
-password.addEventListener("change", function() {
-    if (!password.checkValidity()) {
-        document.querySelector(".invalid-feedback").style.display = "block";
-        document.querySelector(".invalid-feedback").innerHTML = "Password must contain at least 8 characters";
-      }
-      else {
-        document.querySelector(".invalid-feedback").style.display = "none";
-        document.querySelector(".invalid-feedback").innerHTML = "";
-      }
-})
 
-document.querySelector(".fa-rotate").addEventListener("click", function () {
-    location.reload();
-});
-
-document.getElementById("logOut-btn").addEventListener("click", logOut)

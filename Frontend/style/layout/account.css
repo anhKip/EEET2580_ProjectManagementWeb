@@ -361,6 +361,6 @@ form {
   margin-left: 20% + 50px;
 }
 
-.invalid-feedback {
+.feedback {
   display: none;
 }
