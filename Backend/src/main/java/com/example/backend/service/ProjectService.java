@@ -137,4 +137,13 @@ public class ProjectService implements CrudService<Project> {
         projectMemberRepository.deleteById(memberId);
         return "Member has been removed";
     }
+
+    public String changeName(Long projectId, String newName) {
+        // get project
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find project with id " + projectId));
+        project.setName(newName);
+        projectRepository.save(project);
+        return "Project's name has been updated.";
+    }
 }
