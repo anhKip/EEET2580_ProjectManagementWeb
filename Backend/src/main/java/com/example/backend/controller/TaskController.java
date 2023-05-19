@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.model.Status;
 import com.example.backend.model.Task;
 import com.example.backend.record.CreateTaskRequest;
 import com.example.backend.record.GetTaskResponse;
@@ -18,7 +19,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @Operation(description = "Create a task. Note: The JSON date format is yyyy-MM-dd HH:mm:ss")
+    @Operation(description = "Create a task. Note: The JSON date format is yyyy-MM-dd'T'HH:mm")
     @PostMapping(value = "/{projectId}", consumes = "application/json")
     public ResponseEntity<String> create(@PathVariable Long projectId, @RequestBody CreateTaskRequest createTaskRequest) {
         return new ResponseEntity<>(taskService.create(projectId, createTaskRequest), HttpStatus.OK);
@@ -29,7 +30,7 @@ public class TaskController {
     public ResponseEntity<GetTaskResponse> retrieve(@PathVariable Long taskId) {
         Task task = taskService.retrieve(taskId);
         GetTaskResponse response = new GetTaskResponse(taskId, task.getName(), task.getDeadline(), task.getDetail(),
-                task.getPriority(), task.getCompleted(), task.getAssignedTo() == null ? 0 : task.getAssignedTo().getId());
+                task.getPriority(), task.getStatus(), task.getAssignedTo() == null ? 0 : task.getAssignedTo().getId());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -58,9 +59,9 @@ public class TaskController {
         return new ResponseEntity<>(taskService.getAllTasks(projectId), HttpStatus.OK);
     }
 
-    @Operation(description = "Mark task as finished")
-    @PostMapping(value = "/complete/{taskId}")
-    public ResponseEntity<String> completeTask(@PathVariable Long taskId) {
-        return new ResponseEntity<>(taskService.completeTask(taskId), HttpStatus.OK);
+    @Operation(description = "Change status of task")
+    @PostMapping(value = "/{taskId}/{status}")
+    public ResponseEntity<String> changeStatus(@PathVariable Long taskId, @PathVariable Status status) {
+        return new ResponseEntity<>(taskService.changeStatus(taskId, status), HttpStatus.OK);
     }
 }

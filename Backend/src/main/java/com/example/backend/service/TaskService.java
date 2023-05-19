@@ -2,6 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.model.Project;
 import com.example.backend.model.ProjectMember;
+import com.example.backend.model.Status;
 import com.example.backend.model.Task;
 import com.example.backend.record.CreateTaskRequest;
 import com.example.backend.record.GetTaskResponse;
@@ -50,7 +51,7 @@ public class TaskService implements CrudService<Task> {
         taskDb.setDeadline(task.getDeadline());
         taskDb.setDetail(task.getDetail());
         taskDb.setPriority(task.getPriority());
-        taskDb.setCompleted(task.getCompleted());
+        taskDb.setStatus(task.getStatus());
         taskDb.setAssignedTo(task.getAssignedTo());
         return taskRepository.save(taskDb);
     }
@@ -72,7 +73,7 @@ public class TaskService implements CrudService<Task> {
                 .priority(createTaskRequest.priority())
                 .detail(createTaskRequest.detail())
                 .deadline(createTaskRequest.deadline())
-                .completed(false)
+                .status(Status.TODO)
                 .build();
         taskRepository.save(task);
         return "Task has been created";
@@ -112,7 +113,7 @@ public class TaskService implements CrudService<Task> {
                     .deadline(task.getDeadline())
                     .detail(task.getDetail())
                     .priority(task.getPriority())
-                    .completed(task.getCompleted())
+                    .status(task.getStatus())
                     .assignedTo(task.getAssignedTo() == null ? 0 : task.getAssignedTo().getId())
                     .build();
             responses.add(response);
@@ -120,11 +121,11 @@ public class TaskService implements CrudService<Task> {
         return responses;
     }
 
-    public String completeTask(Long taskId) {
+    public String changeStatus(Long taskId, Status status) {
         Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find task with id " + taskId));
-        task.setCompleted(true);
+        task.setStatus(status);
         taskRepository.save(task);
-        return "Task has been marked finished";
+        return "Task's status has been changed'";
     }
 }

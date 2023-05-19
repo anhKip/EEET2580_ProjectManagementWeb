@@ -15,7 +15,7 @@ public record CreateTaskRequest(
         @NotNull
         String detail,
         @NotNull
-        @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
         @Future
         Date deadline
 ) {
