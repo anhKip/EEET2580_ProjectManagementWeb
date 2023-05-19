@@ -15,22 +15,23 @@ public class ProjectMemberController {
     @Autowired
     private ProjectMemberService projectMemberService;
 
-    @PostMapping(value = "/", consumes = "application/json")
-    public ResponseEntity<String> create(@RequestBody ProjectMember projectMember) {
-        projectMemberService.create(projectMember);
-        return ResponseEntity.ok("Member has been created");
-    }
+//    @PostMapping(value = "/", consumes = "application/json")
+//    public ResponseEntity<String> create(@RequestBody ProjectMember projectMember) {
+//        projectMemberService.create(projectMember);
+//        return ResponseEntity.ok("Member has been created");
+//    }
+//
+//    @GetMapping(value = "/{id}", produces = "application/json")
+//    public ResponseEntity<?> retrieve(@PathVariable Long id) {
+//        return ResponseEntity.ok(projectMemberService.retrieve(id));
+//    }
+//
+//    @PutMapping(value = "/", consumes = "application/json")
+//    public ResponseEntity<?> update(@RequestBody ProjectMember projectMember) {
+//        return ResponseEntity.ok(projectMemberService.update(projectMember));
+//    }
 
-    @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<?> retrieve(@PathVariable Long id) {
-        return ResponseEntity.ok(projectMemberService.retrieve(id));
-    }
-
-    @PutMapping(value = "/", consumes = "application/json")
-    public ResponseEntity<?> update(@RequestBody ProjectMember projectMember) {
-        return ResponseEntity.ok(projectMemberService.update(projectMember));
-    }
-
+    @Operation(description = "Remove a member")
     @DeleteMapping(value = "/")
     public ResponseEntity<String> delete (Long id) {
         projectMemberService.delete(id);
