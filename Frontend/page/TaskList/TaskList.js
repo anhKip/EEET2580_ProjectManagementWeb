@@ -45,10 +45,6 @@ document.querySelector(".fa-rotate").addEventListener("click", function () {
 
 // initialize task array
 let tasks = [];
-// initialize my task array
-let onGoingTasks = [];
-// initialize completed task array
-let completedTasks = [];
 
 // function to sort tasks
 function sortTasks(sortBy) {
@@ -60,9 +56,23 @@ function sortTasks(sortBy) {
         tasks.sort((a, b) => a.name.localeCompare(b.name));
     } else if (sortBy === "priority") {
         // sort by priority
-        tasks.sort((a, b) => a.priority - b.priority);
+        tasks.sort((a, b) => {
+            const priorityOrder = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+            return priorityOrder[b.priority] - priorityOrder[a.priority];
+        });
     }
+
+    // Update the task list after sorting
+    updateTaskList(tasks);
 }
+
+// add event listener to the sort dropdown menu
+const sortDropdown = document.querySelector("#dropdownMenuButton");
+sortDropdown.addEventListener("click", (event) => {
+    const sortBy = event.target.getAttribute("data-sort");
+    console.log(sortBy);
+    sortTasks(sortBy);
+});
 
 // function to format due date
 function formatDueDate(dueDate) {
@@ -81,16 +91,6 @@ function formatDueDate(dueDate) {
 
 // add event listener to add task button
 document.querySelector("#addTaskBtn").addEventListener("click", addTask);
-
-// add event listeners to sort links
-const sortLinks = document.querySelectorAll(".sort-link");
-sortLinks.forEach((link) => {
-    link.addEventListener("click", (event) => {
-        event.preventDefault();
-        const sortBy = event.target.dataset.sort;
-        sortTasks(sortBy);
-    });
-});
 
 $(document).ready(function () {
     // click event handler for create project card
@@ -113,7 +113,7 @@ $(document).ready(function () {
 });
 
 function openEditPopup(task, taskId) {
-    console.log("openedit task ID: ");
+    console.log("openedit task ID: ", task.dueDate);
 
     // Get edit popup elements
     const editPopup = document.querySelector(".edit-task-popup");
@@ -122,21 +122,19 @@ function openEditPopup(task, taskId) {
     const dueDateInput = document.querySelector("#editDueDateInput");
     const taskDetailsInput = document.querySelector("#editTaskDetailsInput");
     const deleteTaskBtn = document.querySelector("#deleteTaskBtn");
-
+    // get edit popup elements
+    const updateBtn = document.querySelector("#editTaskSubmitBtn");
+    const cancelBtn = document.querySelector("#cancelEditBtn");
     // Fill in input fields with task information
     taskNameInput.value = task.name;
     prioritySelect.value = task.priority;
     taskDetailsInput.value = task.details;
-
-    // Format the due date to be in the format accepted by the input element
-    const formattedDueDate = new Date(task.dueDate).toISOString().substring(0, 16);
-    console.log("Date format 1: ", new Date(task.dueDate).toISOString().substring(0, 16))
-    console.log("Date format 2: ", new Date(task.dueDate).toISOString())
-    dueDateInput.value = formattedDueDate;
+    dueDateInput.value = task.dueDate;
 
     // Store task object and index as properties of the editPopup element
     editPopup.taskObj = task;
     editPopup.taskId = taskId;
+    console.log("editPopup", editPopup.taskObj);
 
     // Show edit popup and overlay
     editPopup.style.display = "block";
@@ -145,69 +143,64 @@ function openEditPopup(task, taskId) {
     // Add event listener to delete button
     deleteTaskBtn.addEventListener("click", () => {
         // Call the deleteTask function to remove the task
-        deleteTask(index);
-
+        deleteTask(taskId);
         // Close the edit popup
+        closeEditPopup();
+    });
+
+    cancelBtn.addEventListener("click", () => {
+        // close edit popup
+        closeEditPopup();
+    });
+
+    updateBtn.addEventListener("click", () => {
+        // Create a new Date object for today's date
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set the time to 00:00:00
+
+        // Create a new Date object to validate the edited due date
+        const editedDueDateObj = new Date(dueDateInput.value);
+
+        // Check if the edited due date is valid and not before today
+        if (isNaN(editedDueDateObj) || editedDueDateObj < today) {
+            window.alert("Invalid due date!");
+            return; // Exit the function if the edited due date is invalid
+        }
+
+        updateTask(
+            taskId,
+            taskNameInput.value,
+            prioritySelect.value,
+            dueDateInput.value,
+            taskDetailsInput.value
+        );
+
+        // close edit popup
         closeEditPopup();
     });
 }
 
-function deleteTask(index) {
-    // Remove the task from the tasks array
-    tasks.splice(index, 1);
+function deleteTask(taskId) {
+    const url = `http://localhost:8080/api/task/${taskId}`;
 
-    // Update the task list
-    updateTaskList();
+    fetch(url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                console.log("Delete successfull");
+                // Remove the task from the tasks array
+                tasks.splice(taskId, 1);
+                location.reload();
+            }
+        })
+        .catch((error) => {
+            console.error("Error creating task:", error);
+        });
 }
-
-// get edit popup elements
-const editPopup = document.querySelector(".edit-task-popup");
-const updateBtn = document.querySelector("#editTaskSubmitBtn");
-const cancelBtn = document.querySelector("#cancelEditBtn");
-
-// add event listener to update button in edit popup
-updateBtn.addEventListener("click", () => {
-    // get taskObj and index from the editPopup element
-    const taskObj = editPopup.taskObj;
-    const index = editPopup.index;
-
-    // get input values
-    const taskName = document.querySelector("#editTaskNameInput").value;
-    const priority = document.querySelector("#editPrioritySelect").value;
-    const dueDate = document.querySelector("#editDueDateInput").value;
-    const details = document.querySelector("#editTaskDetailsInput").value;
-
-    // Create a new Date object for today's date
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set the time to 00:00:00
-
-    // Create a new Date object to validate the edited due date
-    const editedDueDateObj = new Date(dueDate);
-
-    // Check if the edited due date is valid and not before today
-    if (isNaN(editedDueDateObj) || editedDueDateObj < today) {
-        window.alert("Invalid due date!");
-        return; // Exit the function if the edited due date is invalid
-    }
-
-    // update task object with new values
-    taskObj.name = taskName;
-    taskObj.priority = priority;
-    taskObj.dueDate = editedDueDateObj;
-    taskObj.details = details;
-
-    // update task list
-    updateTaskList();
-
-    // close edit popup
-    closeEditPopup();
-});
-
-// add event listener to cancel button in edit popup
-cancelBtn.addEventListener("click", () => {
-    // close edit popup
-    closeEditPopup();
-});
 
 function closeEditPopup() {
     // get edit popup elements
@@ -223,52 +216,32 @@ function closeEditPopup() {
 
     // hide gray overlay
     document.querySelector(".overlay").style.display = "none";
-
-    // remove the event listener from the update button
-    document
-        .querySelector("#editTaskSubmitBtn")
-        .removeEventListener("click", updateTask);
 }
 
-function updateTask(taskId, taskName, priority, dueDate) {
-
+function updateTask(taskId, taskName, priority, dueDate, details) {
     const url = `http://localhost:8080/api/task/${taskId}`;
 
-    fetch(fetch_url, {
+    fetch(url, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+            name: taskName,
+            priority: priority,
+            deadline: dueDate,
+            detail: details,
+        }),
     })
         .then((response) => {
             if (response.ok) {
-                console.log("Task edit successfully!");
-                // Clear input fields
-                document.querySelector("#taskNameInput").value = "";
-                document.querySelector("#dueDateInput").value = "";
-                document.querySelector("#taskDetailsInput").value = "";
-                fetchTasks();
-            } else {
-                response.json().then((data) => {
-                    console.error(
-                        "Failed to create task. Status:",
-                        response.status
-                    );
-                    console.log("Response body:", data);
-                });
+                console.log("Edit successfull");
+                location.reload();
             }
         })
         .catch((error) => {
             console.error("Error creating task:", error);
         });
-
-    // update task object with new values
-    tasks[taskId].name = taskName;
-    tasks[taskId].priority = priority;
-    tasks[taskId].dueDate = new Date(dueDate);
-
-    // update task list
-    updateTaskList();
 
     // close edit popup
     closeEditPopup();
@@ -459,7 +432,7 @@ function updateTaskList(tasks) {
             // Add event listener to edit icon
             editIcon.addEventListener("click", (event) => {
                 let taskId = event.target.id.split("-")[1];
-                console.log("Task ID: ", taskId)
+                console.log("Task ID: ", taskId);
                 event.stopPropagation();
                 openEditPopup(task, taskId);
             });

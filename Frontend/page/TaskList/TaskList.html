@@ -39,13 +39,15 @@
         <div class="right-icons d-flex justify-content-end align-items-center">
             <a href="#"><i class="fa-solid fa-rotate"></i></a>
             <div class="toggle-body">
-              <a class="dropdown-btn" href="#">
-                <i class="fa-regular fa-user"></i>
-              </a>
-              <ul class="custom-toggle">
-                <li><a class="d-flex justify-content-center align-items-center gap-2" href="../Account/profile.html"> <i class="fa-solid fa-gear"></i> Settings </a></li>
-                <li><a class="d-flex justify-content-center align-items-center gap-2" href="../Login/login.html" id="logOut-btn"><i class="fa-solid fa-right-from-bracket"></i> Log out </a></li>
-              </ul>          
+                <a class="dropdown-btn" href="#">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+                <ul class="custom-toggle">
+                    <li><a class="d-flex justify-content-center align-items-center gap-2"
+                            href="../Account/profile.html"> <i class="fa-solid fa-gear"></i> Settings </a></li>
+                    <li><a class="d-flex justify-content-center align-items-center gap-2" href="../Login/login.html"
+                            id="logOut-btn"><i class="fa-solid fa-right-from-bracket"></i> Log out </a></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -56,16 +58,17 @@
                 Add Task
             </button>
             <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle sort-btn" type="button" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-primary dropdown-toggle sort-btn" type="button" id="sortDropdown"
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Sort By
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item sort-link" href="#" data-sort="date">Due date</a>
+                <div class="dropdown-menu" id="dropdownMenuButton" aria-labelledby="sortDropdown">
+                    <a class="dropdown-item sort-link" href="#" data-sort="dueDate">Due Date</a>
                     <a class="dropdown-item sort-link" href="#" data-sort="name">Name</a>
                     <a class="dropdown-item sort-link" href="#" data-sort="priority">Priority</a>
                 </div>
             </div>
+
             <div class="overlay"></div>
             <div class="add-task-popup">
                 <h6>Add Task</h6>
