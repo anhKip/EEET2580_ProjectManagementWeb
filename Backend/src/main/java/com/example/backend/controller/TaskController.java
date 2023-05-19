@@ -33,7 +33,8 @@ public class TaskController {
     public ResponseEntity<GetTaskResponse> retrieve(@PathVariable Long taskId) {
         Task task = taskService.retrieve(taskId);
         GetTaskResponse response = new GetTaskResponse(taskId, task.getName(), task.getDeadline(), task.getDetail(),
-                task.getPriority(), task.getStatus(), task.getAssignedTo() == null ? 0 : task.getAssignedTo().getId());
+                task.getPriority(), task.getStatus(), task.getAssignedTo() == null ? 0 : task.getAssignedTo().getId(),
+                task.getAssignedTo() == null ? null : task.getAssignedTo().getUser().getUsername());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

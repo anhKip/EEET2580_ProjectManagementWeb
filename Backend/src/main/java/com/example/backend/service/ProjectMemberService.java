@@ -3,8 +3,6 @@ package com.example.backend.service;
 import com.example.backend.model.ProjectMember;
 import com.example.backend.repository.ProjectMemberRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +34,9 @@ public class ProjectMemberService implements CrudService<ProjectMember> {
     }
 
     @Override
-    public void delete(Long id) {
+    public String delete(Long id) {
         projectMemberRepository.deleteById(id);
+        return null;
     }
 
     public Boolean isAdmin(Long memberId) {

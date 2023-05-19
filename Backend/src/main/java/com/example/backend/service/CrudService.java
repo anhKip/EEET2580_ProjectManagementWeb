@@ -7,5 +7,5 @@ public interface CrudService<T> {
 
     T update(T t);
 
-    void delete(Long id);
+    String delete(Long id);
 }

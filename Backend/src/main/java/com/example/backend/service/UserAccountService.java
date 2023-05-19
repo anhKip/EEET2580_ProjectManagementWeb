@@ -3,10 +3,10 @@ package com.example.backend.service;
 import com.example.backend.model.ProjectMember;
 import com.example.backend.model.UserAccount;
 import com.example.backend.record.GetProjectRespone;
+import com.example.backend.record.UpdateUserRequest;
 import com.example.backend.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,9 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserAccountService implements CrudService<UserAccount>, UserDetailsService {
@@ -50,8 +48,9 @@ public class UserAccountService implements CrudService<UserAccount>, UserDetails
     }
 
     @Override
-    public void delete(Long id) {
+    public String delete(Long id) {
         userAccountRepository.deleteById(id);
+        return null;
     }
 
     @Override
@@ -59,6 +58,16 @@ public class UserAccountService implements CrudService<UserAccount>, UserDetails
         UserAccount userAccount = userAccountRepository.findUserAccountByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found"));
         return new User(userAccount.getUsername(), userAccount.getPassword(), userAccount.getAuthorities());
+    }
+
+    public String updateUser(Long userId, UpdateUserRequest request) {
+        UserAccount userAccount = userAccountRepository.findById(userId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find user account with id " + userId));
+        userAccount.setEmail(request.email());
+        userAccount.setUsername(request.username());
+        userAccount.setDescription(request.description());
+        userAccountRepository.save(userAccount);
+        return "User info has been updated";
     }
 
     public List<GetProjectRespone> getAllProjects(Long id) {
