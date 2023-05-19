@@ -105,73 +105,72 @@ function sortTasks(sortBy) {
     updateTaskList();
 }
 
-function updateTaskList() {
-    // Get task list element
-    const taskList = document.querySelector("#taskList");
+// function updateTaskList() {
+//     // Get task list element
+//     const taskList = document.querySelector("#taskList");
 
-    // Clear task list
-    taskList.innerHTML = "";
+//     // Clear task list
+//     taskList.innerHTML = "";
 
-    // Add each task to the list
-    tasks.forEach((task, index) => {
-        // Create task list item
-        const taskItem = document.createElement("li");
-        taskItem.classList.add("list-group-item");
-        taskItem.innerHTML = `
-            <div class="d-flex align-items-center justify-content-between">
-                <div>
-                    <h6 class="mb-1">${task.name}</h6>
-                    <small>Priority: ${task.priority}</small>
-                </div>
-                <div class="mx-auto">
-                    <small>Due Date: ${formatDueDate(task.dueDate)}</small>
-                </div>
-                <div class="btn-container">
-                    <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <a href="#" class="edit-task">
-                        <div class="edit-task-icon" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></div>
-                    </a>
-                </div>
-            </div>
-        `;
+//     // Add each task to the list
+//     tasks.forEach((task, index) => {
+//         // Create task list item
+//         const taskItem = document.createElement("li");
+//         taskItem.classList.add("list-group-item");
+//         taskItem.innerHTML = `
+//             <div class="d-flex align-items-center justify-content-between">
+//                 <div>
+//                     <h6 class="mb-1">${task.name}</h6>
+//                     <small>Priority: ${task.priority}</small>
+//                 </div>
+//                 <div class="mx-auto">
+//                     <small>Due Date: ${formatDueDate(task.dueDate)}</small>
+//                 </div>
+//                 <div class="btn-container">
+//                     <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
+//                 </div>
+//                 <div class="d-flex justify-content-end">
+//                     <a href="#" class="edit-task">
+//                         <div class="edit-task-icon" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></div>
+//                     </a>
+//                 </div>
+//             </div>
+//         `;
 
-        // Get edit icon element
-        const editIcon = taskItem.querySelector(`#edit-${index}`);
+//         // Get edit icon element
+//         const editIcon = taskItem.querySelector(`#edit-${index}`);
 
-        // Add event listener to edit icon
-        editIcon.addEventListener("click", (event) => {
-            event.stopPropagation();
-            openEditPopup(task, index);
-        });
+//         // Add event listener to edit icon
+//         editIcon.addEventListener("click", (event) => {
+//             event.stopPropagation();
+//             openEditPopup(task, index);
+//         });
 
-        // Add event listener to open task details
-        taskItem.addEventListener("click", (event) => {
-            const clickedElement = event.target;
-            const takeTaskBtn = taskItem.querySelector(".take-task-btn");
-            const completeTaskBtn =
-                taskItem.querySelector(".complete-task-btn");
+//         // Add event listener to open task details
+//         taskItem.addEventListener("click", (event) => {
+//             const clickedElement = event.target;
+//             const takeTaskBtn = taskItem.querySelector(".take-task-btn");
+//             const completeTaskBtn =
+//                 taskItem.querySelector(".complete-task-btn");
 
-            // Check if the clicked element is not "Take Task" or "Complete Task" button
-            if (
-                clickedElement !== takeTaskBtn &&
-                clickedElement !== completeTaskBtn
-            ) {
-                openTaskDetails(task);
-            }
-        });
+//             // Check if the clicked element is not "Take Task" or "Complete Task" button
+//             if (
+//                 clickedElement !== takeTaskBtn
+//             ) {
+//                 openTaskDetails(task);
+//             }
+//         });
 
-        // Add task item to task list
-        taskList.appendChild(taskItem);
-    });
+//         // Add task item to task list
+//         taskList.appendChild(taskItem);
+//     });
 
-    // Attach click event listeners to take task buttons
-    const takeTaskBtns = document.querySelectorAll(".take-task-btn");
-    takeTaskBtns.forEach((btn) => {
-        btn.addEventListener("click", takeTask);
-    });
-}
+//     // Attach click event listeners to take task buttons
+//     const takeTaskBtns = document.querySelectorAll(".take-task-btn");
+//     takeTaskBtns.forEach((btn) => {
+//         btn.addEventListener("click", takeTask);
+//     });
+// }
 
 // function to format due date
 function formatDueDate(dueDate) {
@@ -509,7 +508,7 @@ function openTaskDetails(task) {
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 function addTask() {
-    const fetch_url = `http://localhost:8080/api/task/${pId}`;
+    const fetch_url = `http://localhost:8080/api/task/1`;
     const taskName = document.querySelector("#taskNameInput").value;
     const priority = document.querySelector("#prioritySelect").value;
     const dueDate = document.querySelector("#dueDateInput").value;
@@ -557,8 +556,7 @@ function addTask() {
                 document.querySelector("#taskNameInput").value = "";
                 document.querySelector("#dueDateInput").value = "";
                 document.querySelector("#taskDetailsInput").value = "";
-                // Update task list
-                updateTaskList();
+                fetchTasks();
             } else {
                 response.json().then((data) => {
                     console.error(
@@ -572,4 +570,123 @@ function addTask() {
         .catch((error) => {
             console.error("Error creating task:", error);
         });
+}
+
+function fetchTasks() {
+    const url = `http://localhost:8080/api/task/pId=1`;
+
+    fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(
+                    "Failed to fetch task list. Status: " + response.status
+                );
+            }
+        })
+        .then((data) => {
+            if (Array.isArray(data)) {
+                tasks = data.map((task) => ({
+                    name: task.name,
+                    priority: task.priority,
+                    dueDate: reverseFormatDueDate(task.deadline),
+                    details: task.detail,
+                    status: task.status,
+                    assignedTo: task.assignedTo,
+                }));
+                console.log(tasks)
+                updateTaskList(tasks);
+            } else {
+                throw new Error(
+                    "Invalid response format. Expected an array of tasks."
+                );
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching task list:", error);
+        });
+}
+
+function reverseFormatDueDate(dueDate) {
+    const formattedDueDate = dueDate.slice(0, -6).replace(" ", "T");
+    return formattedDueDate;
+}
+
+
+    
+    // Initial fetch of tasks
+    fetchTasks();
+  
+
+  function updateTaskList(tasks) {
+    // Get task list element
+    const taskList = document.querySelector("#taskList");
+
+    // Clear task list
+    taskList.innerHTML = "";
+
+    // Add each task to the list
+    tasks.forEach((task, index) => {
+        // Create task list item
+        const taskItem = document.createElement("li");
+        taskItem.classList.add("list-group-item");
+        taskItem.innerHTML = `
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h6 class="mb-1">${task.name}</h6>
+                    <small>Priority: ${task.priority}</small>
+                </div>
+                <div class="mx-auto">
+                    <small>Due Date: ${formatDueDate(task.deadline)}</small>
+                </div>
+                <div class="btn-container">
+                    <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a href="#" class="edit-task">
+                        <div class="edit-task-icon" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></div>
+                    </a>
+                </div>
+            </div>
+        `;
+
+        // Get edit icon element
+        const editIcon = taskItem.querySelector(`#edit-${index}`);
+
+        // Add event listener to edit icon
+        editIcon.addEventListener("click", (event) => {
+            event.stopPropagation();
+            openEditPopup(task, index);
+        });
+
+        // Add event listener to open task details
+        taskItem.addEventListener("click", (event) => {
+            const clickedElement = event.target;
+            const takeTaskBtn = taskItem.querySelector(".take-task-btn");
+            const completeTaskBtn =
+                taskItem.querySelector(".complete-task-btn");
+
+            // Check if the clicked element is not "Take Task" or "Complete Task" button
+            if (
+                clickedElement !== takeTaskBtn
+            ) {
+                openTaskDetails(task);
+            }
+        });
+
+        // Add task item to task list
+        taskList.appendChild(taskItem);
+    });
+
+    // Attach click event listeners to take task buttons
+    const takeTaskBtns = document.querySelectorAll(".take-task-btn");
+    takeTaskBtns.forEach((btn) => {
+        btn.addEventListener("click", takeTask);
+    });
 }
