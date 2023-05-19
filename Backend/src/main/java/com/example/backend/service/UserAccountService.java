@@ -3,7 +3,7 @@ package com.example.backend.service;
 import com.example.backend.model.ProjectMember;
 import com.example.backend.model.UserAccount;
 import com.example.backend.record.GetProjectRespone;
-import com.example.backend.record.UpdateUserRequest;
+import com.example.backend.record.UserRequest;
 import com.example.backend.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class UserAccountService implements CrudService<UserAccount>, UserDetails
         return new User(userAccount.getUsername(), userAccount.getPassword(), userAccount.getAuthorities());
     }
 
-    public String updateUser(Long userId, UpdateUserRequest request) {
+    public String updateUser(Long userId, UserRequest request) {
         UserAccount userAccount = userAccountRepository.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find user account with id " + userId));
         userAccount.setEmail(request.email());
@@ -78,5 +78,12 @@ public class UserAccountService implements CrudService<UserAccount>, UserDetails
             projects.add(new GetProjectRespone(membership.getProject().getId(), membership.getProject().getName()));
         }
         return projects;
+    }
+
+    public UserRequest getUser(Long id) {
+        UserAccount user = userAccountRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find user account with id " + id));
+        UserRequest request = new UserRequest(user.getEmail(), user.getUsername(), user.getDescription())
+        return request;
     }
 }
