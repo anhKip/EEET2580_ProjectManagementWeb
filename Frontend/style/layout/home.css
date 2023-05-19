@@ -5,7 +5,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 9999;
+    z-index: 999;
 }
 
 .topnav a {
@@ -50,7 +50,7 @@
     margin-right: 5px;
 }
 
-.menu-icon {
+/* .menu-icon {
     float: right;
     margin-right: 10px;
     cursor: pointer;
@@ -86,7 +86,7 @@
 
 .menu-container.open {
     left: 0;
-}
+} */
 
 
 .project-grid {
@@ -95,6 +95,7 @@
     grid-gap: 100px;
     padding: 100px;
     margin-top: 40px;
+    z-index: 0;
 }
 
 .project-card {
@@ -199,7 +200,7 @@
     transform: translate(-50%, -50%);
     background-color: #d4d7c6;
     padding: 20px;
-    z-index: 9999;
+    z-index: 999;
 }
 
 .create-project-popup h6 {
@@ -268,11 +269,45 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9998;
+    z-index: 998;
     background-color: rgba(0, 0, 0, 0.6);
 }
 
 .overlay,
 .create-project-popup {
     display: none;
+}
+
+/* .dropdown-menu.show {
+    background-color: red;
+    display: block;
+    z-index: 9999;
+}
+
+.dropdown-item {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+} */
+
+.custom-toggle {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    transform: translateY(70%);
+    -webkit-transform: translateY(70%);
+    -moz-transform: translateY(70%);
+    -ms-transform: translateY(70%);
+    -o-transform: translateY(70%);
+}
+
+.toggle-body {
+    position: relative;
+}
+
+.toggle-body:hover .custom-toggle {
+    display: block;
 }

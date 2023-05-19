@@ -41,7 +41,7 @@ function renderProjectCards(projects) {
         const projectName = project.name;
 
         const projectCard = document.createElement("a");
-        projectCard.href = `http://127.0.0.1:5500/Frontend/page/Dashboard/dashboard.html?pId=${project.id}`;
+        projectCard.href = "../Dashboard/dashboard.html?pId=" + project.id;
         projectCard.classList.add("project-card");
 
         const projectLogoWrapper = document.createElement("div");
