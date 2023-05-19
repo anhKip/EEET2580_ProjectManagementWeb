@@ -30,4 +30,7 @@ public class Project {
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<File> files = new ArrayList<>();
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<Update> updates = new ArrayList<>();
 }
