@@ -92,4 +92,6 @@ function saveInfo(event) {
     .catch((e) => {
         console.log(e)
     })
+    document.querySelector(".confirm-feedback").style.display = 'block';
+
 }

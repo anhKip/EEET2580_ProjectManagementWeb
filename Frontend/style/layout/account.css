@@ -361,6 +361,6 @@ form {
   margin-left: 20% + 50px;
 }
 
-.feedback {
+.feedback, .confirm-feedback {
   display: none;
 }

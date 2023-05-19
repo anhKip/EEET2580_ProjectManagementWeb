@@ -199,3 +199,12 @@ caption {
   line-height: 14px;
   color: red;
 }
+
+.confirm-feedback {
+  font-family: "Roboto", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 14px;
+  color: green;
+}
