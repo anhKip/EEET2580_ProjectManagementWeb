@@ -122,7 +122,7 @@ public class ProjectService implements CrudService<Project> {
                 .build();
         // add to project table
         project.getMembers().add(newMember);
-        Date now = Date.valueOf(LocalDate.now());
+        LocalDateTime now = LocalDateTime.now();
         Update update = Update.builder()
                 .project(project)
                 .date(now)

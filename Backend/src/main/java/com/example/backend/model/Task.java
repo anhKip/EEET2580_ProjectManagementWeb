@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -31,7 +32,7 @@ public class Task {
 
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
     @Column(name = "task_deadline")
-    private Date deadline;
+    private LocalDateTime deadline;
 
     @Column(name = "task_detail")
     private String detail;

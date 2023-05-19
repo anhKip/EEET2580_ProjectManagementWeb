@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +103,7 @@ public class TaskService implements CrudService<Task> {
         task.setAssignedTo(projectMember);
         task.setStatus(Status.ONGOING);
 
-        Date now = Date.valueOf(LocalDate.now());
+        LocalDateTime now = LocalDateTime.now();
         Update update = Update.builder()
                 .project(projectMember.getProject())
                 .date(now)
@@ -149,7 +150,7 @@ public class TaskService implements CrudService<Task> {
         } else {
             projectMember.setScore(projectMember.getScore() + 10);
         }
-        Date now = Date.valueOf(LocalDate.now());
+        LocalDateTime now = LocalDateTime.now();
         Update update = Update.builder()
                 .project(task.getProject())
                 .date(now)
@@ -160,7 +161,7 @@ public class TaskService implements CrudService<Task> {
         return "Task's status has been changed to COMPLETED";
     }
 
-    public String changeDeadline(Long taskId, Date deadline) {
+    public String changeDeadline(Long taskId, LocalDateTime deadline) {
         Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find task with id " + taskId));
         task.setDeadline(deadline);

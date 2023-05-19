@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Builder
 public record GetTaskResponse(
@@ -17,7 +18,7 @@ public record GetTaskResponse(
         String name,
         @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
         @NotNull
-        Date deadline,
+        LocalDateTime deadline,
         String detail,
         @NotNull
         Priority priority,
