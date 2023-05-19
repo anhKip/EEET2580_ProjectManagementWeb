@@ -38,56 +38,6 @@ let onGoingTasks = [];
 // initialize completed task array
 let completedTasks = [];
 
-// // function to add a new task
-// function addTask() {
-//     // get input values
-//     const taskName = document.querySelector("#taskNameInput").value;
-//     const priority = document.querySelector("#prioritySelect").value;
-//     let dueDate = document.querySelector("#dueDateInput").value;
-//     const taskDetails = document.querySelector("#taskDetailsInput").value;
-
-//     if (taskName == null || taskName == "") {
-//         window.alert("Empty task name is not allowed!");
-//     } else {
-//         // Check if hour input is empty
-//         if (!dueDate.includes(":")) {
-//             dueDate += " 23:59"; // Set default time to 23:59
-//         }
-
-//         // Create a new Date object for today's date
-//         const today = new Date();
-//         today.setHours(0, 0, 0, 0); // Set the time to 00:00:00
-
-//         // Create a new Date object to validate the due date
-//         const dueDateObj = new Date(dueDate);
-
-//         // Check if the due date is valid and not before today
-//         if (isNaN(dueDateObj) || dueDateObj < today) {
-//             window.alert("Invalid due date!");
-//             return; // Exit the function if the due date is invalid
-//         }
-
-//         // create new task object
-//         const task = {
-//             name: taskName,
-//             priority: priority,
-//             dueDate: new Date(dueDate),
-//             details: taskDetails,
-//         };
-
-//         // add new task to array
-//         tasks.push(task);
-
-//         // update task list
-//         updateTaskList();
-
-//         // Clear input fields
-//         taskNameInput.value = "";
-//         dueDateInput.value = "";
-//         taskDetailsInput.value = "";
-//     }
-// }
-
 // function to sort tasks
 function sortTasks(sortBy) {
     if (sortBy === "dueDate") {
@@ -105,76 +55,9 @@ function sortTasks(sortBy) {
     updateTaskList();
 }
 
-function updateTaskList() {
-    // Get task list element
-    const taskList = document.querySelector("#taskList");
-
-    // Clear task list
-    taskList.innerHTML = "";
-
-    // Add each task to the list
-    tasks.forEach((task, index) => {
-        // Create task list item
-        const taskItem = document.createElement("li");
-        taskItem.classList.add("list-group-item");
-        taskItem.innerHTML = `
-            <div class="d-flex align-items-center justify-content-between">
-                <div>
-                    <h6 class="mb-1">${task.name}</h6>
-                    <small>Priority: ${task.priority}</small>
-                </div>
-                <div class="mx-auto">
-                    <small>Due Date: ${formatDueDate(task.dueDate)}</small>
-                </div>
-                <div class="btn-container">
-                    <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <a href="#" class="edit-task">
-                        <div class="edit-task-icon" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></div>
-                    </a>
-                </div>
-            </div>
-        `;
-
-        // Get edit icon element
-        const editIcon = taskItem.querySelector(`#edit-${index}`);
-
-        // Add event listener to edit icon
-        editIcon.addEventListener("click", (event) => {
-            event.stopPropagation();
-            openEditPopup(task, index);
-        });
-
-        // Add event listener to open task details
-        taskItem.addEventListener("click", (event) => {
-            const clickedElement = event.target;
-            const takeTaskBtn = taskItem.querySelector(".take-task-btn");
-            const completeTaskBtn =
-                taskItem.querySelector(".complete-task-btn");
-
-            // Check if the clicked element is not "Take Task" or "Complete Task" button
-            if (
-                clickedElement !== takeTaskBtn &&
-                clickedElement !== completeTaskBtn
-            ) {
-                openTaskDetails(task);
-            }
-        });
-
-        // Add task item to task list
-        taskList.appendChild(taskItem);
-    });
-
-    // Attach click event listeners to take task buttons
-    const takeTaskBtns = document.querySelectorAll(".take-task-btn");
-    takeTaskBtns.forEach((btn) => {
-        btn.addEventListener("click", takeTask);
-    });
-}
-
 // function to format due date
 function formatDueDate(dueDate) {
+    const dateObj = new Date(dueDate); // Parse the dueDate string into a Date object
     const options = {
         weekday: "long",
         day: "2-digit",
@@ -183,7 +66,7 @@ function formatDueDate(dueDate) {
         hour: "2-digit",
         minute: "2-digit",
     };
-    const formattedDate = dueDate.toLocaleDateString(undefined, options);
+    const formattedDate = dateObj.toLocaleDateString(undefined, options);
     return formattedDate;
 }
 
@@ -533,14 +416,11 @@ function addTask() {
         return; // Exit the function if the due date is invalid
     }
 
-    // Format the due date to the required format: yyyy-MM-dd HH:mm:ss
-    const formattedDueDate = dueDate.replace("T", " ") + ":00";
-
     const task = {
         name: taskName,
         priority: priority,
         detail: taskDetails,
-        deadline: formattedDueDate,
+        deadline: dueDate,
     };
 
     fetch(fetch_url, {
@@ -557,8 +437,7 @@ function addTask() {
                 document.querySelector("#taskNameInput").value = "";
                 document.querySelector("#dueDateInput").value = "";
                 document.querySelector("#taskDetailsInput").value = "";
-                // Update task list
-                updateTaskList();
+                fetchTasks();
             } else {
                 response.json().then((data) => {
                     console.error(
@@ -572,4 +451,156 @@ function addTask() {
         .catch((error) => {
             console.error("Error creating task:", error);
         });
+}
+
+function fetchTasks() {
+    const url = `http://localhost:8080/api/task/pId=${pId}`;
+
+    fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(
+                    "Failed to fetch task list. Status: " + response.status
+                );
+            }
+        })
+        .then((data) => {
+            if (Array.isArray(data)) {
+                tasks = data.map((task) => ({
+                    taskId: task.taskId,
+                    name: task.name,
+                    priority: task.priority,
+                    dueDate: task.deadline,
+                    details: task.detail,
+                    status: task.status,
+                    assignedTo: task.assignedTo,
+                }));
+                console.log(tasks);
+                updateTaskList(tasks);
+            } else {
+                throw new Error(
+                    "Invalid response format. Expected an array of tasks."
+                );
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching task list:", error);
+        });
+}
+
+// Initial fetch of tasks
+fetchTasks();
+
+function updateTaskList(tasks) {
+    // Get task list element
+    const taskList = document.querySelector("#taskList");
+
+    // Clear task list
+    taskList.innerHTML = "";
+
+    // Add each task to the list
+    tasks.forEach((task, index) => {
+        // Create task list item
+        const taskItem = document.createElement("li");
+        taskItem.classList.add("list-group-item");
+        taskItem.innerHTML = `
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h6 class="mb-1">${task.name}</h6>
+                    <small>Priority: ${task.priority}</small>
+                </div>
+                <div class="mx-auto">
+                    <small>Due Date: ${formatDueDate(task.dueDate)}</small>
+                </div>
+                <div class="btn-container">
+                    <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <a href="#" class="edit-task">
+                        <div class="edit-task-icon" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></div>
+                    </a>
+                </div>
+            </div>
+        `;
+
+        // Get edit icon element
+        const editIcon = taskItem.querySelector(`#edit-${index}`);
+
+        // Add event listener to edit icon
+        editIcon.addEventListener("click", (event) => {
+            event.stopPropagation();
+            openEditPopup(task, index);
+        });
+
+        // Add event listener to open task details
+        taskItem.addEventListener("click", (event) => {
+            const clickedElement = event.target;
+            const takeTaskBtn = taskItem.querySelector(".take-task-btn");
+            const completeTaskBtn =
+                taskItem.querySelector(".complete-task-btn");
+
+            // Check if the clicked element is not "Take Task" or "Complete Task" button
+            if (clickedElement !== takeTaskBtn) {
+                openTaskDetails(task);
+            }
+        });
+
+        // Add task item to task list
+        taskList.appendChild(taskItem);
+    });
+
+    // Attach click event listeners to take task buttons
+    const takeTaskBtns = document.querySelectorAll(".take-task-btn");
+    takeTaskBtns.forEach((btn) => {
+        btn.addEventListener("click", takeTask);
+    });
+}
+
+function setOnGoing() {
+    const url = `http://localhost:8080/api/task/${task.id}/ONGOING`;
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                console.log("Task assigned successfully!");
+            } else {
+                response.json().then((data) => {
+                    console.error(
+                        "Failed to create task. Status:",
+                        response.status
+                    );
+                    console.log("Response body:", data);
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Error assigning task:", error);
+        });
+}
+
+function moveTasks() {
+    if (task.status == "ONGOING") {
+        // move the task from tasks array to onGoingTasks array
+        const onGoingTask = tasks.splice(taskIndex, 1)[0];
+        onGoingTasks.push(onGoingTask);
+    } else if (task.status == "COMPLETED") {
+        // get the task index
+        const taskIndex = event.target.dataset.taskIndex;
+
+        // move the task from onGoingTasks array to completedTasks array
+        const completedTask = onGoingTasks.splice(taskIndex, 1)[0];
+        completedTasks.push(completedTask);
+    }
 }

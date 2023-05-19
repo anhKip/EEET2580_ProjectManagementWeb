@@ -27,15 +27,14 @@ public class ProjectMember {
     @Column(name = "member_score", columnDefinition = "integer default 0")
     private int score;
     //    @ManyToOne(targetEntity = Project.class, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @ManyToOne(targetEntity = Project.class, cascade = CascadeType.ALL)
-
+    @ManyToOne(targetEntity = Project.class)
     @JoinColumn(name = "project_id")
     private Project project;
     //    @ManyToOne(targetEntity = UserAccount.class, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    @ManyToOne(targetEntity = UserAccount.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = UserAccount.class)
     @JoinColumn(name = "user_id")
     private UserAccount user;
 
-    @OneToMany(mappedBy = "assignedTo", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "assignedTo", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Task> tasks = new ArrayList<>();
 }

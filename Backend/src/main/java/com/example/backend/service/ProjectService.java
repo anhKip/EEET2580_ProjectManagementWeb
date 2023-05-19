@@ -109,7 +109,7 @@ public class ProjectService implements CrudService<Project> {
         UserAccount user = userAccountRepository.findUserAccountByUsername(username).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find user account with username " + username));
         // check if user is already a member
-        if (!projectMemberRepository.isAlreadyMember(user.getId(), projectId).isEmpty())
+        if (!projectMemberRepository.findByUserIdAndProjectId(user.getId(), projectId).isEmpty())
             return "This user is already a member.";
         // create and set data for member
         ProjectMember newMember = ProjectMember.builder()
@@ -122,7 +122,7 @@ public class ProjectService implements CrudService<Project> {
         // add to project table
         project.getMembers().add(newMember);
         // saving project
-        projectRepository.save(project);
+//        projectRepository.save(project);
         projectMemberRepository.save(newMember);
 
         return "Member has been added";
@@ -132,9 +132,18 @@ public class ProjectService implements CrudService<Project> {
         // get project
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id " + projectId));
-        ProjectMember member = projectMemberRepository.findByIdAndProjectId(memberId, projectId).orElseThrow(
+        ProjectMember member = projectMemberRepository.findByMemberIdAndProjectId(memberId, projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find member in this project with id " + projectId));
         projectMemberRepository.deleteById(memberId);
         return "Member has been removed";
+    }
+
+    public String changeName(Long projectId, String newName) {
+        // get project
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find project with id " + projectId));
+        project.setName(newName);
+        projectRepository.save(project);
+        return "Project's name has been updated.";
     }
 }
