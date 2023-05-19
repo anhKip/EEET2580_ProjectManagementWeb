@@ -98,9 +98,10 @@ public class TaskService implements CrudService<Task> {
         ProjectMember projectMember = projectMemberRepository.findByUserIdAndProjectId(assignTaskRequest.userId(), assignTaskRequest.projectId()).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find member"));
         task.setAssignedTo(projectMember);
+        task.setStatus(Status.ONGOING);
         taskRepository.save(task);
 
-        return "Task has been assigned";
+        return "Task has been assigned and marked as ONGOING";
     }
 
     public List<GetTaskResponse> getAllTasks(Long projectId) {
@@ -122,12 +123,12 @@ public class TaskService implements CrudService<Task> {
         return responses;
     }
 
-    public String changeStatus(Long taskId, Status status) {
+    public String completeTask(Long taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find task with id " + taskId));
-        task.setStatus(status);
+        task.setStatus(Status.COMPLETED);
         taskRepository.save(task);
-        return "Task's status has been changed";
+        return "Task's status has been changed to COMPLETED";
     }
 
     public String changeDeadline(Long taskId, Date deadline) {

@@ -62,10 +62,10 @@ public class TaskController {
         return new ResponseEntity<>(taskService.getAllTasks(projectId), HttpStatus.OK);
     }
 
-    @Operation(description = "Change status of task")
-    @PostMapping(value = "/{taskId}/{status}")
-    public ResponseEntity<String> changeStatus(@PathVariable Long taskId, @PathVariable Status status) {
-        return new ResponseEntity<>(taskService.changeStatus(taskId, status), HttpStatus.OK);
+    @Operation(description = "Set status of task to COMPLETED")
+    @PostMapping(value = "/{taskId}/complete")
+    public ResponseEntity<String> completeTask(@PathVariable Long taskId) {
+        return new ResponseEntity<>(taskService.completeTask(taskId), HttpStatus.OK);
     }
 
     @Operation(description = "Change deadline of a task")
