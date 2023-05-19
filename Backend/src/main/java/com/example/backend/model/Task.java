@@ -29,7 +29,7 @@ public class Task {
     @Column(name = "task_name")
     private String name;
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
     @Column(name = "task_deadline")
     private Date deadline;
 

@@ -19,7 +19,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @Operation(description = "Create a task. Note: The JSON date format is yyyy-MM-dd HH:mm:ss")
+    @Operation(description = "Create a task. Note: The JSON date format is yyyy-MM-dd'T'HH:mm")
     @PostMapping(value = "/{projectId}", consumes = "application/json")
     public ResponseEntity<String> create(@PathVariable Long projectId, @RequestBody CreateTaskRequest createTaskRequest) {
         return new ResponseEntity<>(taskService.create(projectId, createTaskRequest), HttpStatus.OK);
