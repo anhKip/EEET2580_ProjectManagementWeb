@@ -1,8 +1,7 @@
 package com.example.backend.controller;
 
-import com.example.backend.model.Status;
 import com.example.backend.model.Task;
-import com.example.backend.record.AssignTaskRequest;
+import com.example.backend.record.UpdateStatusTaskRequest;
 import com.example.backend.record.ChangeTaskDeadlineRequest;
 import com.example.backend.record.CreateTaskRequest;
 import com.example.backend.record.GetTaskResponse;
@@ -53,8 +52,8 @@ public class TaskController {
 
     @Operation(description = "Assign a task to user")
     @PostMapping(value = "/{taskId}/assign")
-    public ResponseEntity<String> assignTask(@PathVariable Long taskId, @RequestBody @Valid AssignTaskRequest assignTaskRequest) {
-        return new ResponseEntity<>(taskService.assignTask(taskId, assignTaskRequest), HttpStatus.OK);
+    public ResponseEntity<String> assignTask(@PathVariable Long taskId, @RequestBody @Valid UpdateStatusTaskRequest request) {
+        return new ResponseEntity<>(taskService.assignTask(taskId, request), HttpStatus.OK);
     }
 
     @Operation(description = "Get all tasks of a project")
@@ -65,8 +64,8 @@ public class TaskController {
 
     @Operation(description = "Set status of task to COMPLETED")
     @PostMapping(value = "/{taskId}/complete")
-    public ResponseEntity<String> completeTask(@PathVariable Long taskId) {
-        return new ResponseEntity<>(taskService.completeTask(taskId), HttpStatus.OK);
+    public ResponseEntity<String> completeTask(@PathVariable Long taskId, @RequestBody @Valid UpdateStatusTaskRequest request) {
+        return new ResponseEntity<>(taskService.completeTask(taskId, request), HttpStatus.OK);
     }
 
     @Operation(description = "Change deadline of a task")

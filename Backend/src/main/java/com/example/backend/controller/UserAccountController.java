@@ -1,22 +1,16 @@
 package com.example.backend.controller;
 
-import com.example.backend.model.UserAccount;
 import com.example.backend.record.GetProjectRespone;
-import com.example.backend.record.UpdateUserRequest;
+import com.example.backend.record.UserRequest;
 import com.example.backend.repository.UserAccountRepository;
 import com.example.backend.service.UserAccountService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,15 +25,16 @@ public class UserAccountController {
 //    public UserAccount create(@RequestBody UserAccount userAccount) {
 //        return userAccountService.create(userAccount);
 //    }
-//
-//    @GetMapping(value = "/{id}", produces = "application/json")
-//    public UserAccount retrieve(@PathVariable Long id) {
-//        return userAccountService.retrieve(id);
-//    }
+
+    @Operation(description = "Get user info")
+    @GetMapping(value = "/{id}", produces = "application/json")
+    public ResponseEntity<UserRequest> retrieve(@PathVariable Long id) {
+        return new ResponseEntity<>(userAccountService.getUser(id), HttpStatus.OK);
+    }
 
     @Operation(description = "Update user account info")
     @PutMapping(value = "/{userId}/update", consumes = "application/json")
-    public ResponseEntity<String> update(@PathVariable Long userId, @RequestBody @Valid UpdateUserRequest request) {
+    public ResponseEntity<String> update(@PathVariable Long userId, @RequestBody @Valid UserRequest request) {
         return new ResponseEntity<>(userAccountService.updateUser(userId, request), HttpStatus.OK);
     }
 
