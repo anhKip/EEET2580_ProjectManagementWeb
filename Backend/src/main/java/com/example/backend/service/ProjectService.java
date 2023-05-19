@@ -71,9 +71,9 @@ public class ProjectService implements CrudService<Project> {
                 .score(0)
                 .build();
         user.getMemberships().add(member);
-
         members.add(member);
         project.setMembers(members);
+        projectMemberRepository.save(member);
         projectRepository.save(project);
 
         return "Project has been created.";
@@ -112,10 +112,12 @@ public class ProjectService implements CrudService<Project> {
                 .isAdmin(false)
                 .score(0)
                 .build();
+        System.out.println(newMember);
         // add to project table
         project.getMembers().add(newMember);
         // saving project
         projectRepository.save(project);
+        projectMemberRepository.save(newMember);
 
         return "Member has been added";
     }

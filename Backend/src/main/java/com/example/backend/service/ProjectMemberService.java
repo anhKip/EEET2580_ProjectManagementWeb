@@ -5,12 +5,12 @@ import com.example.backend.repository.ProjectMemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Service
 public class ProjectMemberService implements CrudService<ProjectMember> {
+    @Autowired
     private ProjectMemberRepository projectMemberRepository;
 
     @Override

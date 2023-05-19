@@ -3,6 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.model.ProjectMember;
 import com.example.backend.service.ProjectMemberService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("api/member")
 public class ProjectMemberController {
+    @Autowired
     private ProjectMemberService projectMemberService;
 
     @PostMapping(value = "/", consumes = "application/json")

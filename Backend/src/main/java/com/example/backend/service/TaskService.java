@@ -89,6 +89,7 @@ public class TaskService implements CrudService<Task> {
         ProjectMember projectMember = projectMemberRepository.findById(memberId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find member with id " + memberId));
         task.setAssignedTo(projectMember);
+        taskRepository.save(task);
 
         return "Task has been assigned";
     }
