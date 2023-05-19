@@ -63,4 +63,9 @@ public class ProjectController {
     public ResponseEntity<String> removeMember(@PathVariable Long projectId, @PathVariable Long memberId) {
         return new ResponseEntity<>(projectService.removeMember(projectId, memberId), HttpStatus.OK);
     }
+
+    @PostMapping(value = "/{projectId}/change-name", consumes = "text/plain")
+    public ResponseEntity<String> changeName(@PathVariable Long projectId, @RequestBody String newName) {
+        return new ResponseEntity<>(projectService.changeName(projectId, newName), HttpStatus.OK);
+    }
 }
