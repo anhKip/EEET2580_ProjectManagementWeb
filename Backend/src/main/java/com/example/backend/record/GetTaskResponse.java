@@ -24,6 +24,8 @@ public record GetTaskResponse(
         @NotNull
         Status status,
         @Nullable
-        Long assignedTo
+        Long assignedTo,
+        @Nullable
+        String username
 ) {
 }

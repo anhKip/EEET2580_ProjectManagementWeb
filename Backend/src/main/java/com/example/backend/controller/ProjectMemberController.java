@@ -16,7 +16,7 @@ public class ProjectMemberController {
     private ProjectMemberService projectMemberService;
 
     @PostMapping(value = "/", consumes = "application/json")
-    public ResponseEntity<?> create(@RequestBody ProjectMember projectMember) {
+    public ResponseEntity<String> create(@RequestBody ProjectMember projectMember) {
         projectMemberService.create(projectMember);
         return ResponseEntity.ok("Member has been created");
     }

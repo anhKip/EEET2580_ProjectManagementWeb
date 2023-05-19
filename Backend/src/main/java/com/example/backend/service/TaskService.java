@@ -58,10 +58,11 @@ public class TaskService implements CrudService<Task> {
     }
 
     @Override
-    public void delete(Long id) {
+    public String delete(Long id) {
         Task task = taskRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find task with id " + id));
         taskRepository.deleteById(id);
+        return null;
     }
 
     public String create(Long projectId, CreateTaskRequest createTaskRequest) {
@@ -117,6 +118,7 @@ public class TaskService implements CrudService<Task> {
                     .priority(task.getPriority())
                     .status(task.getStatus())
                     .assignedTo(task.getAssignedTo() == null ? 0 : task.getAssignedTo().getId())
+                    .username(task.getAssignedTo() == null ? null : task.getAssignedTo().getUser().getUsername())
                     .build();
             responses.add(response);
         }
