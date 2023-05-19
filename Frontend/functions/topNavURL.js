@@ -8,7 +8,7 @@ function urlGen() {
 
     menu_container_a.forEach(anchor => {
         let buffer = anchor.href
-        anchor.setAttribute("href", buffer + "?pID=" + projectId)
+        anchor.setAttribute("href", buffer + "?pId=" + projectId)
     })
 
     const hide_menu = document.querySelector(".hide-menu")
@@ -16,7 +16,7 @@ function urlGen() {
 
     hide_menu_a.forEach(anchor => {
         let buffer = anchor.href
-        anchor.setAttribute("href", buffer + "?pID=" + projectId)
+        anchor.setAttribute("href", buffer + "?pId=" + projectId)
     })
 }
 
