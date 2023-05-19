@@ -122,7 +122,7 @@ public class ProjectService implements CrudService<Project> {
         // add to project table
         project.getMembers().add(newMember);
         // saving project
-        projectRepository.save(project);
+//        projectRepository.save(project);
         projectMemberRepository.save(newMember);
 
         return "Member has been added";
