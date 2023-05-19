@@ -83,7 +83,7 @@ public class UserAccountService implements CrudService<UserAccount>, UserDetails
     public UserRequest getUser(Long id) {
         UserAccount user = userAccountRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find user account with id " + id));
-        UserRequest request = new UserRequest(user.getEmail(), user.getUsername(), user.getDescription())
+        UserRequest request = new UserRequest(user.getEmail(), user.getUsername(), user.getDescription());
         return request;
     }
 }

@@ -24,13 +24,23 @@ $(document).ready(function () {
         }
     })
     
-    $("#show-hide-btn").click(function () {
-        if ($("#password-input").attr("type") == "password") {
-            $("#show-hide-btn").html('<i class="fa-solid fa-eye-slash"></i>');
-            $("#password-input").attr("type", "text");
+    $("#change-password-input-btn").click(function () {
+        if ($("#change-password-input").attr("type") == "password") {
+            $("#change-password-input-btn").html('<i class="fa-solid fa-eye-slash"></i>');
+            $("#change-password-input").attr("type", "text");
         } else {
-            $("#show-hide-btn").html('<i class="fa-solid fa-eye"></i>');
-            $("#password-input").attr("type", "password");
+            $("#change-password-input-btn").html('<i class="fa-solid fa-eye"></i>');
+            $("#change-password-input").attr("type", "password");
+        }
+    });
+
+    $("#confirm-change-password-input-btn").click(function () {
+        if ($("#confirm-change-password-input").attr("type") == "password") {
+            $("#confirm-change-password-input-btn").html('<i class="fa-solid fa-eye-slash"></i>');
+            $("#confirm-change-password-input").attr("type", "text");
+        } else {
+            $("#confirm-change-password-input-btn").html('<i class="fa-solid fa-eye"></i>');
+            $("#confirm-change-password-input").attr("type", "password");
         }
     });
 });
