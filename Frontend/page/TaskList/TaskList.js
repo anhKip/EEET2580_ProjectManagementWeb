@@ -1,7 +1,13 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
+import { urlGen } from "../../functions/topNavURL.js";
 
 addWrapper();
 pageLoader();
+urlGen();
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const pId = urlParams.get("pId");
 
 $(document).ready(function () {
     $(".menu-icon").click(function () {
@@ -9,12 +15,16 @@ $(document).ready(function () {
     });
 
     // click event handler to close menu-container
-    $(document).click(function(event) {
-        if(!$('.menu-container').is(event.target) && !$('.menu-icon').is(event.target) && !$("#menu-i").is(event.target)) {
-            $('.menu-container').removeClass("open");
-            $('.hide-menu').removeClass("open");
+    $(document).click(function (event) {
+        if (
+            !$(".menu-container").is(event.target) &&
+            !$(".menu-icon").is(event.target) &&
+            !$("#menu-i").is(event.target)
+        ) {
+            $(".menu-container").removeClass("open");
+            $(".hide-menu").removeClass("open");
         }
-    })
+    });
 });
 
 document.querySelector(".fa-rotate").addEventListener("click", function () {
@@ -28,55 +38,55 @@ let onGoingTasks = [];
 // initialize completed task array
 let completedTasks = [];
 
-// function to add a new task
-function addTask() {
-    // get input values
-    const taskName = document.querySelector("#taskNameInput").value;
-    const priority = document.querySelector("#prioritySelect").value;
-    let dueDate = document.querySelector("#dueDateInput").value;
-    const taskDetails = document.querySelector("#taskDetailsInput").value;
+// // function to add a new task
+// function addTask() {
+//     // get input values
+//     const taskName = document.querySelector("#taskNameInput").value;
+//     const priority = document.querySelector("#prioritySelect").value;
+//     let dueDate = document.querySelector("#dueDateInput").value;
+//     const taskDetails = document.querySelector("#taskDetailsInput").value;
 
-    if (taskName == null || taskName == "") {
-        window.alert("Empty task name is not allowed!");
-    } else {
-        // Check if hour input is empty
-        if (!dueDate.includes(":")) {
-            dueDate += " 23:59"; // Set default time to 23:59
-        }
+//     if (taskName == null || taskName == "") {
+//         window.alert("Empty task name is not allowed!");
+//     } else {
+//         // Check if hour input is empty
+//         if (!dueDate.includes(":")) {
+//             dueDate += " 23:59"; // Set default time to 23:59
+//         }
 
-        // Create a new Date object for today's date
-        const today = new Date();
-        today.setHours(0, 0, 0, 0); // Set the time to 00:00:00
+//         // Create a new Date object for today's date
+//         const today = new Date();
+//         today.setHours(0, 0, 0, 0); // Set the time to 00:00:00
 
-        // Create a new Date object to validate the due date
-        const dueDateObj = new Date(dueDate);
+//         // Create a new Date object to validate the due date
+//         const dueDateObj = new Date(dueDate);
 
-        // Check if the due date is valid and not before today
-        if (isNaN(dueDateObj) || dueDateObj < today) {
-            window.alert("Invalid due date!");
-            return; // Exit the function if the due date is invalid
-        }
+//         // Check if the due date is valid and not before today
+//         if (isNaN(dueDateObj) || dueDateObj < today) {
+//             window.alert("Invalid due date!");
+//             return; // Exit the function if the due date is invalid
+//         }
 
-        // create new task object
-        const task = {
-            name: taskName,
-            priority: priority,
-            dueDate: new Date(dueDate),
-            details: taskDetails,
-        };
+//         // create new task object
+//         const task = {
+//             name: taskName,
+//             priority: priority,
+//             dueDate: new Date(dueDate),
+//             details: taskDetails,
+//         };
 
-        // add new task to array
-        tasks.push(task);
+//         // add new task to array
+//         tasks.push(task);
 
-        // update task list
-        updateTaskList();
+//         // update task list
+//         updateTaskList();
 
-        // Clear input fields
-        taskNameInput.value = "";
-        dueDateInput.value = "";
-        taskDetailsInput.value = "";
-    }
-}
+//         // Clear input fields
+//         taskNameInput.value = "";
+//         dueDateInput.value = "";
+//         taskDetailsInput.value = "";
+//     }
+// }
 
 // function to sort tasks
 function sortTasks(sortBy) {
@@ -104,13 +114,6 @@ function updateTaskList() {
 
     // Add each task to the list
     tasks.forEach((task, index) => {
-        // Map the priority value to the corresponding label
-        const priorityLabels = {
-            1: "High",
-            2: "Medium",
-            3: "Low",
-        };
-
         // Create task list item
         const taskItem = document.createElement("li");
         taskItem.classList.add("list-group-item");
@@ -118,7 +121,7 @@ function updateTaskList() {
             <div class="d-flex align-items-center justify-content-between">
                 <div>
                     <h6 class="mb-1">${task.name}</h6>
-                    <small>Priority: ${priorityLabels[task.priority]}</small>
+                    <small>Priority: ${task.priority}</small>
                 </div>
                 <div class="mx-auto">
                     <small>Due Date: ${formatDueDate(task.dueDate)}</small>
@@ -485,16 +488,9 @@ function openTaskDetails(task) {
     const detailsTaskDueDate = document.querySelector("#detailsTaskDueDate");
     const closeDetailsBtn = document.querySelector("#closeDetailsBtn");
 
-    // Map the priority value to the corresponding label
-    const priorityLabels = {
-        1: "High",
-        2: "Medium",
-        3: "Low",
-    };
-
     // Populate task details in the popup
     detailsTaskName.textContent = task.name;
-    detailsTaskPriority.textContent = priorityLabels[task.priority];
+    detailsTaskPriority.textContent = task.priority;
     detailsTaskDetails.textContent = task.details;
     detailsTaskDueDate.textContent = formatDueDate(task.dueDate);
 
@@ -508,4 +504,72 @@ function openTaskDetails(task) {
         taskDetailsPopup.style.display = "none";
         document.querySelector(".overlay").style.display = "none";
     });
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+function addTask() {
+    const fetch_url = `http://localhost:8080/api/task/${pId}`;
+    const taskName = document.querySelector("#taskNameInput").value;
+    const priority = document.querySelector("#prioritySelect").value;
+    const dueDate = document.querySelector("#dueDateInput").value;
+    const taskDetails = document.querySelector("#taskDetailsInput").value;
+
+    if (taskName === null || taskName === "") {
+        window.alert("Empty task name is not allowed!");
+        return;
+    }
+
+    // Create a new Date object for today's date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set the time to 00:00:00
+
+    // Create a new Date object to validate the due date
+    const dueDateObj = new Date(dueDate);
+
+    // Check if the due date is valid and not before today
+    if (isNaN(dueDateObj) || dueDateObj < today) {
+        window.alert("Invalid due date!");
+        return; // Exit the function if the due date is invalid
+    }
+
+    // Format the due date to the required format: yyyy-MM-dd HH:mm:ss
+    const formattedDueDate = dueDate.replace("T", " ") + ":00";
+
+    const task = {
+        name: taskName,
+        priority: priority,
+        detail: taskDetails,
+        deadline: formattedDueDate,
+    };
+
+    fetch(fetch_url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(task),
+    })
+        .then((response) => {
+            if (response.ok) {
+                console.log("Task created successfully!");
+                // Clear input fields
+                document.querySelector("#taskNameInput").value = "";
+                document.querySelector("#dueDateInput").value = "";
+                document.querySelector("#taskDetailsInput").value = "";
+                // Update task list
+                updateTaskList();
+            } else {
+                response.json().then((data) => {
+                    console.error(
+                        "Failed to create task. Status:",
+                        response.status
+                    );
+                    console.log("Response body:", data);
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Error creating task:", error);
+        });
 }
