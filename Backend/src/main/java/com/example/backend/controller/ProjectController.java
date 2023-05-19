@@ -57,4 +57,9 @@ public class ProjectController {
     public ResponseEntity<String> addMember(@PathVariable Long projectId, @RequestBody AddMemberRequest addMemberRequest) {
         return new ResponseEntity<>(projectService.addMember(projectId, addMemberRequest.username()), HttpStatus.OK);
     }
+
+    @PostMapping(value = "/{projectId}/remove-member/{memberId}")
+    public ResponseEntity<String> removeMember(@PathVariable Long projectId, @PathVariable Long memberId) {
+        return new ResponseEntity<>(projectService.removeMember(projectId, memberId), HttpStatus.OK);
+    }
 }

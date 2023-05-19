@@ -8,6 +8,7 @@ import com.example.backend.record.GetMemberResponse;
 import com.example.backend.record.GetProjectRespone;
 import com.example.backend.repository.ProjectMemberRepository;
 import com.example.backend.repository.ProjectRepository;
+import com.example.backend.repository.TaskRepository;
 import com.example.backend.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,8 @@ public class ProjectService implements CrudService<Project> {
     private ProjectMemberRepository projectMemberRepository;
     @Autowired
     private UserAccountRepository userAccountRepository;
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Override
     public Project create(Project project) {
@@ -103,7 +106,7 @@ public class ProjectService implements CrudService<Project> {
         UserAccount user = userAccountRepository.findUserAccountByUsername(username).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find user account with username " + username));
         // check if user is already a member
-        if(!projectMemberRepository.isAlreadyMember(user.getId(), projectId).isEmpty())
+        if (!projectMemberRepository.isAlreadyMember(user.getId(), projectId).isEmpty())
             return "This user is already a member.";
         // create and set data for member
         ProjectMember newMember = ProjectMember.builder()
@@ -120,5 +123,15 @@ public class ProjectService implements CrudService<Project> {
         projectMemberRepository.save(newMember);
 
         return "Member has been added";
+    }
+
+    public String removeMember(Long projectId, Long memberId) {
+        // get project
+        Project project = projectRepository.findById(projectId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find project with id " + projectId));
+        ProjectMember member = projectMemberRepository.findByIdAndProjectId(memberId, projectId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find member in this project with id " + projectId));
+        projectMemberRepository.deleteById(memberId);
+        return "Member has been removed";
     }
 }

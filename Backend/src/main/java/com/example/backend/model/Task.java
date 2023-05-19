@@ -48,7 +48,7 @@ public class Task {
     private Project project;
 
     @Nullable
-    @ManyToOne(targetEntity = ProjectMember.class)
+    @ManyToOne(targetEntity = ProjectMember.class, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "member_id")
     private ProjectMember assignedTo;
 }

@@ -119,4 +119,12 @@ public class TaskService implements CrudService<Task> {
         }
         return responses;
     }
+
+    public String completeTask(Long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find task with id " + taskId));
+        task.setCompleted(true);
+        taskRepository.save(task);
+        return "Task has been marked finished";
+    }
 }

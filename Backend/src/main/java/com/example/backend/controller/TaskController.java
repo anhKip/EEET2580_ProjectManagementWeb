@@ -52,8 +52,15 @@ public class TaskController {
         return new ResponseEntity<>(taskService.assignTask(taskId, memberId), HttpStatus.OK);
     }
 
+    @Operation(description = "Get all tasks of a project")
     @GetMapping(value = "/pId={projectId}", produces = "application/json")
-    public ResponseEntity<List<GetTaskResponse>> getAllTasks (@PathVariable Long projectId) {
+    public ResponseEntity<List<GetTaskResponse>> getAllTasks(@PathVariable Long projectId) {
         return new ResponseEntity<>(taskService.getAllTasks(projectId), HttpStatus.OK);
+    }
+
+    @Operation(description = "Mark task as finished")
+    @PostMapping(value = "/complete/{taskId}")
+    public ResponseEntity<String> completeTask(@PathVariable Long taskId) {
+        return new ResponseEntity<>(taskService.completeTask(taskId), HttpStatus.OK);
     }
 }
