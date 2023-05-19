@@ -1,9 +1,12 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
+import { getIdCookie} from "../../functions/authentications.js";
 import { urlGen } from "../../functions/topNavURL.js";
 
 addWrapper();
 pageLoader();
 urlGen();
+// Get userID
+const userId = getIdCookie("userId");
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -161,19 +164,6 @@ function updateCompletedTaskList() {
     });
 }
 
-function takeTask(event) {
-    // get the task index
-    const taskIndex = event.target.dataset.taskIndex;
-
-    // move the task from tasks array to onGoingTasks array
-    const onGoingTask = tasks.splice(taskIndex, 1)[0];
-    onGoingTasks.push(onGoingTask);
-
-    // update task list and my task list
-    updateTaskList();
-    updateOnGoingTaskList();
-}
-
 function completeTask(event) {
     // get the task index
     const taskIndex = event.target.dataset.taskIndex;
@@ -199,15 +189,6 @@ sortLinks.forEach((link) => {
         const sortBy = event.target.dataset.sort;
         sortTasks(sortBy);
     });
-});
-
-// add event listener to take task button
-document.addEventListener("click", (event) => {
-    if (event.target.classList.contains("take-task-btn")) {
-        const index = parseInt(event.target.dataset.taskIndex);
-        tasks[index].assigned = true; // add a new property to the task object to indicate it's assigned
-        updateTaskList(); // update the task list to reflect the changes
-    }
 });
 
 $(document).ready(function () {
@@ -482,7 +463,7 @@ function fetchTasks() {
                     status: task.status,
                     assignedTo: task.assignedTo,
                 }));
-                console.log(tasks);
+                console.log("Get task", tasks);
                 updateTaskList(tasks);
             } else {
                 throw new Error(
@@ -504,7 +485,7 @@ function updateTaskList(tasks) {
 
     // Clear task list
     taskList.innerHTML = "";
-
+    console.log("Task log", tasks);
     // Add each task to the list
     tasks.forEach((task, index) => {
         // Create task list item
@@ -520,7 +501,7 @@ function updateTaskList(tasks) {
                     <small>Due Date: ${formatDueDate(task.dueDate)}</small>
                 </div>
                 <div class="btn-container">
-                    <button type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
+                    <button id=${task.taskId} type="button" class="btn btn-success take-task-btn" data-task-index="${index}">Take Task</button>
                 </div>
                 <div class="d-flex justify-content-end">
                     <a href="#" class="edit-task">
@@ -563,33 +544,6 @@ function updateTaskList(tasks) {
     });
 }
 
-function setOnGoing() {
-    const url = `http://localhost:8080/api/task/${task.id}/ONGOING`;
-
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-        .then((response) => {
-            if (response.ok) {
-                console.log("Task assigned successfully!");
-            } else {
-                response.json().then((data) => {
-                    console.error(
-                        "Failed to create task. Status:",
-                        response.status
-                    );
-                    console.log("Response body:", data);
-                });
-            }
-        })
-        .catch((error) => {
-            console.error("Error assigning task:", error);
-        });
-}
-
 function moveTasks() {
     if (task.status == "ONGOING") {
         // move the task from tasks array to onGoingTasks array
@@ -603,4 +557,48 @@ function moveTasks() {
         const completedTask = onGoingTasks.splice(taskIndex, 1)[0];
         completedTasks.push(completedTask);
     }
+}
+
+function takeTask(event) {
+    // get the task index
+    const taskId = event.target.id;
+    const url = `http://localhost:8080/api/task/${taskId}/assign`;
+
+    const assignedTask = {
+        userId: userId,
+        projectId: pId,
+    };
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(assignedTask),
+    })
+        .then((response) => {
+            if (response.ok) {
+                console.log("Task assigned successfully!");
+                //location.reload();
+            } else {
+                response.json().then((data) => {
+                    console.error(
+                        "Failed to create task. Status:",
+                        response.status
+                    );
+                    console.log("Response body:", data);
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Error assigning task:", error);
+        });
+
+    // move the task from tasks array to onGoingTasks array
+    // const onGoingTask = tasks.splice(taskIndex, 1)[0];
+    // onGoingTasks.push(onGoingTask);
+
+    // // update task list and my task list
+    // updateTaskList();
+    // updateOnGoingTaskList();
 }
