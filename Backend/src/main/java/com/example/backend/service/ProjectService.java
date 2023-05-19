@@ -59,8 +59,11 @@ public class ProjectService implements CrudService<Project> {
     }
 
     @Override
-    public void delete(Long id) {
+    public String delete(Long id) {
+        Project project = projectRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find project with id " + id));
         projectRepository.deleteById(id);
+        return "Done";
     }
 
     public String createProject(CreateProjectRequest createProjectRequest) {

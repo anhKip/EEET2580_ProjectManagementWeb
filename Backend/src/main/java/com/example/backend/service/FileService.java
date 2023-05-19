@@ -36,7 +36,8 @@ public class FileService implements CrudService<File>{
     }
 
     @Override
-    public void delete(Long id) {
+    public String delete(Long id) {
         fileRepository.deleteById(id);
+        return null;
     }
 }

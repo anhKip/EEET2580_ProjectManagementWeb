@@ -40,6 +40,10 @@ public class UserAccount implements UserDetails {
     @Column(name = "user_password")
     private String password;
 
+    @Nullable
+    @Column(name = "user_description")
+    private String description;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<ProjectMember> memberships = new ArrayList<>();
 
