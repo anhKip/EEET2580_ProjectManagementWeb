@@ -3,6 +3,7 @@ package com.example.backend.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class Update {
     @Column(name = "message")
     private String message;
 
-    @NotBlank
+    @NotNull
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm")
     @Column(name = "date")
     private Date date;
