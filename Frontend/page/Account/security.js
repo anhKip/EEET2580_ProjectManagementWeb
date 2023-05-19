@@ -4,7 +4,6 @@ import { urlGen } from "../../functions/topNavURL.js";
 
 reLog()
 // Set href for top-nav anchors
-urlGen()
 addWrapper()
 pageLoader()
 
