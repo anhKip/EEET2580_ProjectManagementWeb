@@ -40,15 +40,16 @@ public class Task {
     @Column(name = "task_priority")
     private Priority priority;
 
-    @Column(name = "completed", columnDefinition = "boolean default false")
-    private Boolean completed;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private Status status;
 
     @ManyToOne(targetEntity = Project.class)
     @JoinColumn(name = "project_id")
     private Project project;
 
     @Nullable
-    @ManyToOne(targetEntity = ProjectMember.class, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(targetEntity = ProjectMember.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private ProjectMember assignedTo;
 }

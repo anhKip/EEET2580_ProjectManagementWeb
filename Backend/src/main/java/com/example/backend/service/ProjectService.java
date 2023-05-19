@@ -10,6 +10,7 @@ import com.example.backend.repository.ProjectMemberRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.TaskRepository;
 import com.example.backend.repository.UserAccountRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,8 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class ProjectService implements CrudService<Project> {
+    @Autowired
+    private EntityManager entityManager;
     @Autowired
     private ProjectRepository projectRepository;
     @Autowired
@@ -76,7 +79,7 @@ public class ProjectService implements CrudService<Project> {
         user.getMemberships().add(member);
         members.add(member);
         project.setMembers(members);
-        projectMemberRepository.save(member);
+//        projectMemberRepository.save(member);
         projectRepository.save(project);
 
         return "Project has been created.";

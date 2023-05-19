@@ -27,8 +27,6 @@ public class ProjectController {
 
     @PostMapping(value = "/", consumes = "application/json")
     public ResponseEntity<String> create(@RequestBody CreateProjectRequest createProjectRequest) {
-        System.out.println("Test: inside createProject project controller");
-        System.out.println(createProjectRequest);
         return new ResponseEntity<>(projectService.createProject(createProjectRequest), HttpStatus.OK);
     }
 

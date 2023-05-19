@@ -1,6 +1,7 @@
 package com.example.backend.record;
 
 import com.example.backend.model.Priority;
+import com.example.backend.model.Status;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -19,7 +20,7 @@ public record GetTaskResponse(
         @NotNull
         Priority priority,
         @NotNull
-        Boolean completed,
+        Status status,
         @Nullable
         Long assignedTo
 ) {

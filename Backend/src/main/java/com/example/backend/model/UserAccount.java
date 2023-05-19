@@ -40,7 +40,7 @@ public class UserAccount implements UserDetails {
     @Column(name = "user_password")
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<ProjectMember> memberships = new ArrayList<>();
 
     @Override
