@@ -4,6 +4,7 @@ import com.example.backend.model.Project;
 import com.example.backend.model.ProjectMember;
 import com.example.backend.model.Status;
 import com.example.backend.model.Task;
+import com.example.backend.record.AssignTaskRequest;
 import com.example.backend.record.CreateTaskRequest;
 import com.example.backend.record.GetTaskResponse;
 import com.example.backend.repository.ProjectMemberRepository;
@@ -91,11 +92,11 @@ public class TaskService implements CrudService<Task> {
         return "Task has been updated";
     }
 
-    public String assignTask(Long taskId, Long memberId) {
+    public String assignTask(Long taskId, AssignTaskRequest assignTaskRequest) {
         Task task = taskRepository.findById(taskId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find task with id " + taskId));
-        ProjectMember projectMember = projectMemberRepository.findById(memberId).orElseThrow(
-                () -> new EntityNotFoundException("Cannot find member with id " + memberId));
+        ProjectMember projectMember = projectMemberRepository.findByUserIdAndProjectId(assignTaskRequest.userId(), assignTaskRequest.projectId()).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find member"));
         task.setAssignedTo(projectMember);
         taskRepository.save(task);
 

@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.model.Status;
 import com.example.backend.model.Task;
+import com.example.backend.record.AssignTaskRequest;
 import com.example.backend.record.CreateTaskRequest;
 import com.example.backend.record.GetTaskResponse;
 import com.example.backend.service.TaskService;
@@ -48,9 +49,9 @@ public class TaskController {
     }
 
     @Operation(description = "Assign a task to user")
-    @PostMapping(value = "/{taskId}/assign/{memberId}")
-    public ResponseEntity<String> assignTask(@PathVariable Long taskId, @PathVariable Long memberId) {
-        return new ResponseEntity<>(taskService.assignTask(taskId, memberId), HttpStatus.OK);
+    @PostMapping(value = "/{taskId}/assign")
+    public ResponseEntity<String> assignTask(@PathVariable Long taskId, @RequestBody AssignTaskRequest assignTaskRequest) {
+        return new ResponseEntity<>(taskService.assignTask(taskId, assignTaskRequest), HttpStatus.OK);
     }
 
     @Operation(description = "Get all tasks of a project")
