@@ -3,7 +3,7 @@ import { getIdCookie } from "../../functions/authentications.js";
 import { urlGen } from "../../functions/topNavURL.js";
 import { reLog, logOut } from "../../functions/authentications.js";
 
-reLog()
+reLog();
 
 addWrapper();
 pageLoader();
@@ -12,7 +12,7 @@ urlGen();
 // Get userID
 const userId = getIdCookie("userId");
 
-document.getElementById("logOut-btn").addEventListener("click", logOut)
+document.getElementById("logOut-btn").addEventListener("click", logOut);
 
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
@@ -28,12 +28,16 @@ $(document).ready(function () {
     });
 
     // click event handler to close menu-container
-    $(document).click(function(event) {
-        if(!$('.menu-container').is(event.target) && !$('.menu-icon').is(event.target) && !$("#menu-i").is(event.target)) {
-            $('.menu-container').removeClass("open");
-            $('.hide-menu').removeClass("open");
+    $(document).click(function (event) {
+        if (
+            !$(".menu-container").is(event.target) &&
+            !$(".menu-icon").is(event.target) &&
+            !$("#menu-i").is(event.target)
+        ) {
+            $(".menu-container").removeClass("open");
+            $(".hide-menu").removeClass("open");
         }
-    })
+    });
 });
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
@@ -107,6 +111,46 @@ $(document).ready(function () {
         $(".overlay, .add-task-popup").fadeOut();
     });
 });
+
+function openEditPopup(task, taskId) {
+    console.log("openedit task ID: ");
+
+    // Get edit popup elements
+    const editPopup = document.querySelector(".edit-task-popup");
+    const taskNameInput = document.querySelector("#editTaskNameInput");
+    const prioritySelect = document.querySelector("#editPrioritySelect");
+    const dueDateInput = document.querySelector("#editDueDateInput");
+    const taskDetailsInput = document.querySelector("#editTaskDetailsInput");
+    const deleteTaskBtn = document.querySelector("#deleteTaskBtn");
+
+    // Fill in input fields with task information
+    taskNameInput.value = task.name;
+    prioritySelect.value = task.priority;
+    taskDetailsInput.value = task.details;
+
+    // Format the due date to be in the format accepted by the input element
+    const formattedDueDate = new Date(task.dueDate).toISOString().substring(0, 16);
+    console.log("Date format 1: ", new Date(task.dueDate).toISOString().substring(0, 16))
+    console.log("Date format 2: ", new Date(task.dueDate).toISOString())
+    dueDateInput.value = formattedDueDate;
+
+    // Store task object and index as properties of the editPopup element
+    editPopup.taskObj = task;
+    editPopup.taskId = taskId;
+
+    // Show edit popup and overlay
+    editPopup.style.display = "block";
+    document.querySelector(".overlay").style.display = "block";
+
+    // Add event listener to delete button
+    deleteTaskBtn.addEventListener("click", () => {
+        // Call the deleteTask function to remove the task
+        deleteTask(index);
+
+        // Close the edit popup
+        closeEditPopup();
+    });
+}
 
 function deleteTask(index) {
     // Remove the task from the tasks array
@@ -186,11 +230,42 @@ function closeEditPopup() {
         .removeEventListener("click", updateTask);
 }
 
-function updateTask(index, taskName, priority, dueDate) {
+function updateTask(taskId, taskName, priority, dueDate) {
+
+    const url = `http://localhost:8080/api/task/${taskId}`;
+
+    fetch(fetch_url, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                console.log("Task edit successfully!");
+                // Clear input fields
+                document.querySelector("#taskNameInput").value = "";
+                document.querySelector("#dueDateInput").value = "";
+                document.querySelector("#taskDetailsInput").value = "";
+                fetchTasks();
+            } else {
+                response.json().then((data) => {
+                    console.error(
+                        "Failed to create task. Status:",
+                        response.status
+                    );
+                    console.log("Response body:", data);
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Error creating task:", error);
+        });
+
     // update task object with new values
-    tasks[index].name = taskName;
-    tasks[index].priority = priority;
-    tasks[index].dueDate = new Date(dueDate);
+    tasks[taskId].name = taskName;
+    tasks[taskId].priority = priority;
+    tasks[taskId].dueDate = new Date(dueDate);
 
     // update task list
     updateTaskList();
@@ -247,6 +322,8 @@ function addTask() {
     // Create a new Date object to validate the due date
     const dueDateObj = new Date(dueDate);
 
+    console.log("Due date: ", dueDateObj);
+
     // Check if the due date is valid and not before today
     if (isNaN(dueDateObj) || dueDateObj < today) {
         window.alert("Invalid due date!");
@@ -288,47 +365,6 @@ function addTask() {
         .catch((error) => {
             console.error("Error creating task:", error);
         });
-}
-
-function openEditPopup(tasks, index) {
-    // find the task object in the tasks array by index
-    const taskObj = tasks[index];
-
-    const url = `http://localhost:8080/api/task/${pId}`
-
-    // get edit popup elements
-    const editPopup = document.querySelector(".edit-task-popup");
-    const taskNameInput = document.querySelector("#editTaskNameInput");
-    const prioritySelect = document.querySelector("#editPrioritySelect");
-    const dueDateInput = document.querySelector("#editDueDateInput");
-    const taskDetailsInput = document.querySelector("#editTaskDetailsInput");
-    const deleteTaskBtn = document.querySelector("#deleteTaskBtn");
-
-    // fill in input fields with task information
-    taskNameInput.value = taskObj.name;
-    prioritySelect.value = taskObj.priority;
-    taskDetailsInput.value = taskObj.details;
-
-    // Format the due date to be in the format accepted by the input element
-    const formattedDueDate = taskObj.dueDate.toISOString().substring(0, 16);
-    dueDateInput.value = formattedDueDate;
-
-    // store taskObj and index as properties of the editPopup element
-    editPopup.taskObj = taskObj;
-    editPopup.index = index;
-
-    // show edit popup and overlay
-    editPopup.style.display = "block";
-    document.querySelector(".overlay").style.display = "block";
-
-    // add event listener to delete button
-    deleteTaskBtn.addEventListener("click", () => {
-        // Call the deleteTask function to remove the task
-        deleteTask(index);
-
-        // Close the edit popup
-        closeEditPopup();
-    });
 }
 
 function fetchTasks() {
@@ -390,6 +426,7 @@ function updateTaskList(tasks) {
     tasks.forEach((task, index) => {
         if (task.status === "TODO") {
             // Create task list item
+            console.log(task.dueDate);
             const taskItem = document.createElement("li");
             taskItem.classList.add("list-group-item");
             taskItem.innerHTML = `
@@ -408,20 +445,23 @@ function updateTaskList(tasks) {
                 </div>
                 <div class="d-flex justify-content-end">
                     <a href="#" class="edit-task">
-                        <div class="edit-task-icon" id="edit-${index}"><i class="fa-regular fa-pen-to-square"></i></div>
+                        <div class="edit-task-icon"><i id="edit-${
+                            task.taskId
+                        }" class="fa-regular fa-pen-to-square"></i></div>
                     </a>
                 </div>
             </div>
         `;
 
             // Get edit icon element
-            const editIcon = taskItem.querySelector(`#edit-${index}`);
+            const editIcon = taskItem.querySelector(`#edit-${task.taskId}`);
 
             // Add event listener to edit icon
             editIcon.addEventListener("click", (event) => {
+                let taskId = event.target.id.split("-")[1];
+                console.log("Task ID: ", taskId)
                 event.stopPropagation();
-                console.log("Icon clicked")
-                openEditPopup(task, index);
+                openEditPopup(task, taskId);
             });
 
             // Add event listener to open task details
