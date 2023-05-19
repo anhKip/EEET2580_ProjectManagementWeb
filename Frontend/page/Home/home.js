@@ -9,19 +9,18 @@ reLog();
 addWrapper();
 pageLoader();
 
+// Get userID
+const userId = getIdCookie("userId");
+
+window.addEventListener("load", fetchProjects);
+
 document.getElementById("logOut-btn").addEventListener("click", logOut)
 
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
 
-// Get userID
-const userId = getIdCookie("userId");
-
 // Start fetching here
-
-fetchProjects();
-
 function fetchProjects() {
     const url = `http://localhost:8080/api/user/${userId}/my-projects`;
 
@@ -31,17 +30,22 @@ function fetchProjects() {
             "Content-Type": "application/json",
         },
     })
-        .then((response) => response.json())
-        .then((data) => {
-            renderProjectCards(data);
-        })
-        .catch((error) => {
-            console.error("Error fetching projects:", error);
-        });
+    .then((response) => response.json())
+    .then((data) => {
+        renderProjectCards(data)
+    })
+    .catch((error) => {
+        console.error("Error fetching projects:", error);
+    });
 }
 
 function renderProjectCards(projects) {
     const projectGrid = document.querySelector(".project-grid");
+    const projectCards = projectGrid.querySelectorAll("a.project-card");
+
+    projectCards.forEach((card) => {
+        card.remove()
+    })
 
     projects.forEach((project) => {
         const projectName = project.name;
@@ -76,7 +80,7 @@ function createProject() {
 
     const projectData = {
         name: projectName,
-        userId: userId,
+        userId: parseInt(userId),
     };
 
     fetch(url, {
@@ -91,7 +95,7 @@ function createProject() {
             console.log("Project created:", data);
         })
         .catch((error) => {
-            console.error("Error creating project:", error);
+            console.error(error);
         });
 }
 
@@ -116,11 +120,27 @@ $(document).ready(function () {
 
     // click event handler for submit button
     $(".submit-button").click(function (event) {
-        event.preventDefault()
         // prevent the default submit behavior, which is to refresh the page
-        createProject();
-        fetchProjects();
+        event.preventDefault()
+
+        createProject()
+
+        $(".spinner-wrapper").css({
+            "opacity": "0.5",
+            "display": "flex"
+        })
+
+        setTimeout(function() {
+            fetchProjects()
+            $(".spinner-wrapper").css({
+                "opacity": "0",
+                "display": "none"
+            })
+        }, 1000) // <-- Need a timeout because it happens too fast
+
+        $("#project-name").val("")
         // hide the gray overlay and create project box
         $(".overlay, .create-project-popup").fadeOut();
+
     });
 });
