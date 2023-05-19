@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface UpdateRepository extends JpaRepository<Update, Long> {
-    @Query(value = "SELECT * FROM update ORDER BY date DESC LIMIT 7", nativeQuery = true)
+    @Query(value = "SELECT * FROM update ORDER BY update_id DESC LIMIT 7", nativeQuery = true)
     List<Update> findTop7ByDateOrderByDateDateDesc();
 }
