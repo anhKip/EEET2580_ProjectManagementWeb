@@ -2,13 +2,20 @@ import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { reLog, logOut } from "../../functions/authentications.js";
 import { urlGen } from "../../functions/topNavURL.js";
 
-reLog()
+reLog();
 // Set href for top-nav anchors
-urlGen()
-addWrapper()
-pageLoader()
+urlGen();
+addWrapper();
+pageLoader();
 
-document.getElementById("logOut-btn").addEventListener("click", logOut)
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const pId = urlParams.get("pId");
+
+// initialize task array
+let tasks = [];
+
+document.getElementById("logOut-btn").addEventListener("click", logOut);
 
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
@@ -20,12 +27,16 @@ $(document).ready(function () {
     });
 
     // click event handler to close menu-container
-    $(document).click(function(event) {
-        if(!$('.menu-container').is(event.target) && !$('.menu-icon').is(event.target) && !$("#menu-i").is(event.target)) {
-            $('.menu-container').removeClass("open");
-            $('.hide-menu').removeClass("open");
+    $(document).click(function (event) {
+        if (
+            !$(".menu-container").is(event.target) &&
+            !$(".menu-icon").is(event.target) &&
+            !$("#menu-i").is(event.target)
+        ) {
+            $(".menu-container").removeClass("open");
+            $(".hide-menu").removeClass("open");
         }
-    })
+    });
 
     var calendarEl = document.getElementById("calendar");
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -35,13 +46,27 @@ $(document).ready(function () {
             right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
         },
         navLinks: true,
-        events: getTasksData().map(convertTaskToEvent),
+        eventSources: [
+            {
+                events: function (fetchInfo, successCallback, failureCallback) {
+                    fetchTasks()
+                        .then((tasks) => {
+                            const events = tasks.map(convertTaskToEvent);
+                            successCallback(events);
+                        })
+                        .catch((error) => {
+                            console.error("Error fetching task list:", error);
+                            failureCallback(error);
+                        });
+                },
+            },
+        ],
         eventClick: function (info) {
             alert(
                 "Task Name: " +
                     info.event.title +
                     "\nAssigned To: " +
-                    info.event.extendedProps.assignedTo
+                    info.event.extendedProps.username
             );
         },
         eventContent: function (arg) {
@@ -49,7 +74,7 @@ $(document).ready(function () {
             if (arg.view.type === "listMonth") {
                 assignedToHtml =
                     "<div class='assigned-to'>Assigned To: " +
-                    arg.event.extendedProps.assignedTo +
+                    arg.event.extendedProps.username +
                     "</div>";
             }
 
@@ -80,44 +105,16 @@ $(document).ready(function () {
     calendar.render();
 });
 
-function getTasksData() {
-    const tasks = [
-        {
-            id: 1,
-            name: "Task 1",
-            priority: 1,
-            dueDate: "2023-05-01",
-            assignedTo: "John Doe",
-        },
-        {
-            id: 2,
-            name: "Task 2",
-            priority: 2,
-            dueDate: "2023-05-05",
-            assignedTo: "Jane Smith",
-        },
-        {
-            id: 3,
-            name: "Task 3",
-            priority: 3,
-            dueDate: "2023-05-10",
-            assignedTo: "David Johnson",
-        },
-    ];
-
-    return tasks;
-}
-
 function convertTaskToEvent(task) {
     let color;
     switch (task.priority) {
-        case 1:
+        case 'HIGH':
             color = "#f8a580";
             break;
-        case 2:
+        case "MEDIUM":
             color = "#fad3a5";
             break;
-        case 3:
+        case "LOW":
             color = "#46958d";
             break;
         default:
@@ -125,11 +122,11 @@ function convertTaskToEvent(task) {
     }
 
     return {
-        id: task.id,
+        id: task.taskId,
         title: task.name,
         start: task.dueDate,
         color: color,
-        assignedTo: task.assignedTo,
+        username: task.username,
     };
 }
 
@@ -138,4 +135,49 @@ function updateTaskDueDate(taskId, newDueDate) {
     console.log("New Due Date:", newDueDate);
 }
 
+function fetchTasks() {
+    const url = `http://localhost:8080/api/task/pId=${pId}`;
 
+    return fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(
+                    "Failed to fetch task list. Status: " + response.status
+                );
+            }
+        })
+        .then((data) => {
+            if (Array.isArray(data)) {
+                tasks = data.map((task) => ({
+                    taskId: task.taskId,
+                    name: task.name,
+                    priority: task.priority,
+                    dueDate: task.deadline,
+                    details: task.detail,
+                    status: task.status,
+                    assignedTo: task.assignedTo,
+                    usernames: task.username,
+                }));
+                console.log("Get task", tasks);
+                return tasks;
+            } else {
+                throw new Error(
+                    "Invalid response format. Expected an array of tasks."
+                );
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching task list:", error);
+            throw error;
+        });
+}
+
+// Initial fetch of tasks
+fetchTasks();
