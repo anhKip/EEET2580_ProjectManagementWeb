@@ -1,13 +1,19 @@
 // Import from authentication.js
-import { getIdCookie, reLog } from "../../functions/authentications.js";
+import { getIdCookie, reLog, logOut } from "../../functions/authentications.js";
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
+
+// Redirect to login page, comment this out for testing
+reLog();
 
 // add spinner
 addWrapper();
 pageLoader();
 
-// Redirect to login page, comment this out for testing
-reLog();
+document.getElementById("logOut-btn").addEventListener("click", logOut)
+
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
 
 // Get userID
 const userId = getIdCookie("userId");
@@ -131,8 +137,4 @@ $(document).ready(function () {
         // hide the gray overlay and create project box
         $(".overlay, .create-project-popup").fadeOut();
     });
-});
-
-document.querySelector(".fa-rotate").addEventListener("click", function () {
-    location.reload();
 });

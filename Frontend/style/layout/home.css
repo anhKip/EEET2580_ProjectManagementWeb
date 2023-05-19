@@ -1,6 +1,5 @@
 .topnav {
     background-color: #d4d7c6;
-    overflow: hidden;
     position: fixed;
     top: 0;
     left: 0;
@@ -95,7 +94,7 @@
     grid-gap: 100px;
     padding: 100px;
     margin-top: 40px;
-    z-index: 0;
+    z-index: 0 !important;
 }
 
 .project-card {
@@ -278,36 +277,27 @@
     display: none;
 }
 
-/* .dropdown-menu.show {
-    background-color: red;
-    display: block;
-    z-index: 9999;
-}
-
-.dropdown-item {
-    font-family: "Roboto", sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 22px;
-} */
-
 .custom-toggle {
     display: none;
     position: absolute;
     right: 0;
     bottom: 0;
-    transform: translateY(70%);
-    -webkit-transform: translateY(70%);
-    -moz-transform: translateY(70%);
-    -ms-transform: translateY(70%);
-    -o-transform: translateY(70%);
-}
-
-.toggle-body {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid black;
+    background-color: white;
+    transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+    -moz-transform: translateY(100%);
+    -ms-transform: translateY(100%);
+    -o-transform: translateY(100%);
+  }
+  
+  .toggle-body {
     position: relative;
-}
-
-.toggle-body:hover .custom-toggle {
+  }
+  
+  .toggle-body:hover .custom-toggle {
     display: block;
-}
+  }

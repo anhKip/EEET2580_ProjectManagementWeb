@@ -1,16 +1,20 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
-import { reLog } from "../../functions/authentications.js";
+import { reLog, logOut } from "../../functions/authentications.js";
 import { urlGen } from "../../functions/topNavURL.js";
 
+reLog()
 // Add spinner
 addWrapper();
 pageLoader();
 
-// Redirect to login page, comment this out for testing
-// reLog()
-
 // Set href for top-nav anchors
 urlGen()
+
+document.getElementById("logOut-btn").addEventListener("click", logOut)
+
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
 
 $(document).ready(function () {
     $(".menu-icon").click(function () {
@@ -36,10 +40,6 @@ $(document).ready(function () {
         $(".updates-box").toggle();
         $(".leaderboard-box").hide();
     });
-});
-
-document.getElementById("refresh").addEventListener("click", function () {
-    location.reload();
 });
 
 // Calculate the highest points
@@ -97,3 +97,6 @@ function getProjectName() {
 
 // Call the getProjectName function
 getProjectName();
+
+document.getElementById("logOut-btn").addEventListener("click", logOut)
+

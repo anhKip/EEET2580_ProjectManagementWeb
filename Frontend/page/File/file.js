@@ -1,10 +1,19 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { urlGen } from "../../functions/topNavURL.js";
+import { reLog, logOut } from "../../functions/authentications.js";
 
+reLog()
 // Set href for top-nav anchors
 urlGen()
 addWrapper()
 pageLoader()
+
+document.getElementById("logOut-btn").addEventListener("click", logOut)
+
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
+
 
 $(document).ready(function () {
     $(".menu-icon").click(function () {
@@ -74,3 +83,6 @@ document.querySelectorAll(".table th").forEach((headerCell) => {
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
+
+document.getElementById("logOut-btn").addEventListener("click", logOut)
+

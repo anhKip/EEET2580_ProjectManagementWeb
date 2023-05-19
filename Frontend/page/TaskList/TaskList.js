@@ -1,9 +1,19 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { urlGen } from "../../functions/topNavURL.js";
+import { reLog, logOut } from "../../functions/authentications.js";
+
+reLog()
 
 addWrapper();
 pageLoader();
+
 urlGen();
+
+document.getElementById("logOut-btn").addEventListener("click", logOut)
+
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -15,18 +25,13 @@ $(document).ready(function () {
     });
 
     // click event handler to close menu-container
-    $(document).click(function (event) {
-        if (
-            !$(".menu-container").is(event.target) &&
-            !$(".menu-icon").is(event.target) &&
-            !$("#menu-i").is(event.target)
-        ) {
-            $(".menu-container").removeClass("open");
-            $(".hide-menu").removeClass("open");
+    $(document).click(function(event) {
+        if(!$('.menu-container').is(event.target) && !$('.menu-icon').is(event.target) && !$("#menu-i").is(event.target)) {
+            $('.menu-container').removeClass("open");
+            $('.hide-menu').removeClass("open");
         }
-    });
+    })
 });
-
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
