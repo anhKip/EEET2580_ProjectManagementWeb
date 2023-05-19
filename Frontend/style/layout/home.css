@@ -1,11 +1,10 @@
 .topnav {
     background-color: #d4d7c6;
-    overflow: hidden;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 9999;
+    z-index: 999;
 }
 
 .topnav a {
@@ -50,7 +49,7 @@
     margin-right: 5px;
 }
 
-.menu-icon {
+/* .menu-icon {
     float: right;
     margin-right: 10px;
     cursor: pointer;
@@ -86,7 +85,7 @@
 
 .menu-container.open {
     left: 0;
-}
+} */
 
 
 .project-grid {
@@ -95,6 +94,7 @@
     grid-gap: 100px;
     padding: 100px;
     margin-top: 40px;
+    z-index: 0 !important;
 }
 
 .project-card {
@@ -199,7 +199,7 @@
     transform: translate(-50%, -50%);
     background-color: #d4d7c6;
     padding: 20px;
-    z-index: 9999;
+    z-index: 999;
 }
 
 .create-project-popup h6 {
@@ -268,7 +268,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9998;
+    z-index: 998;
     background-color: rgba(0, 0, 0, 0.6);
 }
 
@@ -276,3 +276,28 @@
 .create-project-popup {
     display: none;
 }
+
+.custom-toggle {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid black;
+    background-color: white;
+    transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+    -moz-transform: translateY(100%);
+    -ms-transform: translateY(100%);
+    -o-transform: translateY(100%);
+  }
+  
+  .toggle-body {
+    position: relative;
+  }
+  
+  .toggle-body:hover .custom-toggle {
+    display: block;
+  }

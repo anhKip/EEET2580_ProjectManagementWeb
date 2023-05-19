@@ -1,12 +1,22 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { getIdCookie} from "../../functions/authentications.js";
 import { urlGen } from "../../functions/topNavURL.js";
+import { reLog, logOut } from "../../functions/authentications.js";
+
+reLog()
 
 addWrapper();
 pageLoader();
+
 urlGen();
 // Get userID
 const userId = getIdCookie("userId");
+
+document.getElementById("logOut-btn").addEventListener("click", logOut)
+
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
@@ -18,18 +28,13 @@ $(document).ready(function () {
     });
 
     // click event handler to close menu-container
-    $(document).click(function (event) {
-        if (
-            !$(".menu-container").is(event.target) &&
-            !$(".menu-icon").is(event.target) &&
-            !$("#menu-i").is(event.target)
-        ) {
-            $(".menu-container").removeClass("open");
-            $(".hide-menu").removeClass("open");
+    $(document).click(function(event) {
+        if(!$('.menu-container').is(event.target) && !$('.menu-icon').is(event.target) && !$("#menu-i").is(event.target)) {
+            $('.menu-container').removeClass("open");
+            $('.hide-menu').removeClass("open");
         }
-    });
+    })
 });
-
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
@@ -558,7 +563,6 @@ function moveTasks() {
         completedTasks.push(completedTask);
     }
 }
-
 function takeTask(event) {
     // get the task index
     const taskId = event.target.id;
@@ -602,3 +606,4 @@ function takeTask(event) {
     // updateTaskList();
     // updateOnGoingTaskList();
 }
+
