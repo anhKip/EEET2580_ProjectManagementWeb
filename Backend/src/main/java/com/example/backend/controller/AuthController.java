@@ -6,6 +6,7 @@ import com.example.backend.auth.token.TokenRepository;
 import com.example.backend.auth.token.TokenService;
 import com.example.backend.model.UserAccount;
 import com.example.backend.repository.UserAccountRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

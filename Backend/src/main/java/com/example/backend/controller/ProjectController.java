@@ -7,6 +7,7 @@ import com.example.backend.repository.ProjectMemberRepository;
 import com.example.backend.repository.UserAccountRepository;
 import com.example.backend.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class ProjectController {
     private UserAccountRepository userAccountRepository;
 
     @PostMapping(value = "/", consumes = "application/json")
-    public ResponseEntity<String> create(@RequestBody CreateProjectRequest createProjectRequest) {
+    public ResponseEntity<String> create(@RequestBody @Valid CreateProjectRequest createProjectRequest) {
         return new ResponseEntity<>(projectService.createProject(createProjectRequest), HttpStatus.OK);
     }
 
@@ -53,7 +54,7 @@ public class ProjectController {
     }
 
     @PostMapping(value = "/{projectId}/add-member", consumes = "application/json")
-    public ResponseEntity<String> addMember(@PathVariable Long projectId, @RequestBody AddMemberRequest addMemberRequest) {
+    public ResponseEntity<String> addMember(@PathVariable Long projectId, @RequestBody @Valid AddMemberRequest addMemberRequest) {
         return new ResponseEntity<>(projectService.addMember(projectId, addMemberRequest.username()), HttpStatus.OK);
     }
 
@@ -63,7 +64,7 @@ public class ProjectController {
     }
 
     @PostMapping(value = "/{projectId}/change-name", consumes = "application/json")
-    public ResponseEntity<String> changeName(@PathVariable Long projectId, @RequestBody ChangeProjectNameRequest request) {
+    public ResponseEntity<String> changeName(@PathVariable Long projectId, @RequestBody @Valid ChangeProjectNameRequest request) {
         return new ResponseEntity<>(projectService.changeName(projectId, request.newName()), HttpStatus.OK);
     }
 }

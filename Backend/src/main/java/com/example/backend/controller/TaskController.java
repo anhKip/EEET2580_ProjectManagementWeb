@@ -3,10 +3,12 @@ package com.example.backend.controller;
 import com.example.backend.model.Status;
 import com.example.backend.model.Task;
 import com.example.backend.record.AssignTaskRequest;
+import com.example.backend.record.ChangeTaskDeadlineRequest;
 import com.example.backend.record.CreateTaskRequest;
 import com.example.backend.record.GetTaskResponse;
 import com.example.backend.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class TaskController {
 
     @Operation(description = "Create a task. Note: The JSON date format is yyyy-MM-dd'T'HH:mm")
     @PostMapping(value = "/{projectId}", consumes = "application/json")
-    public ResponseEntity<String> create(@PathVariable Long projectId, @RequestBody CreateTaskRequest createTaskRequest) {
+    public ResponseEntity<String> create(@PathVariable Long projectId, @RequestBody @Valid CreateTaskRequest createTaskRequest) {
         return new ResponseEntity<>(taskService.create(projectId, createTaskRequest), HttpStatus.OK);
     }
 
@@ -37,7 +39,7 @@ public class TaskController {
 
     @Operation(description = "Update a task")
     @PutMapping(value = "/{taskId}", consumes = "application/json")
-    public ResponseEntity<String> update(@PathVariable Long taskId, @RequestBody CreateTaskRequest createTaskRequest) {
+    public ResponseEntity<String> update(@PathVariable Long taskId, @RequestBody @Valid CreateTaskRequest createTaskRequest) {
         return new ResponseEntity<>(taskService.update(taskId, createTaskRequest), HttpStatus.OK);
     }
 
@@ -50,7 +52,7 @@ public class TaskController {
 
     @Operation(description = "Assign a task to user")
     @PostMapping(value = "/{taskId}/assign")
-    public ResponseEntity<String> assignTask(@PathVariable Long taskId, @RequestBody AssignTaskRequest assignTaskRequest) {
+    public ResponseEntity<String> assignTask(@PathVariable Long taskId, @RequestBody @Valid AssignTaskRequest assignTaskRequest) {
         return new ResponseEntity<>(taskService.assignTask(taskId, assignTaskRequest), HttpStatus.OK);
     }
 
@@ -64,5 +66,11 @@ public class TaskController {
     @PostMapping(value = "/{taskId}/{status}")
     public ResponseEntity<String> changeStatus(@PathVariable Long taskId, @PathVariable Status status) {
         return new ResponseEntity<>(taskService.changeStatus(taskId, status), HttpStatus.OK);
+    }
+
+    @Operation(description = "Change deadline of a task")
+    @PostMapping(value = "/{taskId}/deadline", consumes = "application/json")
+    public ResponseEntity<String> changeDeadline(@PathVariable Long taskId, @RequestBody ChangeTaskDeadlineRequest request) {
+        return new ResponseEntity<>(taskService.changeDeadline(taskId, request.deadline()), HttpStatus.OK);
     }
 }

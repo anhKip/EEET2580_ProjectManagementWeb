@@ -14,9 +14,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskService implements CrudService<Task> {
@@ -107,7 +107,7 @@ public class TaskService implements CrudService<Task> {
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id " + projectId));
         List<GetTaskResponse> responses = new ArrayList<>();
-        for (Task task: project.getTasks()) {
+        for (Task task : project.getTasks()) {
             GetTaskResponse response = GetTaskResponse.builder()
                     .taskId(task.getId())
                     .name(task.getName())
@@ -127,6 +127,14 @@ public class TaskService implements CrudService<Task> {
                 () -> new EntityNotFoundException("Cannot find task with id " + taskId));
         task.setStatus(status);
         taskRepository.save(task);
-        return "Task's status has been changed'";
+        return "Task's status has been changed";
+    }
+
+    public String changeDeadline(Long taskId, Date deadline) {
+        Task task = taskRepository.findById(taskId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find task with id " + taskId));
+        task.setDeadline(deadline);
+        taskRepository.save(task);
+        return "Task's deadline has been changed";
     }
 }
