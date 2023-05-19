@@ -53,9 +53,6 @@ function sortTasks(sortBy) {
         // sort by priority
         tasks.sort((a, b) => a.priority - b.priority);
     }
-
-    // update task list
-    updateTaskList();
 }
 
 // function to format due date
@@ -105,47 +102,6 @@ $(document).ready(function () {
         $(".overlay, .add-task-popup").fadeOut();
     });
 });
-
-// ...
-
-function openEditPopup(task, index) {
-    // find the task object in the tasks array by index
-    const taskObj = tasks[index];
-
-    // get edit popup elements
-    const editPopup = document.querySelector(".edit-task-popup");
-    const taskNameInput = document.querySelector("#editTaskNameInput");
-    const prioritySelect = document.querySelector("#editPrioritySelect");
-    const dueDateInput = document.querySelector("#editDueDateInput");
-    const taskDetailsInput = document.querySelector("#editTaskDetailsInput");
-    const deleteTaskBtn = document.querySelector("#deleteTaskBtn");
-
-    // fill in input fields with task information
-    taskNameInput.value = taskObj.name;
-    prioritySelect.value = taskObj.priority;
-    taskDetailsInput.value = taskObj.details;
-
-    // Format the due date to be in the format accepted by the input element
-    const formattedDueDate = taskObj.dueDate.toISOString().substring(0, 16);
-    dueDateInput.value = formattedDueDate;
-
-    // store taskObj and index as properties of the editPopup element
-    editPopup.taskObj = taskObj;
-    editPopup.index = index;
-
-    // show edit popup and overlay
-    editPopup.style.display = "block";
-    document.querySelector(".overlay").style.display = "block";
-
-    // add event listener to delete button
-    deleteTaskBtn.addEventListener("click", () => {
-        // Call the deleteTask function to remove the task
-        deleteTask(index);
-
-        // Close the edit popup
-        closeEditPopup();
-    });
-}
 
 function deleteTask(index) {
     // Remove the task from the tasks array
@@ -329,6 +285,47 @@ function addTask() {
         });
 }
 
+function openEditPopup(tasks, index) {
+    // find the task object in the tasks array by index
+    const taskObj = tasks[index];
+
+    const url = `http://localhost:8080/api/task/${pId}`
+
+    // get edit popup elements
+    const editPopup = document.querySelector(".edit-task-popup");
+    const taskNameInput = document.querySelector("#editTaskNameInput");
+    const prioritySelect = document.querySelector("#editPrioritySelect");
+    const dueDateInput = document.querySelector("#editDueDateInput");
+    const taskDetailsInput = document.querySelector("#editTaskDetailsInput");
+    const deleteTaskBtn = document.querySelector("#deleteTaskBtn");
+
+    // fill in input fields with task information
+    taskNameInput.value = taskObj.name;
+    prioritySelect.value = taskObj.priority;
+    taskDetailsInput.value = taskObj.details;
+
+    // Format the due date to be in the format accepted by the input element
+    const formattedDueDate = taskObj.dueDate.toISOString().substring(0, 16);
+    dueDateInput.value = formattedDueDate;
+
+    // store taskObj and index as properties of the editPopup element
+    editPopup.taskObj = taskObj;
+    editPopup.index = index;
+
+    // show edit popup and overlay
+    editPopup.style.display = "block";
+    document.querySelector(".overlay").style.display = "block";
+
+    // add event listener to delete button
+    deleteTaskBtn.addEventListener("click", () => {
+        // Call the deleteTask function to remove the task
+        deleteTask(index);
+
+        // Close the edit popup
+        closeEditPopup();
+    });
+}
+
 function fetchTasks() {
     const url = `http://localhost:8080/api/task/pId=${pId}`;
 
@@ -357,6 +354,7 @@ function fetchTasks() {
                     details: task.detail,
                     status: task.status,
                     assignedTo: task.assignedTo,
+                    username: task.username,
                 }));
                 console.log("Get task", tasks);
                 updateTaskList(tasks);
@@ -417,6 +415,7 @@ function updateTaskList(tasks) {
             // Add event listener to edit icon
             editIcon.addEventListener("click", (event) => {
                 event.stopPropagation();
+                console.log("Icon clicked")
                 openEditPopup(task, index);
             });
 
@@ -473,7 +472,7 @@ function updateOnGoingTaskList(tasks) {
                 } type="button" class="btn btn-success complete-task-btn" data-task-index="${index}">Complete Task</button>
             </div>    
             <div class="d-flex justify-content-end">
-                <small class="me-3">Assigned to:</small>
+                <small class="me-3">Assigned to: ${task.username}</small>
             </div>
         </div>
       `;
@@ -510,7 +509,7 @@ function updateCompletedTaskList(tasks) {
     completedTaskList.innerHTML = "";
 
     // Add each completed task to the list
-    completedTasks.forEach((task) => {
+    tasks.forEach((task) => {
         if (task.status === "COMPLETED") {
             // Create completed task list item
             const taskItem = document.createElement("li");
@@ -525,7 +524,7 @@ function updateCompletedTaskList(tasks) {
                 <small>Due Date: ${formatDueDate(task.dueDate)}</small>
             </div>
             <div class="d-flex justify-content-end">
-                <small class="me-3">Assigned to:</small>
+                <small class="me-3">Assigned to: ${task.username}</small>
             </div>
         </div>
       `;
@@ -562,7 +561,7 @@ function takeTask(event) {
         .then((response) => {
             if (response.ok) {
                 console.log("Task assigned successfully!");
-                //location.reload();
+                location.reload();
             } else {
                 response.json().then((data) => {
                     console.error(
@@ -582,13 +581,29 @@ function completeTask(event) {
     // get the task index
     const taskId = event.target.id;
     console.log(taskId);
+    const url = `http://localhost:8080/api/task/${taskId}/complete`;
 
-    // move the task from onGoingTasks array to completedTasks array
-    const completedTask = onGoingTasks.splice(taskId, 1)[0];
-    completedTasks.push(completedTask);
-
-    // update task list, my task list, and completed task list
-    updateTaskList();
-    updateOnGoingTaskList();
-    updateCompletedTaskList();
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                console.log("Task complete successfully!");
+                location.reload();
+            } else {
+                response.json().then((data) => {
+                    console.error(
+                        "Failed to create task. Status:",
+                        response.status
+                    );
+                    console.log("Response body:", data);
+                });
+            }
+        })
+        .catch((error) => {
+            console.error("Error assigning task:", error);
+        });
 }
