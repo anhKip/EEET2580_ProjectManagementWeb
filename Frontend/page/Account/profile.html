@@ -19,22 +19,7 @@
 </head>
 <body>
     <div class="topnav">
-        <a class="menu-icon" href="#"><i class="fa-solid fa-bars" id="menu-i"></i></a>
-        <div class="menu-container">
-            <a href="./../Dashboard/dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
-            <a href="./../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i> Task</a>
-            <a href="./../CalendarView/calendar.html"><i class="fa-solid fa-list"></i> View</a>
-            <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i> File management</a>
-            <a href="../Setting/setting.html"><i class="fa-solid fa-gear"></i> Settings</a>
-        </div>
-        <div class="hide-menu">
-            <a href="./../Dashboard/dashboard.html"><i class="fa-solid fa-house"></i></a>
-            <a href="./../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i></a>
-            <a href="./../CalendarView/calendar.html"><i class="fa-solid fa-list"></i></a>
-            <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i></a>
-            <a href="../Setting/setting.html"><i class="fa-solid fa-gear"></i></a>
-        </div>
-        <div class="right-icons d-flex justify-content-end align-items-center">
+        <div class="right-icons w-100 d-flex justify-content-end align-items-center">
             <a href="#"><i class="fa-solid fa-rotate"></i></a>
             <div class="toggle-body">
               <a class="dropdown-btn" href="#">
@@ -64,21 +49,22 @@
                         <img src="./../../static/profile.png" alt="blank-profile">
                     </div>
                     <form>
-                        <div class="inputs">
+                        <div class="form-group was-validated inputs">
                             <label> E-mail </label>
-                            <input type="text" id="email-input">
+                            <input class="form-control" type="email" id="email-input" pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" placeholder="name@gmail.com" required>
 
                             <label> Username </label>
-                            <input type="text" id="username-input">
-
-                            <label> Password </label>
-                            <div class="password-div">
-                                <input type="password" id="password-input"> 
-                                <button type="button" id="show-hide-btn"> <i class="fa-solid fa-eye"></i> </button>
+                            <input class="form-control" type="text" id="username-input" minlength="3" maxlength="32" required>
+                            <div class="invalid-feedback">
+                                Username must be at least 3 characters
                             </div>
 
                             <label> Description </label>
-                            <textarea id="description-input"> </textarea> 
+                            <textarea id="description-input" placeholder="Describe yourself"> </textarea> 
+
+                            <div class="confirm-feedback">
+                                Information saved
+                            </div>
 
                             <button type="submit" id="save-btn"> Save </button>
                         </div>
