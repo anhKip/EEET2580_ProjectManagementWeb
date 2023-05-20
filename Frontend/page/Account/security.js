@@ -24,6 +24,12 @@ window.addEventListener('load', function() {
         document.querySelector(".right-icons").classList.add('w-100');
     }
     else {
+        const tabs = document.querySelector(".tabs")
+        const tabs_a = tabs.querySelectorAll("a")
+        tabs_a.forEach(anchor => {
+            let buffer = anchor.href
+            anchor.setAttribute("href", buffer + "?pId=" + pId)
+        })
         urlGen()
     }
 })

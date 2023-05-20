@@ -109,21 +109,24 @@ function renderContributors(cons) {
         const listItem = document.createElement("li");
         listItem.classList.add("contributor");
         listItem.innerHTML = contributor.userId == getIdCookie('userId') ?
-        `<h5>${contributor.username}</h5> <button type="button" data-memberId=${contributor.memberId} class="leave-btn"> Leave </button>` :
-        `<h5>${contributor.username}</h5> <button type="button" data-memberId=${contributor.memberId} class="remove-btn"> Remove </button>`
+        `<h5>${contributor.username}</h5> <button type="button" id="remove-${contributor.memberId}" class="leave-btn"> Leave </button>` :
+        `<h5>${contributor.username}</h5> <button type="button" id="remove-${contributor.memberId}" class="remove-btn"> Remove </button>`
         if (contributor.userId == getIdCookie('userId')) { memberId = contributor.memberId }
 
         // Append the list item to the contributors list
         contributorsList.appendChild(listItem);
     });
+
+    const buttons = document.querySelectorAll(".remove-btn");
+    const leaveButton = document.querySelector(".leave-btn").addEventListener("click", removeMember);
+    buttons.forEach((button) => {button.addEventListener("click", removeMember)})
+
     checkRank(memberId)
 }
 
 function getProjectName() {
 
     const fetch_url = `http://localhost:8080/api/project/${pId}`;
-
-    console.log(fetch_url);
 
     fetch(fetch_url, {
         method: "GET",
@@ -193,19 +196,17 @@ function checkRank(id) {
 
             disable_remove_button.forEach((btn) => {
                 btn.style.backgroundColor = "grey";
-                // btn.removeEventListener("click", removeMember)
+                btn.removeEventListener("click", removeMember)
             })
 
             disable_delete_button.style.backgroundColor = "grey"
-            // disable_delete_button.removeEventListener("click", deleteProject)
+            disable_delete_button.removeEventListener("click", removeMember)
         }
     })
     .catch((e) => {
         console.log(e)
     })
 }
-
-// deleteProject()
 
 function deleteProject() {
     const fetch_url = "http://localhost:8080/api/project/" + pId
@@ -222,8 +223,10 @@ function deleteProject() {
     })
 }
 
-function removeMember(mId) {
-    const fetch_url = "http://localhost:8080/api/project/" + pId + "/remove-member/" + mId
+function removeMember(event) {
+    const id = event.target.id.split("-")[1]
+
+    const fetch_url = "http://localhost:8080/api/project/" + pId + "/remove-member/" + id
 
     fetch(fetch_url, {
         method: "POST",
@@ -233,7 +236,10 @@ function removeMember(mId) {
     })
     .then((res) => res.text())
     .then((data) => {
-        if (data == "Member has been removed") {
+        if (data == "Member has been removed" && memberId == id) {
+            location.assign("../Home/home.html")
+        }
+        else {
             location.reload()
         }
     })
@@ -242,11 +248,5 @@ function removeMember(mId) {
     })
 }
 
-function addEvent() {
-    // const buttons = document.querySelectorAll(".leave-btn, .remove-btn")
-    // buttons.forEach((button) => {
-    //     button.addEventListener("click", removeMember(button.getAttribute("data-memberId")))
-    // })
-}
 
 

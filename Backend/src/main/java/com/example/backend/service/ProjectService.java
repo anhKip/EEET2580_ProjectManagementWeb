@@ -8,15 +8,12 @@ import com.example.backend.record.CreateProjectRequest;
 import com.example.backend.record.GetMemberResponse;
 import com.example.backend.record.GetProjectRespone;
 import com.example.backend.repository.*;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +30,8 @@ public class ProjectService implements CrudService<Project> {
     private UserAccountRepository userAccountRepository;
     @Autowired
     private UpdateRepository updateRepository;
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Override
     public Project create(Project project) {
@@ -61,6 +60,9 @@ public class ProjectService implements CrudService<Project> {
     public String delete(Long id) {
         Project project = projectRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id " + id));
+        projectMemberRepository.deleteByProjectId(id);
+        taskRepository.deleteByProjectId(id);
+        updateRepository.deleteByProjectId(id);
         projectRepository.deleteById(id);
         return "Done";
     }

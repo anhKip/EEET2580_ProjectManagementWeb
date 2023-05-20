@@ -52,8 +52,28 @@ function reLog() {
     }
 }
 
+/**
+ * Function to delete cookie upon clicking
+ */
 function logOut() {
-    document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; 
+    document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.removeItem("projectList");
 }
 
-export {setIdCookies, getIdCookie, reLog, logOut}
+/**
+ * Function to check if a user is a  member.
+ * If not, return them to home.html.
+ * If yes, let them proceed
+ */
+function checkProjectAccess(projectId) {
+    var storedProjectList = localStorage.getItem("projectList");
+    var storedProjectArray = JSON.parse(storedProjectList);
+
+    for (var i = 0; i < storedProjectArray.length; i++) {
+        if (storedProjectArray[i] !== projectId) {
+            location.assign("../Home/home.html")
+        }
+    }
+}
+
+export {setIdCookies, getIdCookie, reLog, logOut, checkProjectAccess}

@@ -12,6 +12,9 @@ pageLoader();
 // Get userID
 const userId = getIdCookie("userId");
 
+var projectSet = new Set()
+var projectArray = []
+
 window.addEventListener("load", fetchProjects);
 
 document.getElementById("logOut-btn").addEventListener("click", logOut)
@@ -48,6 +51,7 @@ function renderProjectCards(projects) {
     })
 
     projects.forEach((project) => {
+        projectSet.add(project.id)
         const projectName = project.name;
 
         const projectCard = document.createElement("a");
@@ -71,6 +75,9 @@ function renderProjectCards(projects) {
 
         projectGrid.appendChild(projectCard);
     });
+    
+    projectArray = Array.from(projectSet);
+    localStorage.setItem('projectList', JSON.stringify(projectArray));
 }
 
 function createProject() {
