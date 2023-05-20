@@ -73,9 +73,9 @@ function changePassword(event) {
             },
             body: JSON.stringify(data)
         })
-        .then((response) => response.json())
-        .then((json) => {
-            // console.log(json);
+        .then((response) => response.text())
+        .then((responseText) => {
+            console.log(responseText);
         })
         .catch((e) => {
             console.log(e)
