@@ -124,6 +124,7 @@
 .content-container {
   height: 100%;
   width: 100%;
+  padding-left: 50px;
   margin-top: 46px;
 }
 
