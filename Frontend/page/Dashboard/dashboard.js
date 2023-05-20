@@ -72,8 +72,6 @@ leaderboardMembers.forEach((member) => {
 function getProjectName() {
     const fetch_url = `http://localhost:8080/api/project/${pId}`;
 
-    // console.log(fetch_url);
-
     fetch(fetch_url, {
         method: "GET",
         headers: {
@@ -111,10 +109,55 @@ function getUpdates() {
     })
     .then((response) => response.json())
     .then(json => {
-        console.log(json);
+        renderUpdate(json)
     })
     .catch((e) => {
         console.log(e)
+    })
+}
+
+function renderUpdate(updates) {
+    const current = new Date()
+
+    const format = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    }
+
+    updates.forEach((update) => {
+        const d = new Date(update.date);
+        const formatted_local_date = d.toLocaleDateString('en-US', format)
+        var time_diff_string = ""
+        var time_diff = 0
+
+        if ((current - d) <= (60000 * 60)) {
+            time_diff = Math.floor((current - d) / 60000)
+            time_diff_string = time_diff > 1 ? time_diff + " minutes ago" : time_diff + " minute ago"
+        }
+        else if (((current - d) > (60000 * 60)) && ((current - d) <= (60000 * 60 * 24))) {
+            time_diff = Math.floor((current - d) / (60000 * 60))
+            time_diff_string = time_diff > 1 ? time_diff + " hours ago" : time_diff + " hour ago"
+        }
+        else {
+            time_diff = Math.floor((current - d) / (60000 * 60 * 24))
+            time_diff_string = time_diff > 1 ? time_diff + " days ago" : time_diff + " day ago"
+        }
+
+        const update_box_ul = document.querySelector(".updates-box ul")
+
+        var new_update = document.createElement("li")
+        var message_span = document.createElement("span")
+        message_span.classList.add("update-text")
+        message_span.innerText = update.message
+
+        var date_span = document.createElement("span")
+        date_span.classList.add("update-date")
+        date_span.innerText = time_diff_string + " | " + formatted_local_date
+
+        new_update.appendChild(message_span)
+        new_update.appendChild(date_span)
+        update_box_ul.appendChild(new_update)
     })
 }
 

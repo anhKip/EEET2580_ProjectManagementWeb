@@ -84,7 +84,7 @@ function saveInfo(event) {
         },
         body: JSON.stringify(inputs)
     })
-    .then((response) => response.json())
+    .then((response) => response.text())
     .then(json => {
         console.log(json);
     })
