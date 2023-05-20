@@ -64,7 +64,7 @@ public class ProjectService implements CrudService<Project> {
         taskRepository.deleteByProjectId(id);
         updateRepository.deleteByProjectId(id);
         projectRepository.deleteById(id);
-        return "Done";
+        return "Project has been deleted";
     }
 
     public String createProject(CreateProjectRequest createProjectRequest) {
@@ -141,9 +141,27 @@ public class ProjectService implements CrudService<Project> {
         // get project
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id " + projectId));
+        // get member
         ProjectMember member = projectMemberRepository.findByMemberIdAndProjectId(memberId, projectId).orElseThrow(
-                () -> new EntityNotFoundException("Cannot find member in this project with id " + projectId));
+                () -> new EntityNotFoundException("Cannot find member in this project with id " + memberId));
+        // if the member being removed is admin -> set the next member as admin
+        taskRepository.deleteByMemberId(memberId);
         projectMemberRepository.deleteById(memberId);
+
+        // check if there is no admin left -> assign new admin
+        if (projectMemberRepository.findByIsAdminAndProjectId(projectId).isEmpty()) {
+            ProjectMember newAdmin = projectMemberRepository.findFirstByProject(project);
+            System.out.println(newAdmin.getUser().getUsername());
+            newAdmin.setIsAdmin(true);
+            projectMemberRepository.save(newAdmin);
+        }
+
+        // if there is no member left -> delete project
+        project = projectRepository.findById(projectId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find project with id " + projectId));
+        if (project.getMembers().isEmpty()) {
+            return delete(projectId);
+        }
         return "Member has been removed";
     }
 

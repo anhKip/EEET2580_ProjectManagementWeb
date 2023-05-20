@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface TaskRepository extends JpaRepository<Task, Long> {
     @Modifying
+    @Query(value = "DELETE FROM task WHERE member_id = ?1", nativeQuery = true)
+    void deleteByMemberId(Long memberId);
+    @Modifying
     @Query(value = "DELETE FROM task WHERE project_id = ?1", nativeQuery = true)
     void deleteByProjectId(Long projectId);
 }
