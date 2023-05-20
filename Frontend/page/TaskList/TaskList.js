@@ -600,11 +600,17 @@ function completeTask(event) {
     console.log(taskId);
     const url = `http://localhost:8080/api/task/${taskId}/complete`;
 
+    const completedTask = {
+        userId: userId,
+        projectId: pId,
+    };
+
     fetch(url, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
+        body: JSON.stringify(completedTask),
     })
         .then((response) => {
             if (response.ok) {
@@ -613,7 +619,7 @@ function completeTask(event) {
             } else {
                 response.json().then((data) => {
                     console.error(
-                        "Failed to create task. Status:",
+                        "Failed to complete task. Status:",
                         response.status
                     );
                     console.log("Response body:", data);
