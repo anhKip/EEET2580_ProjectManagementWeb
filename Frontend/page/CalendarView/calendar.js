@@ -48,16 +48,11 @@ $(document).ready(function () {
         navLinks: true,
         eventSources: [
             {
-                events: function (fetchInfo, successCallback, failureCallback) {
-                    fetchTasks()
-                        .then((tasks) => {
-                            const events = tasks.map(convertTaskToEvent);
-                            successCallback(events);
-                        })
-                        .catch((error) => {
-                            console.error("Error fetching task list:", error);
-                            failureCallback(error);
-                        });
+                events: async function (fetchInfo, successCallback, failureCallback) {
+                    const data = await fetchTasks();
+                    console.log("data", data);
+                    const events = data.map(convertTaskToEvent);
+                    successCallback(events);
                 },
             },
         ],
@@ -66,7 +61,7 @@ $(document).ready(function () {
                 "Task Name: " +
                     info.event.title +
                     "\nAssigned To: " +
-                    info.event.extendedProps.username
+                    info.event.extendedProps.usernames
             );
         },
         eventContent: function (arg) {
@@ -74,7 +69,7 @@ $(document).ready(function () {
             if (arg.view.type === "listMonth") {
                 assignedToHtml =
                     "<div class='assigned-to'>Assigned To: " +
-                    arg.event.extendedProps.username +
+                    arg.event.extendedProps.usernames +
                     "</div>";
             }
 
@@ -108,7 +103,7 @@ $(document).ready(function () {
 function convertTaskToEvent(task) {
     let color;
     switch (task.priority) {
-        case 'HIGH':
+        case "HIGH":
             color = "#f8a580";
             break;
         case "MEDIUM":
@@ -121,12 +116,17 @@ function convertTaskToEvent(task) {
             color = "blue";
     }
 
+    console.log("r");
+
     return {
-        id: task.taskId,
+        id: task.id,
         title: task.name,
         start: task.dueDate,
         color: color,
-        username: task.username,
+        extendedProps: {
+            usernames: task.usernames || "",
+        },
+        backgroundColor: color,
     };
 }
 
@@ -156,7 +156,7 @@ function fetchTasks() {
         .then((data) => {
             if (Array.isArray(data)) {
                 tasks = data.map((task) => ({
-                    taskId: task.taskId,
+                    id: task.taskId,
                     name: task.name,
                     priority: task.priority,
                     dueDate: task.deadline,
@@ -180,4 +180,32 @@ function fetchTasks() {
 }
 
 // Initial fetch of tasks
-fetchTasks();
+// fetchTasks();
+
+function getTasksData() {
+    const tasks = [
+        {
+            id: 1,
+            name: "Task 1",
+            priority: "HIGH",
+            dueDate: "2023-05-01",
+            assignedTo: "John Doe",
+        },
+        {
+            id: 2,
+            name: "Task 2",
+            priority: "LOW",
+            dueDate: "2023-05-05",
+            assignedTo: "Jane Smith",
+        },
+        {
+            id: 3,
+            name: "Task 3",
+            priority: "MEDIUM",
+            dueDate: "2023-05-10",
+            assignedTo: "David Johnson",
+        },
+    ];
+
+    return tasks;
+}
