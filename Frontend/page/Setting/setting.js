@@ -175,7 +175,7 @@ function addContributors() {
         },
         body: JSON.stringify(member),
     })
-        .then((response) => response.json())
+        .then((response) => response.text())
         .then((contributors) => {
             const contributorsList = document.querySelector(".contributors");
 
