@@ -706,5 +706,3 @@ function getMembers() {
             throw error; // Rethrow the error to propagate it to the caller
         });
 }
-
-getMembers();
