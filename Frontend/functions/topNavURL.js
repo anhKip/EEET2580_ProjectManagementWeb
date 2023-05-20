@@ -18,6 +18,11 @@ function urlGen() {
         let buffer = anchor.href
         anchor.setAttribute("href", buffer + "?pId=" + projectId)
     })
+
+    const settings = document.querySelector(".custom-toggle li:first-child")
+    const settings_a = settings.querySelector("a")
+    let buffer = settings_a.href
+    settings_a.setAttribute("href", buffer + "?pId=" + projectId)
 }
 
 export {urlGen}
