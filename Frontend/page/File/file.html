@@ -51,30 +51,29 @@
 
     
     <div class="content-container">
-        <div class="m-auto w-75">
-            <div class="buttons-flex">
-                <input type="file" id="upload" class="upload-button" value="upload"> 
-                <label for="upload"> <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload </label>
-                <input type="submit" id="download" class="download-button" value="download">
-                <label for="download"> <i class="fa-solid fa-download"></i> Download </label>
-            </div>
-            <table class="table" id="file-table">
-                <thead>
-                    <tr>
-                        <th scope="col"> </th> 
-                        <th scope="col" data-type="string"> Name </th> 
-                        <th scope="col" data-type="string"> Date</th> 
-                        <th scope="col" data-type="number"> Size </th> 
-                        <th scope="col" data-type="string"> Owner </th> 
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    <!-- Existing file rows -->
-                </tbody>
-            </table>
+    <div class="m-auto w-75">
+        <div class="buttons-flex">
+            <input type="file" id="upload" class="upload-button" value="upload"> 
+            <label for="upload"> <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload </label>
+            <input type="submit" id="download" class="download-button" value="download">
+            <label for="download"> <i class="fa-solid fa-download"></i> Download </label>
         </div>
+        <table class="table" id="file-table">
+            <thead>
+                <tr>
+                    <th scope="col"> </th> 
+                    <th scope="col" data-type="string"> Name </th> 
+                    <th scope="col" data-type="string"> Date</th> 
+                    <th scope="col" data-type="number"> Size </th> 
+                    <th scope="col" data-type="string"> Owner </th> 
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <!-- Existing file rows -->
+            </tbody>
+        </table>
     </div>
-    
+</div>
 
     <script type="module" src="./file.js"></script>
       

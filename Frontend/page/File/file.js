@@ -147,5 +147,3 @@ function handleFileDelete(event) {
     // Remove the row from the table
     row.remove();
 }
-
-// ...

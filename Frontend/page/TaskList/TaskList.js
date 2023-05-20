@@ -45,6 +45,8 @@ document.querySelector(".fa-rotate").addEventListener("click", function () {
 
 // initialize task array
 let tasks = [];
+// initialize member array
+let members = [];
 
 // function to sort tasks
 function sortTasks(sortBy) {
@@ -578,6 +580,7 @@ function takeTask(event) {
         .then((response) => {
             if (response.ok) {
                 console.log("Task assigned successfully!");
+                console.log("User ID: ", userId);
                 location.reload();
             } else {
                 response.json().then((data) => {
@@ -595,38 +598,113 @@ function takeTask(event) {
 }
 
 function completeTask(event) {
-    // get the task index
     const taskId = event.target.id;
-    console.log(taskId);
     const url = `http://localhost:8080/api/task/${taskId}/complete`;
 
-    const completedTask = {
-        userId: userId,
-        projectId: pId,
-    };
+    // Fetch the members
+    getMembers()
+        .then((members) => {
+            console.log("Members:", members);
 
-    fetch(url, {
-        method: "POST",
+            // Find the member with the corresponding user ID
+            const member = members.find((member) => member.userId == userId);
+
+            console.log("Member:", member);
+
+            if (!member) {
+                console.error("Member not found. UserID:", userId);
+                return;
+            }
+
+            // Find the task with the given taskId
+            const task = tasks.find((task) => task.taskId == taskId);
+
+            console.log("Task:", task);
+
+            if (!task) {
+                console.error("Task not found. TaskID:", taskId);
+                return;
+            }
+
+            // Check if the member is assigned to the task
+            if (task.assignedTo !== member.memberId) {
+                alert("You are not assigned to the task")
+                return;
+            }
+
+            const completedTask = {
+                userId: member.userId,
+                projectId: pId,
+            };
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(completedTask),
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        console.log("Task completed successfully!");
+                        location.reload();
+                    } else {
+                        response.json().then((data) => {
+                            console.error(
+                                "Failed to complete task. Status:",
+                                response.status
+                            );
+                            console.log("Response body:", data);
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error completing task:", error);
+                });
+        })
+        .catch((error) => {
+            console.error("Error getting members:", error);
+        });
+}
+
+function getMembers() {
+    const url = `http://localhost:8080/api/project/${pId}/members`;
+
+    return fetch(url, {
+        method: "GET",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(completedTask),
     })
         .then((response) => {
             if (response.ok) {
-                console.log("Task complete successfully!");
-                location.reload();
+                return response.json();
             } else {
-                response.json().then((data) => {
-                    console.error(
-                        "Failed to complete task. Status:",
-                        response.status
-                    );
-                    console.log("Response body:", data);
-                });
+                throw new Error(
+                    "Failed to fetch members. Status: " + response.status
+                );
+            }
+        })
+        .then((data) => {
+            if (Array.isArray(data)) {
+                members = data.map((member) => ({
+                    memberId: member.memberId,
+                    userId: member.userId,
+                    username: member.username,
+                    score: member.score,
+                }));
+                console.log("Members:", members);
+                return members; // Return the members array
+            } else {
+                throw new Error(
+                    "Invalid response format. Expected an array of members."
+                );
             }
         })
         .catch((error) => {
-            console.error("Error assigning task:", error);
+            console.error("Error getting members", error);
+            throw error; // Rethrow the error to propagate it to the caller
         });
 }
+
+getMembers();
