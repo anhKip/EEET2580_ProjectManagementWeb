@@ -21,7 +21,7 @@ document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
 
-$(document).ready(function () {
+$(document).ready(async function () {
     $(".menu-icon").click(function () {
         $(".hide-menu, .menu-container").toggleClass("open");
     });
@@ -39,6 +39,10 @@ $(document).ready(function () {
     });
 
     var calendarEl = document.getElementById("calendar");
+    const data = await fetchTasks();
+    const events = data.map((task) => {
+        return convertTaskToEvent(task);
+    });
     var calendar = new FullCalendar.Calendar(calendarEl, {
         headerToolbar: {
             left: "prev,next today",
@@ -48,12 +52,7 @@ $(document).ready(function () {
         navLinks: true,
         eventSources: [
             {
-                events: async function (fetchInfo, successCallback, failureCallback) {
-                    const data = await fetchTasks();
-                    console.log("data", data);
-                    const events = data.map(convertTaskToEvent);
-                    successCallback(events);
-                },
+                events: data.map(convertTaskToEvent),
             },
         ],
         eventClick: function (info) {
@@ -67,24 +66,26 @@ $(document).ready(function () {
         eventContent: function (arg) {
             var assignedToHtml = "";
             if (arg.view.type === "listMonth") {
-                assignedToHtml =
-                    "<div class='assigned-to'>Assigned To: " +
-                    arg.event.extendedProps.usernames +
-                    "</div>";
+              assignedToHtml =
+                "<div class='assigned-to'>Assigned To: " +
+                arg.event.extendedProps.usernames +
+                "</div>";
             }
-
+      
+            var taskNameHtml = "<div class='task-name";
+            if (arg.event.extendedProps.status === "COMPLETED") {
+              taskNameHtml += " completed-task";
+            }
+            taskNameHtml += "'>" + arg.event.title + "</div>";
+      
             return {
-                html:
-                    "<div class='task-event'>" +
-                    "<div class='task-name'>" +
-                    arg.event.title +
-                    "</div>" +
-                    assignedToHtml +
-                    "</div>",
+              html:
+                "<div class='task-event'>" + taskNameHtml + assignedToHtml + "</div>",
             };
-        },
-        editable: true,
-        droppable: true,
+          },
+        
+        editable: false,
+        droppable: false,
         drop: function (info) {
             // Handle dropped events
             console.log("Dropped event:", info.event);
@@ -116,17 +117,16 @@ function convertTaskToEvent(task) {
             color = "blue";
     }
 
-    console.log("r");
-
     return {
         id: task.id,
         title: task.name,
         start: task.dueDate,
         color: color,
+        display: "block",
         extendedProps: {
             usernames: task.usernames || "",
+            status: task.status,
         },
-        backgroundColor: color,
     };
 }
 
@@ -181,31 +181,3 @@ function fetchTasks() {
 
 // Initial fetch of tasks
 // fetchTasks();
-
-function getTasksData() {
-    const tasks = [
-        {
-            id: 1,
-            name: "Task 1",
-            priority: "HIGH",
-            dueDate: "2023-05-01",
-            assignedTo: "John Doe",
-        },
-        {
-            id: 2,
-            name: "Task 2",
-            priority: "LOW",
-            dueDate: "2023-05-05",
-            assignedTo: "Jane Smith",
-        },
-        {
-            id: 3,
-            name: "Task 3",
-            priority: "MEDIUM",
-            dueDate: "2023-05-10",
-            assignedTo: "David Johnson",
-        },
-    ];
-
-    return tasks;
-}
