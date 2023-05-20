@@ -86,3 +86,66 @@ document.querySelector(".fa-rotate").addEventListener("click", function () {
 
 document.getElementById("logOut-btn").addEventListener("click", logOut)
 
+// ...
+
+// Add event listener to the upload button
+document.getElementById("upload").addEventListener("change", handleFileUpload);
+
+// Add event listener to the delete buttons
+document.querySelectorAll("#file-table tbody tr").forEach((row) => {
+    const deleteButton = row.querySelector("button");
+    deleteButton.addEventListener("click", handleFileDelete);
+});
+
+function handleFileUpload(event) {
+    const fileInput = event.target;
+    const fileList = fileInput.files;
+    
+    // Loop through the uploaded files
+    for (let i = 0; i < fileList.length; i++) {
+        const file = fileList[i];
+        
+        // Create a new row in the table for the uploaded file
+        const newRow = document.createElement("tr");
+        
+        const deleteButtonCell = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "<i class='fa-regular fa-trash-can'></i>";
+        deleteButton.addEventListener("click", handleFileDelete);
+        deleteButtonCell.appendChild(deleteButton);
+        newRow.appendChild(deleteButtonCell);
+        
+        const nameCell = document.createElement("td");
+        nameCell.textContent = file.name;
+        newRow.appendChild(nameCell);
+        
+        const dateCell = document.createElement("td");
+        dateCell.textContent = new Date().toLocaleDateString();
+        newRow.appendChild(dateCell);
+        
+        const sizeCell = document.createElement("td");
+        sizeCell.textContent = file.size;
+        newRow.appendChild(sizeCell);
+        
+        const ownerCell = document.createElement("td");
+        ownerCell.textContent = "Current User";
+        newRow.appendChild(ownerCell);
+        
+        // Append the new row to the table
+        const tableBody = document.querySelector("#file-table tbody");
+        tableBody.appendChild(newRow);
+    }
+    
+    // Clear the file input
+    fileInput.value = "";
+}
+
+function handleFileDelete(event) {
+    const deleteButton = event.target;
+    const row = deleteButton.closest("tr");
+    
+    // Remove the row from the table
+    row.remove();
+}
+
+// ...

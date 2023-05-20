@@ -225,3 +225,11 @@ table tr:first-child th:nth-child(5) {
 .table .th-sort-desc::after {
 	margin-left: 5px;
 }
+
+#file-table button {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+}
