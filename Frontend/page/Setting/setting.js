@@ -193,6 +193,7 @@ function addContributors() {
 
                 // Append the list item to the contributors list
                 contributorsList.appendChild(listItem);
+                location.reload();
                 getContributors();
             });
         })

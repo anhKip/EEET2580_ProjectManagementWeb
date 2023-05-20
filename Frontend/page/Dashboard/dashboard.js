@@ -7,8 +7,15 @@ reLog()
 addWrapper();
 pageLoader();
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const pId = urlParams.get("pId");
+
 // Set href for top-nav anchors
 urlGen()
+
+getProjectName();
+getUpdates()
 
 document.getElementById("logOut-btn").addEventListener("click", logOut)
 
@@ -62,10 +69,6 @@ leaderboardMembers.forEach((member) => {
     innerBar.style.width = `${percentage}%`;
 });
 
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const pId = urlParams.get("pId");
-
 function getProjectName() {
     const fetch_url = `http://localhost:8080/api/project/${pId}`;
 
@@ -96,7 +99,23 @@ function getProjectName() {
 }
 
 // Call the getProjectName function
-getProjectName();
 
-document.getElementById("logOut-btn").addEventListener("click", logOut)
+function getUpdates() {
+    const getUpdate_url = "http://localhost:8080/api/update/" + pId;
+
+    fetch(getUpdate_url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then((response) => response.json())
+    .then(json => {
+        console.log(json);
+    })
+    .catch((e) => {
+        console.log(e)
+    })
+}
+
 

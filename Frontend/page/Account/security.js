@@ -4,12 +4,17 @@ import { urlGen } from "../../functions/topNavURL.js";
 
 reLog()
 // Set href for top-nav anchors
-urlGen()
 addWrapper()
 pageLoader()
 
 reLog()
 const userId = getIdCookie("userId");
+
+document.querySelector(".fa-rotate").addEventListener("click", function () {
+    location.reload();
+});
+
+document.getElementById("logOut-btn").addEventListener("click", logOut)
 
 $(document).ready(function () {
     $(".menu-icon").click(function () {
@@ -24,13 +29,23 @@ $(document).ready(function () {
         }
     })
     
-    $("#show-hide-btn").click(function () {
-        if ($("#password-input").attr("type") == "password") {
-            $("#show-hide-btn").html('<i class="fa-solid fa-eye-slash"></i>');
-            $("#password-input").attr("type", "text");
+    $("#change-password-input-btn").click(function () {
+        if ($("#change-password-input").attr("type") == "password") {
+            $("#change-password-input-btn").html('<i class="fa-solid fa-eye-slash"></i>');
+            $("#change-password-input").attr("type", "text");
         } else {
-            $("#show-hide-btn").html('<i class="fa-solid fa-eye"></i>');
-            $("#password-input").attr("type", "password");
+            $("#change-password-input-btn").html('<i class="fa-solid fa-eye"></i>');
+            $("#change-password-input").attr("type", "password");
+        }
+    });
+
+    $("#confirm-change-password-input-btn").click(function () {
+        if ($("#confirm-change-password-input").attr("type") == "password") {
+            $("#confirm-change-password-input-btn").html('<i class="fa-solid fa-eye-slash"></i>');
+            $("#confirm-change-password-input").attr("type", "text");
+        } else {
+            $("#confirm-change-password-input-btn").html('<i class="fa-solid fa-eye"></i>');
+            $("#confirm-change-password-input").attr("type", "password");
         }
     });
 });
@@ -51,10 +66,6 @@ function changePassword(event) {
             'newPassword': password.value,
         }
     
-        // console.log(data);
-        console.log(JSON.stringify(data));
-        // console.log(typeof JSON.stringify(data));
-    
         fetch (url, {
             method: "POST",
             headers: {
@@ -62,37 +73,23 @@ function changePassword(event) {
             },
             body: JSON.stringify(data)
         })
-        .then((response) => response.json())
-        .then((json) => {
-            console.log(json);
+        .then((response) => response.text())
+        .then((responseText) => {
+            console.log(responseText);
         })
         .catch((e) => {
             console.log(e)
         })
+        document.querySelector(".confirm-feedback").style.display = 'block';
+
     }
 
     else {
-        document.querySelector(".invalid-feedback").style.display = 'block';
+        document.querySelector(".feedback").style.display = 'block';
     }
 
     password.value = ""
     password_confirm.value = ""
-
 }
 
-password.addEventListener("change", function() {
-    if (!password.checkValidity()) {
-        document.querySelector(".invalid-feedback").style.display = "block";
-        document.querySelector(".invalid-feedback").innerHTML = "Password must contain at least 8 characters";
-      }
-      else {
-        document.querySelector(".invalid-feedback").style.display = "none";
-        document.querySelector(".invalid-feedback").innerHTML = "";
-      }
-})
 
-document.querySelector(".fa-rotate").addEventListener("click", function () {
-    location.reload();
-});
-
-document.getElementById("logOut-btn").addEventListener("click", logOut)

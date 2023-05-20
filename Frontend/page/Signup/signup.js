@@ -1,8 +1,6 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
-import { urlGen } from "../../functions/topNavURL.js";
 
 // Set href for top-nav anchors
-urlGen()
 addWrapper()
 pageLoader()
 

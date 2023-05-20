@@ -35,7 +35,7 @@ function login(event) {
     .then((response) => response.json())
     .then((json) => {
         if (json.userId > 0) {
-            setIdCookies('userId', json.userId, 1); // 1-hour long cookie
+            setIdCookies('userId', json.userId, 24); // 1-day long cookie
             window.location.assign('../Home/home.html');
             login_btn.removeEventListener("click", login);
         }

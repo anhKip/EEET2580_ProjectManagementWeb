@@ -9,19 +9,18 @@ reLog();
 addWrapper();
 pageLoader();
 
+// Get userID
+const userId = getIdCookie("userId");
+
+window.addEventListener("load", fetchProjects);
+
 document.getElementById("logOut-btn").addEventListener("click", logOut)
 
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
 
-// Get userID
-const userId = getIdCookie("userId");
-
 // Start fetching here
-
-fetchProjects();
-
 function fetchProjects() {
     const url = `http://localhost:8080/api/user/${userId}/my-projects`;
 
@@ -31,17 +30,22 @@ function fetchProjects() {
             "Content-Type": "application/json",
         },
     })
-        .then((response) => response.json())
-        .then((data) => {
-            renderProjectCards(data);
-        })
-        .catch((error) => {
-            console.error("Error fetching projects:", error);
-        });
+    .then((response) => response.json())
+    .then((data) => {
+        renderProjectCards(data)
+    })
+    .catch((error) => {
+        console.error("Error fetching projects:", error);
+    });
 }
 
 function renderProjectCards(projects) {
     const projectGrid = document.querySelector(".project-grid");
+    const projectCards = projectGrid.querySelectorAll("a.project-card");
+
+    projectCards.forEach((card) => {
+        card.remove()
+    })
 
     projects.forEach((project) => {
         const projectName = project.name;
@@ -76,7 +80,7 @@ function createProject() {
 
     const projectData = {
         name: projectName,
-        userId: userId,
+        userId: parseInt(userId),
     };
 
     fetch(url, {
@@ -86,31 +90,19 @@ function createProject() {
         },
         body: JSON.stringify(projectData),
     })
-        .then((response) => response.json())
+        .then((response) => response.text())
         .then((data) => {
-            console.log("Project created:", data);
+            console.log(data);
+            if (data === "Project has been created.") {
+                fetchProjects()
+            }
         })
         .catch((error) => {
-            console.error("Error creating project:", error);
+            console.error(error);
         });
 }
 
 $(document).ready(function () {
-    $(".menu-icon").click(function () {
-        $(".menu-container").toggleClass("open");
-    });
-
-    // click event handler to close menu-container
-    $(document).click(function (event) {
-        if (
-            !$(".menu-container").is(event.target) &&
-            !$(".menu-icon").is(event.target) &&
-            !$("#menu-i").is(event.target)
-        ) {
-            $(".menu-container").removeClass("open");
-        }
-    });
-
     // click event handler for create project card
     $(".project-card-create").click(function (event) {
         // prevent the default click behavior, which is to navigate to a new page
@@ -132,9 +124,13 @@ $(document).ready(function () {
     // click event handler for submit button
     $(".submit-button").click(function (event) {
         // prevent the default submit behavior, which is to refresh the page
-        createProject();
-        fetchProjects();
+        event.preventDefault()
+
+        createProject()
+
+        $("#project-name").val("")
         // hide the gray overlay and create project box
         $(".overlay, .create-project-popup").fadeOut();
+
     });
 });
