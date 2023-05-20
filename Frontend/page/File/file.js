@@ -1,12 +1,19 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { urlGen } from "../../functions/topNavURL.js";
-import { reLog, logOut } from "../../functions/authentications.js";
+import { reLog, logOut, checkProjectAccess } from "../../functions/authentications.js";
 
 reLog()
 // Set href for top-nav anchors
 urlGen()
+
 addWrapper()
 pageLoader()
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const pId = urlParams.get("pId");
+
+checkProjectAccess(pId)
 
 document.getElementById("logOut-btn").addEventListener("click", logOut)
 

@@ -3,15 +3,16 @@ import { reLog, logOut, checkProjectAccess } from "../../functions/authenticatio
 import { urlGen } from "../../functions/topNavURL.js";
 
 reLog()
-// Add spinner
-addWrapper();
-pageLoader();
 
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const pId = urlParams.get("pId");
 
 checkProjectAccess(pId)
+
+// Add spinner
+addWrapper();
+pageLoader();
 
 // Set href for top-nav anchors
 urlGen()

@@ -69,10 +69,8 @@ function checkProjectAccess(projectId) {
     var storedProjectList = localStorage.getItem("projectList");
     var storedProjectArray = JSON.parse(storedProjectList);
 
-    for (var i = 0; i < storedProjectArray.length; i++) {
-        if (storedProjectArray[i] !== projectId) {
-            location.assign("../Home/home.html")
-        }
+    if (!storedProjectArray.includes(parseInt(projectId))) {
+        location.assign("../Home/home.html");
     }
 }
 
