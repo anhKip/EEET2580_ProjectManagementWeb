@@ -1,6 +1,6 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { urlGen } from "../../functions/topNavURL.js";
-import { reLog, logOut } from "../../functions/authentications.js";
+import { reLog, logOut, getIdCookie } from "../../functions/authentications.js";
 
 reLog()
 // Set href for top-nav anchors
@@ -16,10 +16,15 @@ document.querySelector(".fa-rotate").addEventListener("click", function () {
 });
 
 const queryString = window.location.search;
-const urlPrarams = new URLSearchParams(queryString);
-const pId = urlPrarams.get("pId");
+const urlParams = new URLSearchParams(queryString);
+const pId = urlParams.get("pId");
+
+var memberId
 
 getContributors();
+
+// Call the getProjectName function
+getProjectName();
 
 $(document).ready(function () {
     $(".menu-icon").click(function () {
@@ -69,30 +74,10 @@ $(document).ready(function () {
     });
 
     $("#confirm-button").click(function (event) {
+        event.preventDefault()
         addContributors();
-        location.reload();
         $(".overlay, .add-form").fadeOut();
     });
-
-    // Add leave button for user account
-    $(".you").append(
-        '<button type="button" class="remove-btn"> Leave </button>'
-    );
-
-    // Add remove button for each contributors
-    $(".contributor").append(
-        '<button type="button" class="remove-btn"> Remove </button>'
-    );
-
-    $(".remove-btn").click(function (event) {
-        event.preventDefault();
-
-        // Remove user from db
-    });
-});
-
-document.querySelector(".fa-rotate").addEventListener("click", function () {
-    location.reload();
 });
 
 function getContributors() {
@@ -104,29 +89,34 @@ function getContributors() {
             "Content-Type": "application/json",
         },
     })
-        .then((response) => response.json())
-        .then((contributors) => {
-            const contributorsList = document.querySelector(".contributors");
+    .then((response) => response.json())
+    .then((contributors) => {
+        renderContributors(contributors)
+    })
+    .catch((error) => {
+        console.error("Error getting contributors", error);
+    });
+}
 
-            // Clear previous list items
-            contributorsList.innerHTML = "";
+function renderContributors(cons) {
+    const contributorsList = document.querySelector(".contributors");
 
-            // Add each contributor to the list
-            contributors.forEach((contributor) => {
-                const listItem = document.createElement("li");
-                listItem.classList.add("contributor");
-                listItem.innerHTML = `
-                    <h5>${contributor.username}</h5>
-                    <button type="button" class="remove-btn">Remove</button>
-                `;
+    // Clear previous list items
+    contributorsList.innerHTML = "";
 
-                // Append the list item to the contributors list
-                contributorsList.appendChild(listItem);
-            });
-        })
-        .catch((error) => {
-            console.error("Error getting contributors", error);
-        });
+    // Add each contributor to the list
+    cons.forEach((contributor) => {
+        const listItem = document.createElement("li");
+        listItem.classList.add("contributor");
+        listItem.innerHTML = contributor.userId == getIdCookie('userId') ?
+        `<h5>${contributor.username}</h5> <button type="button" data-memberId=${contributor.memberId} class="leave-btn"> Leave </button>` :
+        `<h5>${contributor.username}</h5> <button type="button" data-memberId=${contributor.memberId} class="remove-btn"> Remove </button>`
+        if (contributor.userId == getIdCookie('userId')) { memberId = contributor.memberId }
+
+        // Append the list item to the contributors list
+        contributorsList.appendChild(listItem);
+    });
+    checkRank(memberId)
 }
 
 function getProjectName() {
@@ -141,26 +131,25 @@ function getProjectName() {
             "Content-Type": "application/json",
         },
     })
-        .then((response) => response.json())
-        .then((project) => {
-            const projectName = document.getElementById("project-name");
-            projectName.textContent = project.name;
+    .then((response) => response.json())
+    .then((project) => {
+        const projectName = document.getElementById("project-name");
+        projectName.textContent = project.name;
 
-            const contentContainer = document.querySelector(".content");
-            contentContainer.insertBefore(
-                projectName,
-                contentContainer.firstChild
-            );
-        })
-        .catch((error) => {
-            console.error("Error getting project name", error);
-        });
+        const contentContainer = document.querySelector(".content");
+        contentContainer.insertBefore(
+            projectName,
+            contentContainer.firstChild
+        );
+    })
+    .catch((error) => {
+        console.error("Error getting project name", error);
+    });
 }
 
-// Call the getProjectName function
-getProjectName();
 
 function addContributors() {
+
     const fetch_url = `http://localhost:8080/api/project/${pId}/add-member`;
     const name = document.getElementById("user-input").value;
 
@@ -175,31 +164,89 @@ function addContributors() {
         },
         body: JSON.stringify(member),
     })
-        .then((response) => response.json())
-        .then((contributors) => {
-            const contributorsList = document.querySelector(".contributors");
+    .then((response) => response.text())
+    .then((contributors) => {
+        if (contributors === "Member has been added") {
+            getContributors();
+        }
+    })
+    .catch((error) => {
+        console.error("Error getting user", error);
+    });
+}
 
-            // Clear previous list items
-            contributorsList.innerHTML = "";
+function checkRank(id) {
+    const fetch_url = "http://localhost:8080/api/member/" + id + "/isAdmin";
 
-            // Add each contributor to the list
-            contributors.forEach((contributor) => {
-                const listItem = document.createElement("li");
-                listItem.classList.add("contributor");
-                listItem.innerHTML = `
-                <h5>${contributor.username}</h5>
-                <button type="button" class="remove-btn"> Remove </button>
-                `;
+    fetch(fetch_url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    .then((response) => response.text())
+    .then((data) => {
+        // console.log(typeof data);
+        if (data === "false") {
+            const disable_remove_button = document.querySelectorAll(".remove-btn")
+            const disable_delete_button = document.querySelector(".delete-project-btn")
 
-                // Append the list item to the contributors list
-                contributorsList.appendChild(listItem);
-                location.reload();
-                getContributors();
-            });
-        })
-        .catch((error) => {
-            console.error("Error getting user", error);
-        });
+            disable_remove_button.forEach((btn) => {
+                btn.style.backgroundColor = "grey";
+                // btn.removeEventListener("click", removeMember)
+            })
+
+            disable_delete_button.style.backgroundColor = "grey"
+            // disable_delete_button.removeEventListener("click", deleteProject)
+        }
+    })
+    .catch((e) => {
+        console.log(e)
+    })
+}
+
+// deleteProject()
+
+function deleteProject() {
+    const fetch_url = "http://localhost:8080/api/project/" + pId
+
+    fetch(fetch_url, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    .then((response) => response.text())
+    .then((data) => {
+        
+    })
+}
+
+function removeMember(mId) {
+    const fetch_url = "http://localhost:8080/api/project/" + pId + "/remove-member/" + mId
+
+    fetch(fetch_url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    .then((res) => res.text())
+    .then((data) => {
+        if (data == "Member has been removed") {
+            location.reload()
+        }
+    })
+    .catch((e) => {
+        console.log(e)
+    })
+}
+
+function addEvent() {
+    // const buttons = document.querySelectorAll(".leave-btn, .remove-btn")
+    // buttons.forEach((button) => {
+    //     button.addEventListener("click", removeMember(button.getAttribute("data-memberId")))
+    // })
 }
 
 
