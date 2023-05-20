@@ -90,9 +90,12 @@ function createProject() {
         },
         body: JSON.stringify(projectData),
     })
-        .then((response) => response.json())
+        .then((response) => response.text())
         .then((data) => {
-            console.log("Project created:", data);
+            console.log(data);
+            if (data === "Project has been created.") {
+                fetchProjects()
+            }
         })
         .catch((error) => {
             console.error(error);
@@ -124,19 +127,6 @@ $(document).ready(function () {
         event.preventDefault()
 
         createProject()
-
-        $(".spinner-wrapper").css({
-            "opacity": "0.5",
-            "display": "flex"
-        })
-
-        setTimeout(function() {
-            fetchProjects()
-            $(".spinner-wrapper").css({
-                "opacity": "0",
-                "display": "none"
-            })
-        }, 1000) // <-- Need a timeout because it happens too fast
 
         $("#project-name").val("")
         // hide the gray overlay and create project box
