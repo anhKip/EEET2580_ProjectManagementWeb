@@ -89,15 +89,6 @@
     height: 100%;
 }
 
-.menu-container :nth-child(5) {
-    background-color: rgba(250, 212, 166, 0.6);
-    border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    -ms-border-radius: 20px;
-    -o-border-radius: 20px;
-}
-
 .hide-menu {
     position: fixed;
     top: 46px;
@@ -326,4 +317,8 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     appearance: textfield;
     -moz-appearance: textfield;
+}
+
+ul {
+    padding-left: 0 !important;
 }
