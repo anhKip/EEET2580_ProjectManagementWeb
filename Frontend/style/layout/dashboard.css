@@ -308,3 +308,13 @@ h3 {
     height: 100%;
     padding-left: 50px;
 }
+
+.leaderboard-box {
+    height: 100%;
+}
+
+li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }

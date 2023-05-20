@@ -56,13 +56,17 @@ $(document).ready(async function () {
             },
         ],
         eventClick: function (info) {
+            const taskName = info.event.title;
+            const assignedTo = info.event.extendedProps.usernames;
+            const details = info.event.extendedProps.details;
+          
             alert(
-                "Task Name: " +
-                    info.event.title +
-                    "\nAssigned To: " +
-                    info.event.extendedProps.usernames
+              "Task Name: " + taskName +
+              "\nAssigned To: " + assignedTo +
+              "\nDetails: " + details
             );
-        },
+          },
+          
         eventContent: function (arg) {
             var assignedToHtml = "";
             if (arg.view.type === "listMonth") {
@@ -126,6 +130,7 @@ function convertTaskToEvent(task) {
         extendedProps: {
             usernames: task.usernames || "",
             status: task.status,
+            details: task.details || "",
         },
     };
 }
