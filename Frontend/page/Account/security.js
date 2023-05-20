@@ -10,6 +10,24 @@ pageLoader()
 reLog()
 const userId = getIdCookie("userId");
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const pId = urlParams.get("pId");
+
+window.addEventListener('load', function() {
+    if (pId === null) {
+        console.log(pId);
+        document.querySelector(".menu-container").style.display = 'none';
+        document.querySelector(".menu-icon").style.display = 'none';
+        document.querySelector(".hide-menu").style.display = 'none';
+        document.querySelector(".content-container").style.padding = '0';
+        document.querySelector(".right-icons").classList.add('w-100');
+    }
+    else {
+        urlGen()
+    }
+})
+
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
