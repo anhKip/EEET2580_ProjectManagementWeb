@@ -22,7 +22,7 @@ public class Project {
     @Column(name = "project_name")
     private String name;
 
-    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.PERSIST)
     private List<ProjectMember> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
