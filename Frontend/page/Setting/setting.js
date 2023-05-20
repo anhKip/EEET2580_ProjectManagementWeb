@@ -21,6 +21,7 @@ document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
 
+document.querySelector(".delete-project-btn").addEventListener("click", deleteProject)
 var memberId
 
 getContributors();
@@ -202,7 +203,7 @@ function checkRank(id) {
             })
 
             disable_delete_button.style.backgroundColor = "grey"
-            disable_delete_button.removeEventListener("click", removeMember)
+            disable_delete_button.removeEventListener("click", deleteProject)
         }
     })
     .catch((e) => {
@@ -221,7 +222,9 @@ function deleteProject() {
     })
     .then((response) => response.text())
     .then((data) => {
-        
+        if (data == "Done") {
+            location.assign("../Home/home.html")
+        }
     })
 }
 
