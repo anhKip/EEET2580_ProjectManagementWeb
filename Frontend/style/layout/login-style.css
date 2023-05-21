@@ -55,12 +55,22 @@ body {
     margin-bottom: 12px;
 }
 
-.form-check-input {
-    margin-top: 0 !important;
+.form-check {
+    margin-top: 1rem;
+    font-size: 1.2rem;
 }
 
-.form-check {
-    font-size: 14px;
+#remember-me {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#inlineCheckbox2 {
+    margin-top: 6px;
+}
+
+.form-group {
+    margin-bottom: 10px;
 }
 
 .signup form input[type="submit"] {
@@ -79,4 +89,8 @@ body {
 
 .form-control {
     font-size: 14px;
+}
+
+label {
+    font-size: 1.2rem !important;
 }
