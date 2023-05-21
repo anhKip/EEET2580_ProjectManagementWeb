@@ -24,7 +24,6 @@ const pId = urlParams.get("pId");
 
 window.addEventListener('load', function() {
     if (pId === null) {
-        console.log(pId);
         document.querySelector(".menu-container").style.display = 'none';
         document.querySelector(".menu-icon").style.display = 'none';
         document.querySelector(".hide-menu").style.display = 'none';
@@ -109,12 +108,17 @@ function saveInfo(event) {
         body: JSON.stringify(inputs)
     })
     .then((response) => response.text())
-    .then(json => {
-        console.log(json);
+    .then(data => {
+        if (data == "User info has been updated") {
+            document.querySelector(".confirm-feedback").style.display = 'block';
+        }
+        else {
+            document.querySelector(".confirm-feedback").style.display = 'block';
+            document.querySelector(".confirm-feedback").style.color = 'red'
+            document.querySelector(".confirm-feedback").innerHTML = "Username is taken"
+        }
     })
     .catch((e) => {
         console.log(e)
     })
-    document.querySelector(".confirm-feedback").style.display = 'block';
-
 }
