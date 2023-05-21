@@ -13,10 +13,6 @@ const pId = urlParams.get("pId");
 
 checkProjectAccess(pId)
 
-// Add spinner
-addWrapper();
-pageLoader();
-
 // Set href for top-nav anchors
 urlGen();
 
