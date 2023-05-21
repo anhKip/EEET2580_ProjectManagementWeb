@@ -147,8 +147,9 @@
     align-items: center;
     border-bottom: 2px solid black;
     font-weight: 400;
-    font-size: 48px;
+    font-size: 4rem;
     line-height: 65px;
+    
 }
 
 #project-name {
