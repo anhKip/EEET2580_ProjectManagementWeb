@@ -1,5 +1,10 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
-import { getIdCookie, reLog, logOut, checkProjectAccess } from "../../functions/authentications.js";
+import {
+    getIdCookie,
+    reLog,
+    logOut,
+    checkProjectAccess,
+} from "../../functions/authentications.js";
 import { urlGen } from "../../functions/topNavURL.js";
 
 reLog();
@@ -15,7 +20,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const pId = urlParams.get("pId");
 
-checkProjectAccess(pId)
+checkProjectAccess(pId);
 
 document.getElementById("logOut-btn").addEventListener("click", logOut);
 
@@ -468,58 +473,81 @@ function updateTaskList(tasks) {
 function updateOnGoingTaskList(tasks) {
     // Get on-going task list element
     const onGoingTaskList = document.querySelector("#onGoingTaskList");
+    let userMemberId;
+    // Fetch members and assign userMemberId
+    getMembers()
+        .then((members) => {
+            console.log("Members:", members);
 
-    // Clear task list
-    onGoingTaskList.innerHTML = "";
+            // Find the member with the corresponding user ID
+            const member = members.find((member) => member.userId == userId);
 
-    // Add each task to the list
-    tasks.forEach((task, index) => {
-        if (task.status === "ONGOING") {
-            // Create task list item
-            const taskItem = document.createElement("li");
-            taskItem.classList.add("list-group-item");
-            taskItem.innerHTML = `
-        <div class="d-flex align-items-center justify-content-between">
-            <div>
-                <h6 class="mb-1">${task.name}</h6>
-                <small>Priority: ${task.priority}</small>
-            </div>
-            <div class="mx-auto">
-                <small>Due Date: ${formatDueDate(task.dueDate)}</small>
-            </div>
-            <div class="btn-container">
-                <button id=${
-                    task.taskId
-                } type="button" class="btn btn-success complete-task-btn" data-task-index="${index}">Complete Task</button>
-            </div>    
-            <div class="d-flex justify-content-end">
-                <small class="me-3">Assigned to: ${task.username}</small>
-            </div>
-        </div>
-      `;
+            console.log("Member:", member);
 
-            // Add event listener to open task details
-            taskItem.addEventListener("click", (event) => {
-                const clickedElement = event.target;
-                const completeTaskBtn =
-                    taskItem.querySelector(".complete-task-btn");
+            if (!member) {
+                console.error("Member not found. UserID:", userId);
+                return;
+            }
 
-                // Check if the clicked element is not "Complete Task" button
-                if (clickedElement !== completeTaskBtn) {
-                    openTaskDetails(task);
+            userMemberId = member.memberId; // Assign userMemberId
+
+            // Clear task list
+            onGoingTaskList.innerHTML = "";
+
+            // Add each task to the list
+            tasks.forEach((task, index) => {
+                if (task.status === "ONGOING") {
+                    // Create task list item
+                    const taskItem = document.createElement("li");
+                    taskItem.classList.add("list-group-item");
+                    taskItem.innerHTML = `
+                        <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h6 class="mb-1">${task.name}</h6>
+                            <small>Priority: ${task.priority}</small>
+                        </div>
+                        <div class="mx-auto">
+                            <small>Due Date: ${formatDueDate(task.dueDate)}</small>
+                        </div>
+                        <div class="btn-container ${
+                            userMemberId !== task.assignedTo && "d-none"
+                        }">
+                            <button id="${
+                                task.taskId
+                            }" type="button" class="btn btn-success complete-task-btn" data-task-index="${index}">Complete Task</button>
+                        </div>    
+                        <div class="d-flex justify-content-end">
+                            <small class="me-3">Assigned to: ${task.username}</small>
+                        </div>
+                        </div>
+                    `;
+
+                    // Add event listener to open task details
+                    taskItem.addEventListener("click", (event) => {
+                        const clickedElement = event.target;
+                        const completeTaskBtn = taskItem.querySelector(".complete-task-btn");
+
+                        // Check if the clicked element is not "Complete Task" button
+                        if (clickedElement !== completeTaskBtn) {
+                            openTaskDetails(task);
+                        }
+                    });
+
+                    // Add task item to on-going task list
+                    onGoingTaskList.appendChild(taskItem);
                 }
             });
 
-            // Add task item to on-going task list
-            onGoingTaskList.appendChild(taskItem);
-        }
-    });
-
-    // Attach click event listeners to complete task buttons
-    const completeTaskBtns = document.querySelectorAll(".complete-task-btn");
-    completeTaskBtns.forEach((btn) => {
-        btn.addEventListener("click", completeTask);
-    });
+            // Attach click event listeners to complete task buttons
+            const completeTaskBtns =
+                document.querySelectorAll(".complete-task-btn");
+            completeTaskBtns.forEach((btn) => {
+                btn.addEventListener("click", completeTask);
+            });
+        })
+        .catch((error) => {
+            console.error("Error getting members:", error);
+        });
 }
 
 function updateCompletedTaskList(tasks) {
@@ -599,72 +627,39 @@ function takeTask(event) {
 }
 
 function completeTask(event) {
+    // get the task index
     const taskId = event.target.id;
+    console.log(taskId);
     const url = `http://localhost:8080/api/task/${taskId}/complete`;
 
-    // Fetch the members
-    getMembers()
-        .then((members) => {
-            console.log("Members:", members);
+    const completedTask = {
+        userId: userId,
+        projectId: pId,
+    };
 
-            // Find the member with the corresponding user ID
-            const member = members.find((member) => member.userId == userId);
-
-            console.log("Member:", member);
-
-            if (!member) {
-                console.error("Member not found. UserID:", userId);
-                return;
-            }
-
-            // Find the task with the given taskId
-            const task = tasks.find((task) => task.taskId == taskId);
-
-            console.log("Task:", task);
-
-            if (!task) {
-                console.error("Task not found. TaskID:", taskId);
-                return;
-            }
-
-            // Check if the member is assigned to the task
-            if (task.assignedTo !== member.memberId) {
-                alert("You are not assigned to the task")
-                return;
-            }
-
-            const completedTask = {
-                userId: member.userId,
-                projectId: pId,
-            };
-
-            fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(completedTask),
-            })
-                .then((response) => {
-                    if (response.ok) {
-                        console.log("Task completed successfully!");
-                        location.reload();
-                    } else {
-                        response.json().then((data) => {
-                            console.error(
-                                "Failed to complete task. Status:",
-                                response.status
-                            );
-                            console.log("Response body:", data);
-                        });
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error completing task:", error);
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(completedTask),
+    })
+        .then((response) => {
+            if (response.ok) {
+                console.log("Task complete successfully!");
+                location.reload();
+            } else {
+                response.json().then((data) => {
+                    console.error(
+                        "Failed to complete task. Status:",
+                        response.status
+                    );
+                    console.log("Response body:", data);
                 });
+            }
         })
         .catch((error) => {
-            console.error("Error getting members:", error);
+            console.error("Error assigning task:", error);
         });
 }
 

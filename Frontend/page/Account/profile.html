@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,20 +18,21 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title> Profile </title>
 </head>
+
 <body>
     <div class="topnav" id="top_nav_bar">
         <a class="menu-icon" href="#"><i class="fa-solid fa-bars" id="menu-i"></i></a>
         <div class="menu-container">
             <a href="../Dashboard/dashboard.html"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
-            <a href="../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i> Task</a>
-            <a href="../CalendarView/calendar.html"><i class="fa-solid fa-list"></i> View</a>
+            <a href="../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i> Task list</a>
+            <a href="../CalendarView/calendar.html"><i class="fa-regular fa-calendar"></i> Calendar view</a>
             <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i> File management</a>
             <a href="../Setting/setting.html"><i class="fa-solid fa-gear"></i> Settings</a>
         </div>
         <div class="hide-menu">
             <a href="./../Dashboard/dashboard.html"><i class="fa-solid fa-gauge-high"></i></a>
             <a href="./../TaskList/TaskList.html"><i class="fa-regular fa-clipboard"></i></a>
-            <a href="./../CalendarView/calendar.html"><i class="fa-solid fa-list"></i></a>
+            <a href="./../CalendarView/calendar.html"><i class="fa-regular fa-calendar"></i></a>
             <a href="../File/file.html"><i class="fa-regular fa-file-lines"></i></a>
             <a href="../Setting/setting.html"><i class="fa-solid fa-gear"></i></a>
         </div>
@@ -38,45 +40,51 @@
             <a href="./../Home/home.html"><i class="fa-solid fa-house"></i></a>
             <a href="#"><i class="fa-solid fa-rotate"></i></a>
             <div class="toggle-body">
-              <a class="dropdown-btn" href="#">
-                <i class="fa-regular fa-user"></i>
-              </a>
-              <ul class="custom-toggle">
-                <li><a class="d-flex justify-content-center align-items-center gap-2" href="../Account/profile.html"> <i class="fa-solid fa-gear"></i> Settings </a></li>
-                <li><a class="d-flex justify-content-center align-items-center gap-2" href="../Login/login.html" id="logOut-btn"><i class="fa-solid fa-right-from-bracket"></i> Log out </a></li>
-              </ul>          
+                <a class="dropdown-btn" href="#">
+                    <i class="fa-regular fa-user"></i>
+                </a>
+                <ul class="custom-toggle">
+                    <li><a class="d-flex justify-content-center align-items-center gap-2"
+                            href="../Account/profile.html"> <i class="fa-solid fa-gear"></i> Settings </a></li>
+                    <li><a class="d-flex justify-content-center align-items-center gap-2" href="../Login/login.html"
+                            id="logOut-btn"><i class="fa-solid fa-right-from-bracket"></i> Log out </a></li>
+                </ul>
             </div>
         </div>
-    </div>  
+    </div>
 
-    <div class="content-container" >
+    <div class="content-container">
         <div class="side-tabs">
             <div class="tabs">
-                <a class="tab selected" href="#"> <i class="fa-sharp fa-solid fa-pen"></i> Profile <i class="fa-sharp fa-solid fa-angle-right"></i></a>
+                <a class="tab selected" href="#"> <i class="fa-sharp fa-solid fa-pen"></i> Profile <i
+                        class="fa-sharp fa-solid fa-angle-right"></i></a>
                 <a class="tab" href="notification.html"> <i class="fa-sharp fa-solid fa-bell"></i> Notification </a>
-                <a class="tab" href="security.html"> <i class="fa-sharp fa-solid fa-shield"></i> Password & Security </a>
+                <a class="tab" href="security.html"> <i class="fa-sharp fa-solid fa-shield"></i> Password & Security
+                </a>
             </div>
         </div>
         <div class="content">
             <div class="content-div">
                 <div class="title"> Edit profile </div>
-                <div class="profile-content"> 
+                <div class="profile-content">
                     <div class="img-div">
                         <img src="./../../static/profile.png" alt="blank-profile">
                     </div>
                     <form>
                         <div class="form-group was-validated inputs">
                             <label> E-mail </label>
-                            <input class="form-control" type="email" id="email-input" pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" placeholder="name@gmail.com" required>
+                            <input class="form-control" type="email" id="email-input"
+                                pattern="[a-zA-Z0-9._%+-]+@gmail\.com$" placeholder="name@gmail.com" required>
 
                             <label> Username </label>
-                            <input class="form-control" type="text" id="username-input" minlength="3" maxlength="32" required>
+                            <input class="form-control" type="text" id="username-input" minlength="3" maxlength="32"
+                                required>
                             <div class="invalid-feedback">
                                 Username must be at least 3 characters
                             </div>
 
                             <label> Description </label>
-                            <textarea id="description-input" placeholder="Describe yourself"> </textarea> 
+                            <textarea id="description-input" placeholder="Describe yourself"> </textarea>
 
                             <div class="confirm-feedback">
                                 Information saved
@@ -94,4 +102,5 @@
 
     <script type="module" src="account.js"></script>
 </body>
+
 </html>
