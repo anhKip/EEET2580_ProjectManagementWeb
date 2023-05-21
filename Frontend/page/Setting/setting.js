@@ -160,30 +160,30 @@ function getProjectName() {
     });
 }
 
-// function changeProjectName() {
-//     const fetch_url = "http://localhost:8080/api/project/" + pId + "/change-name"
+function changeProjectName() {
+    const fetch_url = "http://localhost:8080/api/project/" + pId + "/change-name"
     
-//     const input = {
-//         "newName": document.getElementById("name-input").value
-//     }
+    const input = {
+        "newName": document.getElementById("name-input").value
+    }
 
-//     fetch(fetch_url, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(input)
-//     })
-//     .then((res) => res.text())
-//     .then((data) => {
-//         if (data == "Project's name has been updated.") {
-//             getProjectName()
-//         }
-//     })
-//     .catch((e) => {
-//         console.log(e)
-//     })
-// }
+    fetch(fetch_url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input)
+    })
+    .then((res) => res.text())
+    .then((data) => {
+        if (data == "Project's name has been updated.") {
+            getProjectName()
+        }
+    })
+    .catch((e) => {
+        console.log(e)
+    })
+}
 
 
 function addContributors() {
@@ -206,6 +206,9 @@ function addContributors() {
     .then((contributors) => {
         if (contributors === "Member has been added") {
             getContributors();
+        }
+        else {
+            console.log("Member does not exist")
         }
     })
     .catch((error) => {
@@ -263,7 +266,8 @@ function deleteProject() {
     })
     .then((response) => response.text())
     .then((data) => {
-        if (data == "Done") {
+        console.log(data)
+        if (data == "Project has been deleted") {
             location.assign("../Home/home.html")
         }
     })
