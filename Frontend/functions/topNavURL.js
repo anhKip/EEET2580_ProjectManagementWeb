@@ -1,3 +1,7 @@
+/**
+ * Function to change the 'href' attribute of menu anchors
+ * to include project id
+ */
 function urlGen() {
     const queryString = window.location.search
     const urlParams = new URLSearchParams(queryString)

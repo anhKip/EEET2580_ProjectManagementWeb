@@ -2,8 +2,9 @@ import { getIdCookie, reLog, logOut } from "../../functions/authentications.js";
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { urlGen } from "../../functions/topNavURL.js";
 
+// Check login info
 reLog()
-// Set href for top-nav anchors
+//Page spinner
 addWrapper()
 pageLoader()
 
@@ -53,7 +54,7 @@ $(document).ready(function () {
             $('.hide-menu').removeClass("open");
         }
     })
-    
+
     $("#show-hide-btn").click(function () {
         if ($("#password-input").attr("type") == "password") {
             $("#show-hide-btn").html('<i class="fa-solid fa-eye-slash"></i>');

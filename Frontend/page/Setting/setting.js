@@ -2,10 +2,11 @@ import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { urlGen } from "../../functions/topNavURL.js";
 import { reLog, logOut, getIdCookie, checkProjectAccess } from "../../functions/authentications.js";
 
+// Check login info
 reLog()
 // Set href for top-nav anchors
 urlGen()
-
+// Page spinner
 addWrapper()
 pageLoader()
 
@@ -13,6 +14,7 @@ const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const pId = urlParams.get("pId");
 
+// Check project access
 checkProjectAccess(pId)
 
 document.getElementById("logOut-btn").addEventListener("click", logOut)
@@ -25,8 +27,6 @@ document.querySelector(".delete-project-btn").addEventListener("click", deletePr
 var memberId
 
 getContributors();
-
-// Call the getProjectName function
 getProjectName();
 
 $(document).ready(function () {
@@ -121,10 +121,10 @@ function renderContributors(cons) {
     });
 
     const buttons = document.querySelectorAll(".remove-btn");
-    const leaveButton = document.querySelector(".leave-btn").addEventListener("click", removeMember);
+    document.querySelector(".leave-btn").addEventListener("click", removeMember);
     buttons.forEach((button) => {button.addEventListener("click", removeMember)})
 
-    checkRank(memberId)
+    checkAdmin(memberId)
 }
 
 function getProjectName() {
@@ -181,7 +181,7 @@ function addContributors() {
     });
 }
 
-function checkRank(id) {
+function checkAdmin(id) {
     const fetch_url = "http://localhost:8080/api/member/" + id + "/isAdmin";
 
     fetch(fetch_url, {
@@ -193,17 +193,24 @@ function checkRank(id) {
     .then((response) => response.text())
     .then((data) => {
         // console.log(typeof data);
-        if (data === "false") {
-            const disable_remove_button = document.querySelectorAll(".remove-btn")
-            const disable_delete_button = document.querySelector(".delete-project-btn")
+        const remove_buttons = document.querySelectorAll(".remove-btn")
+        const delete_button = document.querySelector(".delete-project-btn")
+        const leave_button = document.querySelector(".leave-btn")
 
-            disable_remove_button.forEach((btn) => {
+        // If user is not an admin, remove-member and delete-project buttons are disable
+        if (data === "false") {
+            remove_buttons.forEach((btn) => {
                 btn.style.backgroundColor = "grey";
                 btn.removeEventListener("click", removeMember)
             })
 
-            disable_delete_button.style.backgroundColor = "grey"
-            disable_delete_button.removeEventListener("click", deleteProject)
+            delete_button.style.backgroundColor = "grey"
+            delete_button.removeEventListener("click", deleteProject)
+        }
+        // Else if user is an admin, the their leave-project will become a delete-project button
+        else {
+            leave_button.removeEventListener("click", removeMember)
+            leave_button.addEventListener("click", deleteProject)
         }
     })
     .catch((e) => {

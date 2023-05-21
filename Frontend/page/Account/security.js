@@ -2,12 +2,12 @@ import { getIdCookie, reLog, logOut } from "../../functions/authentications.js";
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { urlGen } from "../../functions/topNavURL.js";
 
+// Check login info
 reLog()
-// Set href for top-nav anchors
+// Page spinner
 addWrapper()
 pageLoader()
 
-reLog()
 const userId = getIdCookie("userId");
 
 const queryString = window.location.search;
@@ -15,6 +15,7 @@ const urlParams = new URLSearchParams(queryString);
 const pId = urlParams.get("pId");
 
 window.addEventListener('load', function() {
+    // If there is no pId on the URL, nav-bar is disable
     if (pId === null) {
         console.log(pId);
         document.querySelector(".menu-container").style.display = 'none';
@@ -23,6 +24,7 @@ window.addEventListener('load', function() {
         document.querySelector(".content-container").style.padding = '0';
         document.querySelector(".right-icons").classList.add('w-100');
     }
+    // If there is a pId, we assign the href attribute to new one
     else {
         const tabs = document.querySelector(".tabs")
         const tabs_a = tabs.querySelectorAll("a")

@@ -61,7 +61,7 @@ function logOut() {
 }
 
 /**
- * Function to check if a user is a  member.
+ * Function to check if a user is a  member by accessing localStorage.
  * If not, return them to home.html.
  * If yes, let them proceed
  */
