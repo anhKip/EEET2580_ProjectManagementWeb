@@ -230,6 +230,7 @@ function checkAdmin(id) {
         // console.log(typeof data);
         const remove_buttons = document.querySelectorAll(".remove-btn")
         const delete_button = document.querySelector(".delete-project-btn")
+        const change_button = document.getElementById("change")
         const leave_button = document.querySelector(".leave-btn")
 
         // If user is not an admin, remove-member and delete-project buttons are disable
@@ -243,6 +244,9 @@ function checkAdmin(id) {
             delete_button.style.backgroundColor = "grey"
             delete_button.disabled = true;
             delete_button.removeEventListener("click", deleteProject)
+
+            change_button.style.backgroundColor = "grey"
+            change_button.disabled = true;
         }
         // Else if user is an admin, the their leave-project will become a delete-project button
         else {
