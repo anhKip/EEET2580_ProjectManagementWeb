@@ -1,3 +1,6 @@
+/**
+ * Add spinner div to pages
+ */
 function addWrapper() {
     const body = document.body;
 
@@ -17,6 +20,9 @@ function addWrapper() {
     spinner_border_div.appendChild(hidden_span);
 }
 
+/**
+ * Make spinner disappear after 1 second
+ */
 function pageLoader() {
     const spinner_wrapper = document.querySelector(".spinner-wrapper");
 

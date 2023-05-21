@@ -1,5 +1,5 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
-import { reLog, logOut } from "../../functions/authentications.js";
+import { reLog, logOut, checkProjectAccess } from "../../functions/authentications.js";
 import { urlGen } from "../../functions/topNavURL.js";
 
 reLog();
@@ -11,6 +11,8 @@ pageLoader();
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const pId = urlParams.get("pId");
+
+checkProjectAccess(pId)
 
 // initialize task array
 let tasks = [];

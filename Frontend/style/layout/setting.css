@@ -206,8 +206,12 @@ button:hover {
     height: 33px;
 }
 
-#change, #add-contributor, .remove-btn {
+#change, #add-contributor, .remove-btn, .leave-btn {
     width: 90px;
+}
+
+.remove-btn:disabled:hover, .delete-project-btn:disabled:hover {
+    cursor: default;
 }
 
 #change {
@@ -288,6 +292,10 @@ h6 {
     -moz-border-radius: 20px;
     -ms-border-radius: 20px;
     -o-border-radius: 20px;
+}
+
+ul {
+    padding: 0;
 }
 
 #user-input:focus {

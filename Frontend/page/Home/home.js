@@ -2,7 +2,7 @@
 import { getIdCookie, reLog, logOut } from "../../functions/authentications.js";
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 
-// Redirect to login page, comment this out for testing
+// Check login info
 reLog();
 
 // add spinner
@@ -12,6 +12,9 @@ pageLoader();
 // Get userID
 const userId = getIdCookie("userId");
 
+var projectSet = new Set()
+var projectArray = []
+
 window.addEventListener("load", fetchProjects);
 
 document.getElementById("logOut-btn").addEventListener("click", logOut)
@@ -20,7 +23,6 @@ document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
 
-// Start fetching here
 function fetchProjects() {
     const url = `http://localhost:8080/api/user/${userId}/my-projects`;
 
@@ -48,6 +50,8 @@ function renderProjectCards(projects) {
     })
 
     projects.forEach((project) => {
+        // Add fetched project id to a set
+        projectSet.add(project.id)
         const projectName = project.name;
 
         const projectCard = document.createElement("a");
@@ -71,6 +75,11 @@ function renderProjectCards(projects) {
 
         projectGrid.appendChild(projectCard);
     });
+    
+    // Put set into an array
+    projectArray = Array.from(projectSet);
+    // Store array into the localStorage
+    localStorage.setItem('projectList', JSON.stringify(projectArray));
 }
 
 function createProject() {

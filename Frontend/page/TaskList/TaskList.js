@@ -1,7 +1,6 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
-import { getIdCookie } from "../../functions/authentications.js";
+import { getIdCookie, reLog, logOut, checkProjectAccess } from "../../functions/authentications.js";
 import { urlGen } from "../../functions/topNavURL.js";
-import { reLog, logOut } from "../../functions/authentications.js";
 
 reLog();
 
@@ -12,15 +11,17 @@ urlGen();
 // Get userID
 const userId = getIdCookie("userId");
 
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const pId = urlParams.get("pId");
+
+checkProjectAccess(pId)
+
 document.getElementById("logOut-btn").addEventListener("click", logOut);
 
 document.querySelector(".fa-rotate").addEventListener("click", function () {
     location.reload();
 });
-
-const queryString = window.location.search;
-const urlParams = new URLSearchParams(queryString);
-const pId = urlParams.get("pId");
 
 $(document).ready(function () {
     $(".menu-icon").click(function () {

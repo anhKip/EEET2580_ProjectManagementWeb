@@ -1,8 +1,8 @@
 import {setIdCookies} from "../../functions/authentications.js";
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 
+// Page spinner
 addWrapper()
-
 pageLoader()
 
 const login_btn = document.querySelector("#login-btn");
@@ -42,6 +42,7 @@ function login(event) {
     })
     .catch((e) => {
         console.log(e);
+        // Incorrect or non-existed login info
         document.getElementById("invalid-username").style.display = 'block';
         document.getElementById("invalid-password").style.display = 'block';
         document.getElementById("invalid-username").innerHTML = "Incorrect username";

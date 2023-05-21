@@ -1,6 +1,6 @@
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 
-// Set href for top-nav anchors
+// Page spinner
 addWrapper()
 pageLoader()
 

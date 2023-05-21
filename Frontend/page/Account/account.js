@@ -2,8 +2,9 @@ import { getIdCookie, reLog, logOut } from "../../functions/authentications.js";
 import { pageLoader, addWrapper } from "../../functions/pageLoader.js";
 import { urlGen } from "../../functions/topNavURL.js";
 
+// Check login info
 reLog()
-// Set href for top-nav anchors
+//Page spinner
 addWrapper()
 pageLoader()
 
@@ -31,6 +32,12 @@ window.addEventListener('load', function() {
         document.querySelector(".right-icons").classList.add('w-100');
     }
     else {
+        const tabs = document.querySelector(".tabs")
+        const tabs_a = tabs.querySelectorAll("a")
+        tabs_a.forEach(anchor => {
+            let buffer = anchor.href
+            anchor.setAttribute("href", buffer + "?pId=" + pId)
+        })
         urlGen()
     }
 })
@@ -47,7 +54,7 @@ $(document).ready(function () {
             $('.hide-menu').removeClass("open");
         }
     })
-    
+
     $("#show-hide-btn").click(function () {
         if ($("#password-input").attr("type") == "password") {
             $("#show-hide-btn").html('<i class="fa-solid fa-eye-slash"></i>');
