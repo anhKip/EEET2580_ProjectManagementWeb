@@ -56,7 +56,7 @@ public class UpdateService implements CrudService<Update> {
                 () -> new EntityNotFoundException("Cannot find project with id " + projectId));
         // build response
         List<GetUpdateResponse> responses = new ArrayList<>();
-        List<Update> updates = updateRepository.findTop7ByDateOrderByDateDateDesc();
+        List<Update> updates = updateRepository.findTop7ByDateOrderByDateDateDesc(projectId);
         for (Update update : updates) {
             responses.add(new GetUpdateResponse(update.getMessage(), update.getDate()));
         }

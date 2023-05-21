@@ -10,8 +10,8 @@ import java.util.List;
 
 @Transactional
 public interface UpdateRepository extends JpaRepository<Update, Long> {
-    @Query(value = "SELECT * FROM update ORDER BY update_id DESC LIMIT 7", nativeQuery = true)
-    List<Update> findTop7ByDateOrderByDateDateDesc();
+    @Query(value = "SELECT * FROM update WHERE project_id = ?1 ORDER BY update_id DESC LIMIT 7", nativeQuery = true)
+    List<Update> findTop7ByDateOrderByDateDateDesc(Long id);
     @Modifying
     @Query(value = "DELETE FROM update WHERE project_id = ?1", nativeQuery = true)
     void deleteByProjectId(Long projectId);
