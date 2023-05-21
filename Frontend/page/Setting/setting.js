@@ -53,6 +53,14 @@ $(document).ready(function () {
         $("#name-input").val($("#project-name").text().trim());
     });
 
+    $("#confirm-change-button").click(function (event) {
+        event.preventDefault()
+
+        changeProjectName()
+        $(".overlay, .name-change-form").fadeOut();
+
+    })
+
     $("#cancel-change-button").click(function () {
         $(".overlay, .name-change-form").fadeOut();
     });
@@ -101,14 +109,14 @@ function getContributors() {
     });
 }
 
-function renderContributors(cons) {
+function renderContributors(contr) {
     const contributorsList = document.querySelector(".contributors");
 
     // Clear previous list items
     contributorsList.innerHTML = "";
 
     // Add each contributor to the list
-    cons.forEach((contributor) => {
+    contr.forEach((contributor) => {
         const listItem = document.createElement("li");
         listItem.classList.add("contributor");
         listItem.innerHTML = contributor.userId == getIdCookie('userId') ?
@@ -128,7 +136,6 @@ function renderContributors(cons) {
 }
 
 function getProjectName() {
-
     const fetch_url = `http://localhost:8080/api/project/${pId}`;
 
     fetch(fetch_url, {
@@ -153,6 +160,31 @@ function getProjectName() {
     });
 }
 
+function changeProjectName() {
+    const fetch_url = "http://localhost:8080/api/project/" + pId + "/change-name"
+    
+    const input = {
+        "newName": document.getElementById("name-input").value
+    }
+
+    fetch(fetch_url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input)
+    })
+    .then((res) => res.text())
+    .then((data) => {
+        if (data == "Project's name has been updated.") {
+            getProjectName()
+        }
+    })
+    .catch((e) => {
+        console.log(e)
+    })
+}
+
 
 function addContributors() {
 
@@ -174,6 +206,9 @@ function addContributors() {
     .then((contributors) => {
         if (contributors === "Member has been added") {
             getContributors();
+        }
+        else {
+            console.log("Member does not exist")
         }
     })
     .catch((error) => {
@@ -231,7 +266,8 @@ function deleteProject() {
     })
     .then((response) => response.text())
     .then((data) => {
-        if (data == "Done") {
+        console.log(data)
+        if (data == "Project has been deleted") {
             location.assign("../Home/home.html")
         }
     })
