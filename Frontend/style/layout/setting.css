@@ -219,6 +219,10 @@ button:hover {
     width: 90px;
 }
 
+.remove-btn:disabled:hover, .delete-project-btn:disabled:hover {
+    cursor: default;
+}
+
 #change {
     height: 33px;
 }

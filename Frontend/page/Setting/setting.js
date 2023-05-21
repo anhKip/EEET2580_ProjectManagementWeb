@@ -201,10 +201,12 @@ function checkAdmin(id) {
         if (data === "false") {
             remove_buttons.forEach((btn) => {
                 btn.style.backgroundColor = "grey";
+                btn.disabled = true;
                 btn.removeEventListener("click", removeMember)
             })
 
             delete_button.style.backgroundColor = "grey"
+            delete_button.disabled = true;
             delete_button.removeEventListener("click", deleteProject)
         }
         // Else if user is an admin, the their leave-project will become a delete-project button
