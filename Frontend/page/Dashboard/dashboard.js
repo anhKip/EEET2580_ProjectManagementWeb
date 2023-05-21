@@ -45,11 +45,11 @@ $(document).ready(function () {
 $(document).ready(function () {
     $(".updates-box").hide();
     $(".button-leaderboard").click(function () {
-        $(".leaderboard-box").toggle();
+        $(".leaderboard-box").show();
         $(".updates-box").hide();
     });
     $(".button-updates").click(function () {
-        $(".updates-box").toggle();
+        $(".updates-box").show();
         $(".leaderboard-box").hide();
     });
 });
