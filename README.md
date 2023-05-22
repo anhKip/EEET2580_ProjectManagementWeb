@@ -4,7 +4,7 @@
 **To run the backend**, please open folder Backend in your IntelliJ IDEA application.
 
 Navigate to *src/main/resources/application.properties* and input your password for postgresql as below:
-> spring.datasource.password=${DB_PASSWORD:[your-password]}
+> spring.datasource.password=${DB_PASSWORD:your-password}
 
 Next, navigate to *src/main/java/com/example/backend/BackendApplication.java* to run the application
 
