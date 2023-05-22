@@ -217,7 +217,7 @@ function addContributors() {
       if (contributors === "Member has been added") {
         getContributors();
       } else {
-        console.log("Member does not exist");
+        alert("Member does not exist");
       }
     })
     .catch((error) => {
