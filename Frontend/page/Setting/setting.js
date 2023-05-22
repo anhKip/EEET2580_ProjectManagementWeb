@@ -276,18 +276,21 @@ function deleteProject() {
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then((response) => response.text())
-    .then((data) => {
-      console.log(data);
-      if (data == "Project has been deleted") {
-        location.assign("../Home/home.html");
-      }
-    });
+  }).then((response) => {
+    if (response.ok) {
+      location.assign("../Home/home.html");
+    } else {
+      console.log(response);
+      alert("Something went wrong");
+    }
+  });
 }
 
 function removeMember(event) {
   const id = event.target.id.split("-")[1];
+  const btnClass = event.target.classList[0];
+
+  console.log("test", btnClass);
 
   const fetch_url =
     "http://localhost:8080/api/project/" + pId + "/remove-member/" + id;
@@ -300,7 +303,11 @@ function removeMember(event) {
   })
     .then((res) => {
       if (res.ok) {
-        location.assign("../Home/home.html");
+        if (btnClass === "remove-btn") {
+          location.reload();
+        } else {
+          location.assign("../Home/home.html");
+        }
       } else {
         location.reload();
       }
