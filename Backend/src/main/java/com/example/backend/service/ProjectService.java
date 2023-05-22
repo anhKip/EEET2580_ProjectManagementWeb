@@ -148,6 +148,13 @@ public class ProjectService implements CrudService<Project> {
         taskRepository.deleteByMemberId(memberId);
         projectMemberRepository.deleteById(memberId);
 
+        // if there is no member left -> delete project
+        project = projectRepository.findById(projectId).orElseThrow(
+                () -> new EntityNotFoundException("Cannot find project with id " + projectId));
+        if (project.getMembers().isEmpty()) {
+            return delete(projectId);
+        }
+
         // check if there is no admin left -> assign new admin
         if (projectMemberRepository.findByIsAdminAndProjectId(projectId).isEmpty()) {
             ProjectMember newAdmin = projectMemberRepository.findFirstByProject(project);
@@ -156,12 +163,6 @@ public class ProjectService implements CrudService<Project> {
             projectMemberRepository.save(newAdmin);
         }
 
-        // if there is no member left -> delete project
-        project = projectRepository.findById(projectId).orElseThrow(
-                () -> new EntityNotFoundException("Cannot find project with id " + projectId));
-        if (project.getMembers().isEmpty()) {
-            return delete(projectId);
-        }
         return "Member has been removed";
     }
 
