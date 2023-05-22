@@ -2,7 +2,7 @@ package com.example.backend.service;
 
 import com.example.backend.model.Project;
 import com.example.backend.model.Update;
-import com.example.backend.repository.GetUpdateResponse;
+import com.example.backend.record.GetUpdateResponse;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.UpdateRepository;
 import jakarta.persistence.EntityNotFoundException;

@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
-import com.example.backend.model.Update;
-import com.example.backend.repository.GetUpdateResponse;
+import com.example.backend.record.GetUpdateResponse;
 import com.example.backend.service.UpdateService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;

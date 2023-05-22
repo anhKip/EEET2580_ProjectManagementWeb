@@ -1,7 +1,6 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.File;
-import com.example.backend.service.CrudService;
 import com.example.backend.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;

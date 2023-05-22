@@ -2,7 +2,6 @@ package com.example.backend.controller;
 
 import com.example.backend.record.GetProjectRespone;
 import com.example.backend.record.UserRequest;
-import com.example.backend.repository.UserAccountRepository;
 import com.example.backend.service.UserAccountService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -18,13 +17,6 @@ import java.util.List;
 public class UserAccountController {
     @Autowired
     private UserAccountService userAccountService;
-    @Autowired
-    private UserAccountRepository userAccountRepository;
-
-//    @PostMapping(value = "/", consumes = "application/json")
-//    public UserAccount create(@RequestBody UserAccount userAccount) {
-//        return userAccountService.create(userAccount);
-//    }
 
     @Operation(description = "Get user info")
     @GetMapping(value = "/{id}", produces = "application/json")

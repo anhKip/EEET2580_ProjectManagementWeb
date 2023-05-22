@@ -1,10 +1,10 @@
 package com.example.backend.controller;
 
 import com.example.backend.model.Task;
-import com.example.backend.record.UpdateStatusTaskRequest;
 import com.example.backend.record.ChangeTaskDeadlineRequest;
 import com.example.backend.record.CreateTaskRequest;
 import com.example.backend.record.GetTaskResponse;
+import com.example.backend.record.UpdateStatusTaskRequest;
 import com.example.backend.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

@@ -1,9 +1,9 @@
 package com.example.backend.service;
 
 import com.example.backend.model.*;
-import com.example.backend.record.UpdateStatusTaskRequest;
 import com.example.backend.record.CreateTaskRequest;
 import com.example.backend.record.GetTaskResponse;
+import com.example.backend.record.UpdateStatusTaskRequest;
 import com.example.backend.repository.ProjectMemberRepository;
 import com.example.backend.repository.ProjectRepository;
 import com.example.backend.repository.TaskRepository;
@@ -12,8 +12,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -143,7 +141,7 @@ public class TaskService implements CrudService<Task> {
         // get member
         ProjectMember projectMember = projectMemberRepository.findByUserIdAndProjectId(request.userId(), request.projectId()).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find member"));
-        if(task.getPriority() == Priority.HIGH) {
+        if (task.getPriority() == Priority.HIGH) {
             projectMember.setScore(projectMember.getScore() + 30);
         } else if (task.getPriority() == Priority.MEDIUM) {
             projectMember.setScore(projectMember.getScore() + 20);

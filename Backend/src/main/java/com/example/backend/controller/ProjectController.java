@@ -36,11 +36,6 @@ public class ProjectController {
         return new ResponseEntity<>(projectService.getProject(id), HttpStatus.OK);
     }
 
-//    @PutMapping(value = "/", consumes = "application/json")
-//    public Project update(@RequestBody Project project) {
-//        return projectService.update(project);
-//    }
-
     @Operation(description = "Delete a project by project id")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {

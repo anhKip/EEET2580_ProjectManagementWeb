@@ -43,6 +43,7 @@ public class AuthController {
     @Value("${application.security.jwt.refreshTokenMin}")
     private int refreshTokenMin;
 
+    @Operation(description = "Authenticate user and return access and refresh tokens")
     @PostMapping(value = "/signin", consumes = "application/json")
     public ResponseEntity<SignInResponse> authenticateUser(@RequestBody @Valid SignInRequest signInRecord) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -66,6 +67,7 @@ public class AuthController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(description = "Register user. If user uses the same username and email as another user will return bad request")
     @PostMapping(value = "/signup", consumes = "application/json")
     public ResponseEntity<SignUpResponse> registerUser(@RequestBody @Valid SignUpRequest signUpRecord) {
         // check if username already exists in DB
@@ -90,6 +92,7 @@ public class AuthController {
         return new ResponseEntity<>(new SignUpResponse("User registered successfully.", userAccount.getId()), HttpStatus.OK);
     }
 
+    @Operation(description = "Change password")
     @PostMapping(value = "/change-password", consumes = "application/json")
     public ResponseEntity<String> changePassword(@RequestBody @Valid ChangePasswordRequest changePasswordRequest) {
         // get user
