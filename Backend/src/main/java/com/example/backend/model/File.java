@@ -3,12 +3,15 @@ package com.example.backend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Builder
 @Table(name = "file")
 public class File {
     @Id
@@ -23,9 +26,18 @@ public class File {
 
     @NotBlank
     @Column(name = "file_upload_date")
-    private Date uploadDate;
+    private LocalDateTime uploadDate;
 
-    @ManyToOne(targetEntity = Project.class, cascade = CascadeType.ALL)
+    @NotBlank
+    @Column(name = "file_type")
+    private String fileType;
+
+    @NotBlank
+    @Column(name = "file_resource")
+    @Lob
+    private byte[] data;
+
+    @ManyToOne(targetEntity = Project.class)
     @JoinColumn(name = "project_id")
     private Project project;
 
