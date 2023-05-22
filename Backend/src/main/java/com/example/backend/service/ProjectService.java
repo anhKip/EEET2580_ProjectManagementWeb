@@ -60,8 +60,8 @@ public class ProjectService implements CrudService<Project> {
     public String delete(Long id) {
         Project project = projectRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Cannot find project with id " + id));
-        projectMemberRepository.deleteByProjectId(id);
         taskRepository.deleteByProjectId(id);
+        projectMemberRepository.deleteByProjectId(id);
         updateRepository.deleteByProjectId(id);
         projectRepository.deleteById(id);
         return "Project has been deleted";
